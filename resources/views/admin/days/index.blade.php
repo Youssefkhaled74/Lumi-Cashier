@@ -1,16 +1,16 @@
 @extends('layouts.admin')
 
-@section('title', 'Business Days History')
+@section('title', __('messages.business_days_history'))
 
 @section('content')
     <div class="mb-6 flex items-center justify-between">
         <div>
-            <h2 class="text-3xl font-extrabold text-gray-800 mb-2">Business Days History</h2>
-            <p class="text-gray-600">View all business day sessions and their details</p>
+            <h2 class="text-3xl font-extrabold text-gray-800 mb-2">{{ __('messages.business_days_history') }}</h2>
+            <p class="text-gray-600">{{ __('messages.view_all_sessions') }}</p>
         </div>
         <a href="{{ route('day.status') }}" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
             <i class="bi bi-calendar-check text-xl"></i>
-            <span class="font-semibold">Current Day Status</span>
+            <span class="font-semibold">{{ __('messages.current_day_status') }}</span>
         </a>
     </div>
 
@@ -37,13 +37,13 @@
             <table class="data-table min-w-full divide-y divide-gray-200" style="width:100%">
                 <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
                     <tr>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Date</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Opened At</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Closed At</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Duration</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Orders</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Total Sales</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.date') }}</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.status') }}</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.opened_at') }}</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.closed_at') }}</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.duration') }}</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.orders') }}</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.total_sales') }}</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -63,11 +63,11 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($day->is_open)
                                     <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-green-100 text-green-800 animate-pulse">
-                                        <i class="bi bi-circle-fill mr-1 text-xs"></i> Open
+                                        <i class="bi bi-circle-fill mr-1 text-xs"></i> {{ __('messages.open_status') }}
                                     </span>
                                 @else
                                     <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-gray-100 text-gray-800">
-                                        <i class="bi bi-check-circle mr-1"></i> Closed
+                                        <i class="bi bi-check-circle mr-1"></i> {{ __('messages.closed_status') }}
                                     </span>
                                 @endif
                             </td>
@@ -114,11 +114,11 @@
                             <td colspan="7" class="px-6 py-16 text-center">
                                 <div class="flex flex-col items-center text-gray-400">
                                     <i class="bi bi-calendar-x text-6xl mb-4"></i>
-                                    <p class="text-xl font-semibold mb-2">No business days found</p>
-                                    <p class="text-sm mb-4">Open a new day to get started</p>
+                                    <p class="text-xl font-semibold mb-2">{{ __('messages.no_business_days_found') }}</p>
+                                    <p class="text-sm mb-4">{{ __('messages.open_new_day_to_start') }}</p>
                                     <a href="{{ route('day.status') }}" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
                                         <i class="bi bi-plus-circle mr-2"></i>
-                                        Go to Day Status
+                                        {{ __('messages.go_to_day_status') }}
                                     </a>
                                 </div>
                             </td>

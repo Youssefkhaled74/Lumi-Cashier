@@ -86,27 +86,27 @@
     <div class="card p-8 mb-8 shadow-xl">
         <h3 class="text-2xl font-extrabold text-gray-800 mb-6 flex items-center">
             <i class="bi bi-lightning-fill text-yellow-500 mr-3 text-3xl"></i>
-            Quick Actions
+            {{ __('messages.quick_actions') }}
         </h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <a href="{{ route('pos.index') }}" class="group flex flex-col items-center justify-center p-8 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                 <i class="bi bi-cart-plus text-5xl text-purple-600 mb-3 group-hover:scale-110 transition-transform duration-300"></i>
-                <span class="font-bold text-gray-700 group-hover:text-purple-600 transition-colors">New Sale</span>
+                <span class="font-bold text-gray-700 group-hover:text-purple-600 transition-colors">{{ __('messages.new_sale') }}</span>
             </a>
             
             <a href="{{ route('items.create') }}" class="group flex flex-col items-center justify-center p-8 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                 <i class="bi bi-plus-circle text-5xl text-blue-600 mb-3 group-hover:scale-110 transition-transform duration-300"></i>
-                <span class="font-bold text-gray-700 group-hover:text-blue-600 transition-colors">Add Item</span>
+                <span class="font-bold text-gray-700 group-hover:text-blue-600 transition-colors">{{ __('messages.add_item') }}</span>
             </a>
             
             <a href="{{ route('categories.create') }}" class="group flex flex-col items-center justify-center p-8 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                 <i class="bi bi-folder-plus text-5xl text-green-600 mb-3 group-hover:scale-110 transition-transform duration-300"></i>
-                <span class="font-bold text-gray-700 group-hover:text-green-600 transition-colors">Add Category</span>
+                <span class="font-bold text-gray-700 group-hover:text-green-600 transition-colors">{{ __('messages.add_category') }}</span>
             </a>
             
             <a href="{{ route('reports.index') }}" class="group flex flex-col items-center justify-center p-8 bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                 <i class="bi bi-file-earmark-pdf text-5xl text-orange-600 mb-3 group-hover:scale-110 transition-transform duration-300"></i>
-                <span class="font-bold text-gray-700 group-hover:text-orange-600 transition-colors">Reports</span>
+                <span class="font-bold text-gray-700 group-hover:text-orange-600 transition-colors">{{ __('messages.nav.reports') }}</span>
             </a>
         </div>
         

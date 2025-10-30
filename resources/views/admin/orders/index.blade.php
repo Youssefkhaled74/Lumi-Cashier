@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Orders')
+@section('title', __('messages.orders'))
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Orders</h1>
+        <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">{{ __('messages.orders') }}</h1>
         <a href="{{ route('orders.create') }}" class="btn-gradient px-6 py-3 rounded-xl font-semibold flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
             <i class="bi bi-plus-circle"></i>
-            <span>New Order</span>
+            <span>{{ __('messages.new_order') }}</span>
         </a>
     </div>
 
@@ -30,7 +30,7 @@
         <div class="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-indigo-600 to-purple-600">
             <h2 class="text-xl font-bold text-white flex items-center">
                 <i class="bi bi-receipt mr-3 text-2xl"></i>
-                All Orders
+                {{ __('messages.all_orders') }}
             </h2>
         </div>
 
@@ -39,13 +39,13 @@
             <table class="min-w-full divide-y divide-gray-200 data-table">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-hash mr-1"></i>Order #</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-calendar mr-1"></i>Date</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-calendar-check mr-1"></i>Day</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-box mr-1"></i>Items</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-currency-dollar mr-1"></i>Total</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-info-circle mr-1"></i>Status</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-gear mr-1"></i>Actions</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-hash mr-1"></i>{{ __('messages.order_number') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-calendar mr-1"></i>{{ __('messages.date') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-calendar-check mr-1"></i>{{ __('messages.day') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-box mr-1"></i>{{ __('messages.items') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-currency-dollar mr-1"></i>{{ __('messages.total') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-info-circle mr-1"></i>{{ __('messages.status') }}</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="bi bi-gear mr-1"></i>{{ __('messages.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -56,15 +56,15 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $order->created_at->format('M d, Y h:i A') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Day #{{ $order->day->id }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $order->items->count() }} item(s)</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $order->items->count() }} {{ __('messages.items_count') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">${{ number_format($order->total, 2) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($order->is_completed)
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"><i class="bi bi-check-circle mr-1"></i>Completed</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"><i class="bi bi-check-circle mr-1"></i>{{ __('messages.completed') }}</span>
                                 @elseif($order->is_cancelled)
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"><i class="bi bi-x-circle mr-1"></i>Cancelled</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"><i class="bi bi-x-circle mr-1"></i>{{ __('messages.cancelled') }}</span>
                                 @else
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"><i class="bi bi-clock mr-1"></i>Pending</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"><i class="bi bi-clock mr-1"></i>{{ __('messages.pending') }}</span>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
@@ -87,10 +87,10 @@
             <div class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full mb-4">
                 <i class="bi bi-inbox text-5xl text-indigo-400"></i>
             </div>
-            <p class="text-xl text-gray-500 mb-4">No orders found</p>
+            <p class="text-xl text-gray-500 mb-4">{{ __('messages.no_orders_message') }}</p>
             <a href="{{ route('orders.create') }}" class="inline-flex items-center px-6 py-3 btn-gradient text-white rounded-xl hover:shadow-lg transition-all">
                 <i class="bi bi-plus-circle mr-2"></i>
-                Create your first order
+                {{ __('messages.create_first_order_message') }}
             </a>
         </div>
         @endif

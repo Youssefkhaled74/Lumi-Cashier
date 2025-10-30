@@ -1,16 +1,16 @@
 @extends('layouts.admin')
 
-@section('title', 'Items')
+@section('title', __('messages.items'))
 
 @section('content')
     <div class="mb-6 flex items-center justify-between">
         <div>
-            <h2 class="text-3xl font-extrabold text-gray-800 mb-2">Items Inventory</h2>
-            <p class="text-gray-600">Manage your product catalog and stock levels</p>
+            <h2 class="text-3xl font-extrabold text-gray-800 mb-2">{{ __('messages.items_inventory') }}</h2>
+            <p class="text-gray-600">{{ __('messages.manage_catalog') }}</p>
         </div>
         <a href="{{ route('items.create') }}" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
             <i class="bi bi-plus-circle text-xl"></i>
-            <span class="font-semibold">New Item</span>
+            <span class="font-semibold">{{ __('messages.new_item') }}</span>
         </a>
     </div>
 
@@ -37,12 +37,12 @@
             <table class="data-table min-w-full divide-y divide-gray-200" style="width:100%">
                 <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
                     <tr>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Item</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Category</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">SKU</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Price</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Stock</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Actions</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.item') }}</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.category') }}</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.sku') }}</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.price') }}</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.stock') }}</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ __('messages.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -76,24 +76,24 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full {{ $item->available_stock > 10 ? 'bg-green-100 text-green-800' : ($item->available_stock > 0 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
-                                    <i class="bi bi-box mr-1"></i> {{ $item->available_stock }} units
+                                    <i class="bi bi-box mr-1"></i> {{ $item->available_stock }} {{ __('messages.units') }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center space-x-3">
-                                    <button onclick="quickViewItem({{ $item->id }})" class="text-blue-600 hover:text-blue-900 transition-colors" title="Quick View">
+                                    <button onclick="quickViewItem({{ $item->id }})" class="text-blue-600 hover:text-blue-900 transition-colors" title="{{ __('messages.quick_view') }}">
                                         <i class="bi bi-eye text-lg"></i>
                                     </button>
-                                    <a href="{{ route('items.show', $item) }}" class="text-indigo-600 hover:text-indigo-900 transition-colors" title="View Details">
+                                    <a href="{{ route('items.show', $item) }}" class="text-indigo-600 hover:text-indigo-900 transition-colors" title="{{ __('messages.view_details') }}">
                                         <i class="bi bi-box-arrow-up-right text-lg"></i>
                                     </a>
-                                    <a href="{{ route('items.edit', $item) }}" class="text-purple-600 hover:text-purple-900 transition-colors" title="Edit">
+                                    <a href="{{ route('items.edit', $item) }}" class="text-purple-600 hover:text-purple-900 transition-colors" title="{{ __('messages.edit') }}">
                                         <i class="bi bi-pencil text-lg"></i>
                                     </a>
-                                    <form action="{{ route('items.destroy', $item) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                    <form action="{{ route('items.destroy', $item) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('messages.delete_item_confirm') }}');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900 transition-colors" title="Delete">
+                                        <button type="submit" class="text-red-600 hover:text-red-900 transition-colors" title="{{ __('messages.delete') }}">
                                             <i class="bi bi-trash text-lg"></i>
                                         </button>
                                     </form>

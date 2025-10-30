@@ -1,17 +1,17 @@
 @extends('layouts.admin')
 
-@section('title', 'Day Status')
+@section('title', __('messages.day_status'))
 
 @section('content')
     <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
             <div>
-                <h2 class="text-3xl font-extrabold text-gray-800 mb-2">Day Status</h2>
+                <h2 class="text-3xl font-extrabold text-gray-800 mb-2">{{ __('messages.day_status') }}</h2>
                 <p class="text-gray-600">Monitor current business day operations</p>
             </div>
             <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300">
                 <i class="bi bi-arrow-left"></i>
-                <span>Back to Dashboard</span>
+                <span>{{ __('messages.back_to_dashboard') }}</span>
             </a>
         </div>
     </div>
@@ -40,10 +40,10 @@
             <!-- Day Info Card -->
             <div class="card shadow-2xl animate-fadeInUp">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold text-gray-800">Current Day</h3>
+                    <h3 class="text-xl font-bold text-gray-800">{{ __('messages.current_day') }}</h3>
                     <span class="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-sm font-bold rounded-full shadow-lg flex items-center">
                         <span class="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
-                        OPEN
+                        {{ strtoupper(__('messages.open_status')) }}
                     </span>
                 </div>
 
@@ -54,7 +54,7 @@
                                 <i class="bi bi-calendar-check text-white text-2xl"></i>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600 font-semibold">Opened At</p>
+                                <p class="text-sm text-gray-600 font-semibold">{{ __('messages.opened_at') }}</p>
                                 <p class="text-lg font-bold text-gray-900">{{ $day->opened_at->format('h:i A') }}</p>
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                                 <i class="bi bi-clock-history text-white text-2xl"></i>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600 font-semibold">Duration</p>
+                                <p class="text-sm text-gray-600 font-semibold">{{ __('messages.duration') }}</p>
                                 <p class="text-lg font-bold text-gray-900">{{ number_format($stats['duration'] ?? 0, 2) }} hours</p>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                                 <i class="bi bi-hash text-white text-2xl"></i>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600 font-semibold">Day ID</p>
+                                <p class="text-sm text-gray-600 font-semibold">{{ __('messages.day_id') }}</p>
                                 <p class="text-lg font-bold text-gray-900">#{{ $day->id }}</p>
                             </div>
                         </div>
@@ -91,35 +91,35 @@
 
             <!-- Statistics Card -->
             <div class="card shadow-2xl animate-fadeInUp" style="animation-delay: 0.1s;">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">Today's Performance</h3>
+                <h3 class="text-xl font-bold text-gray-800 mb-4">{{ __('messages.todays_performance') }}</h3>
 
                 <div class="space-y-4">
                     <div class="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm font-semibold text-gray-600">Total Sales</span>
+                            <span class="text-sm font-semibold text-gray-600">{{ __('messages.total_sales') }}</span>
                             <i class="bi bi-cash-stack text-2xl text-green-600"></i>
                         </div>
                         <p class="text-3xl font-extrabold text-gray-900">${{ number_format($stats['total_sales'] ?? 0, 2) }}</p>
-                        <p class="text-xs text-gray-500 mt-1">Revenue generated today</p>
+                        <p class="text-xs text-gray-500 mt-1">{{ __('messages.revenue_generated_today') }}</p>
                     </div>
 
                     <div class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm font-semibold text-gray-600">Total Orders</span>
+                            <span class="text-sm font-semibold text-gray-600">{{ __('messages.total_orders') }}</span>
                             <i class="bi bi-receipt text-2xl text-blue-600"></i>
                         </div>
                         <p class="text-3xl font-extrabold text-gray-900">{{ $stats['total_orders'] ?? 0 }}</p>
-                        <p class="text-xs text-gray-500 mt-1">Completed transactions</p>
+                        <p class="text-xs text-gray-500 mt-1">{{ __('messages.completed_transactions') }}</p>
                     </div>
 
                     @if(($stats['total_orders'] ?? 0) > 0)
                         <div class="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl">
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-sm font-semibold text-gray-600">Average Order</span>
+                                <span class="text-sm font-semibold text-gray-600">{{ __('messages.average_order') }}</span>
                                 <i class="bi bi-graph-up text-2xl text-purple-600"></i>
                             </div>
                             <p class="text-3xl font-extrabold text-gray-900">${{ number_format(($stats['total_sales'] ?? 0) / ($stats['total_orders'] ?? 1), 2) }}</p>
-                            <p class="text-xs text-gray-500 mt-1">Per transaction</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ __('messages.per_transaction') }}</p>
                         </div>
                     @endif
                 </div>
@@ -134,13 +134,13 @@
                         <i class="bi bi-cart-check text-white text-2xl"></i>
                     </div>
                     <div>
-                        <h4 class="font-bold text-gray-800">View Orders</h4>
-                        <p class="text-sm text-gray-500">Check today's orders</p>
+                        <h4 class="font-bold text-gray-800">{{ __('messages.view_orders') }}</h4>
+                        <p class="text-sm text-gray-500">{{ __('messages.check_todays_orders') }}</p>
                     </div>
                 </div>
                 <a href="{{ route('orders.index') }}" class="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
                     <i class="bi bi-arrow-right-circle mr-2"></i>
-                    Go to Orders
+                    {{ __('messages.go_to_orders') }}
                 </a>
             </div>
 
@@ -150,13 +150,13 @@
                         <i class="bi bi-box-seam text-white text-2xl"></i>
                     </div>
                     <div>
-                        <h4 class="font-bold text-gray-800">Manage Inventory</h4>
-                        <p class="text-sm text-gray-500">Update stock levels</p>
+                        <h4 class="font-bold text-gray-800">{{ __('messages.manage_inventory') }}</h4>
+                        <p class="text-sm text-gray-500">{{ __('messages.update_stock_levels') }}</p>
                     </div>
                 </div>
                 <a href="{{ route('items.index') }}" class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
                     <i class="bi bi-arrow-right-circle mr-2"></i>
-                    Go to Items
+                    {{ __('messages.go_to_items') }}
                 </a>
             </div>
 
@@ -187,14 +187,14 @@
                 <div class="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-6">
                     <i class="bi bi-moon-stars text-6xl text-gray-400"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">No Active Day</h3>
-                <p class="text-gray-600 mb-8 max-w-md">There is no business day currently open. Start a new day to begin processing orders and managing inventory.</p>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ __('messages.no_active_day') }}</h3>
+                <p class="text-gray-600 mb-8 max-w-md">{{ __('messages.no_business_day_message') }}. {{ __('messages.start_new_day_message') }}.</p>
                 
                 <form action="{{ route('day.open') }}" method="POST">
                     @csrf
                     <button type="submit" class="px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center text-lg">
                         <i class="bi bi-sunrise mr-2 text-2xl"></i>
-                        Open New Day
+                        {{ __('messages.open_new_day') }}
                     </button>
                 </form>
             </div>
@@ -207,9 +207,9 @@
                     <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-3">
                         <i class="bi bi-shield-check text-white text-xl"></i>
                     </div>
-                    <h4 class="font-bold text-gray-800">Secure</h4>
+                    <h4 class="font-bold text-gray-800">{{ __('messages.secure') }}</h4>
                 </div>
-                <p class="text-sm text-gray-600">All transactions are tracked and secured</p>
+                <p class="text-sm text-gray-600">{{ __('messages.all_transactions_tracked') }}</p>
             </div>
 
             <div class="card shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-purple-50 to-pink-50">
@@ -217,9 +217,9 @@
                     <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mr-3">
                         <i class="bi bi-speedometer2 text-white text-xl"></i>
                     </div>
-                    <h4 class="font-bold text-gray-800">Real-time</h4>
+                    <h4 class="font-bold text-gray-800">{{ __('messages.realtime') }}</h4>
                 </div>
-                <p class="text-sm text-gray-600">Monitor your business in real-time</p>
+                <p class="text-sm text-gray-600">{{ __('messages.monitor_business_realtime') }}</p>
             </div>
 
             <div class="card shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-green-50 to-emerald-50">
@@ -227,9 +227,9 @@
                     <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-3">
                         <i class="bi bi-graph-up-arrow text-white text-xl"></i>
                     </div>
-                    <h4 class="font-bold text-gray-800">Analytics</h4>
+                    <h4 class="font-bold text-gray-800">{{ __('messages.analytics') }}</h4>
                 </div>
-                <p class="text-sm text-gray-600">Detailed insights and reports</p>
+                <p class="text-sm text-gray-600">{{ __('messages.detailed_insights_reports') }}</p>
             </div>
         </div>
     @endif
