@@ -116,6 +116,12 @@ return [
     'all_categories' => 'جميع الفئات',
     'most_ordered' => 'المنتجات الأكثر طلباً',
     'filter_by_category' => 'تصفية حسب الفئة',
+    'available_items' => 'المنتجات المتاحة',
+    'search_items' => 'البحث عن المنتجات بالاسم أو الكود',
+    'no_items_found' => 'لم يتم العثور على منتجات',
+    'try_different_search' => 'حاول استخدام مصطلح بحث أو فئة مختلفة',
+    'available' => 'متاح',
+    'add' => 'إضافة',
     
     // Days
     'days' => 'الأيام',

@@ -148,6 +148,55 @@
 
 <script>
 let cart = {};
+let currentCategory = 'all';
+
+// Filter items by search query
+function filterItems() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const items = document.querySelectorAll('.item-card');
+    const noResults = document.getElementById('noResults');
+    const container = document.getElementById('itemsContainer');
+    let visibleCount = 0;
+
+    items.forEach(item => {
+        const itemName = item.dataset.itemName;
+        const itemSku = item.dataset.itemSku;
+        const categoryId = item.dataset.categoryId;
+        
+        const matchesSearch = itemName.includes(searchTerm) || itemSku.includes(searchTerm);
+        const matchesCategory = currentCategory === 'all' || categoryId === currentCategory;
+        
+        if (matchesSearch && matchesCategory) {
+            item.classList.remove('hidden');
+            visibleCount++;
+        } else {
+            item.classList.add('hidden');
+        }
+    });
+
+    // Show/hide no results message
+    if (visibleCount === 0) {
+        container.classList.add('hidden');
+        noResults.classList.remove('hidden');
+    } else {
+        container.classList.remove('hidden');
+        noResults.classList.add('hidden');
+    }
+}
+
+// Filter items by category
+function filterByCategory(categoryId) {
+    currentCategory = categoryId;
+    
+    // Update active button
+    document.querySelectorAll('.category-filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector(`[data-category="${categoryId}"]`).classList.add('active');
+    
+    // Apply filter
+    filterItems();
+}
 
 function updateCart(itemId, itemName, itemPrice, quantity, maxStock) {
     quantity = parseInt(quantity) || 0;
@@ -258,4 +307,23 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
     this.submit();
 });
 </script>
+
+<style>
+.category-filter-btn {
+    background-color: #f3f4f6;
+    color: #6b7280;
+    border: 2px solid transparent;
+}
+
+.category-filter-btn:hover {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
+.category-filter-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+}
+</style>
 @endsection

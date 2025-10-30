@@ -116,6 +116,12 @@ return [
     'all_categories' => 'All Categories',
     'most_ordered' => 'Most Ordered Items',
     'filter_by_category' => 'Filter by category',
+    'available_items' => 'Available Items',
+    'search_items' => 'Search items by name or SKU',
+    'no_items_found' => 'No items found',
+    'try_different_search' => 'Try a different search term or category',
+    'available' => 'available',
+    'add' => 'Add',
     
     // Days
     'days' => 'Days',
