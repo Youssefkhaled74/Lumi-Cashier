@@ -81,13 +81,13 @@ Route::prefix('admin')->middleware(AdminAuth::class)->group(function (): void {
     })->name('dashboard');
 
     // Categories CRUD
-    Route::resource('categories', CategoryController::class);
     Route::get('categories/export-pdf', [CategoryController::class, 'exportPdf'])->name('categories.export-pdf');
+    Route::resource('categories', CategoryController::class);
 
     // Items CRUD
+    Route::get('items/export-pdf', [ItemController::class, 'exportPdf'])->name('items.export-pdf');
     Route::resource('items', ItemController::class);
     Route::post('items/{item}/add-stock', [ItemController::class, 'addStock'])->name('items.add-stock');
-    Route::get('items/export-pdf', [ItemController::class, 'exportPdf'])->name('items.export-pdf');
 
     // Day Management
     Route::get('days', [DayController::class, 'index'])->name('days.index');
