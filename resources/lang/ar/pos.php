@@ -1,0 +1,228 @@
+<?php
+
+return [
+    // Header & Navigation
+    'title' => 'نقطة البيع',
+    'dashboard' => 'لوحة التحكم',
+    'back' => 'رجوع',
+    'logout' => 'تسجيل الخروج',
+    'welcome' => 'مرحباً',
+    
+    // Language Switcher
+    'language' => 'اللغة',
+    'switch_to_english' => 'English',
+    'switch_to_arabic' => 'عربي',
+    
+    // Search & Filter
+    'search_products' => 'البحث في المنتجات',
+    'search_placeholder' => 'ابحث بالاسم، رمز SKU أو الباركود...',
+    'filter_by_category' => 'تصفية حسب الفئة',
+    'all_categories' => 'كل الفئات',
+    'no_results' => 'لا توجد نتائج',
+    'loading' => 'جاري التحميل...',
+    
+    // Product Grid
+    'products' => 'المنتجات',
+    'available_items' => 'المنتجات المتاحة',
+    'in_stock' => 'متوفر',
+    'out_of_stock' => 'نفذ من المخزون',
+    'low_stock' => 'مخزون منخفض',
+    'stock' => 'المخزون',
+    'price' => 'السعر',
+    'add_to_cart' => 'إضافة للسلة',
+    'quick_add' => 'إضافة سريعة',
+    
+    // Cart
+    'cart' => 'السلة',
+    'cart_empty' => 'السلة فارغة',
+    'cart_empty_message' => 'ابدأ بإضافة المنتجات إلى السلة',
+    'item' => 'منتج',
+    'items' => 'منتجات',
+    'quantity' => 'الكمية',
+    'qty' => 'الكمية',
+    'unit_price' => 'سعر الوحدة',
+    'subtotal' => 'المجموع الفرعي',
+    'total' => 'الإجمالي',
+    'remove' => 'حذف',
+    'clear_cart' => 'إفراغ السلة',
+    'update_qty' => 'تحديث الكمية',
+    
+    // Cart Actions
+    'hold_order' => 'تعليق الطلب',
+    'recall_order' => 'استرجاع طلب',
+    'held_orders' => 'الطلبات المعلقة',
+    'no_held_orders' => 'لا توجد طلبات معلقة',
+    'held_at' => 'معلق في',
+    'resume' => 'استئناف',
+    
+    // Checkout
+    'checkout' => 'الدفع',
+    'proceed_to_checkout' => 'متابعة إلى الدفع',
+    'payment_method' => 'طريقة الدفع',
+    'payment_methods' => 'طرق الدفع',
+    'cash' => 'نقدي',
+    'card' => 'بطاقة',
+    'credit_card' => 'بطاقة ائتمان',
+    'debit_card' => 'بطاقة مدين',
+    'mobile_payment' => 'دفع بالجوال',
+    'other' => 'أخرى',
+    
+    // Payment Details
+    'amount_to_pay' => 'المبلغ المطلوب',
+    'amount_paid' => 'المبلغ المدفوع',
+    'change' => 'الباقي',
+    'discount' => 'الخصم',
+    'tax' => 'الضريبة',
+    'vat' => 'ضريبة القيمة المضافة',
+    
+    // Customer Info
+    'customer' => 'العميل',
+    'customer_info' => 'معلومات العميل',
+    'customer_name' => 'اسم العميل',
+    'customer_phone' => 'رقم الهاتف',
+    'customer_email' => 'البريد الإلكتروني',
+    'optional' => 'اختياري',
+    'walk_in_customer' => 'عميل عابر',
+    
+    // Order Notes
+    'notes' => 'ملاحظات',
+    'order_notes' => 'ملاحظات الطلب',
+    'add_notes' => 'إضافة ملاحظات للطلب...',
+    
+    // Actions
+    'complete_order' => 'إتمام الطلب',
+    'complete_payment' => 'إتمام الدفع',
+    'cancel' => 'إلغاء',
+    'save' => 'حفظ',
+    'print' => 'طباعة',
+    'print_receipt' => 'طباعة الإيصال',
+    'email_receipt' => 'إرسال الإيصال بالبريد',
+    'new_order' => 'طلب جديد',
+    'create_order' => 'إنشاء طلب',
+    
+    // Receipt
+    'receipt' => 'الإيصال',
+    'invoice' => 'الفاتورة',
+    'order_number' => 'رقم الطلب',
+    'order_id' => 'رقم الطلب',
+    'date' => 'التاريخ',
+    'time' => 'الوقت',
+    'cashier' => 'الكاشير',
+    'served_by' => 'خدمك',
+    'thank_you' => 'شكراً لك!',
+    'thank_you_message' => 'نشكرك على تعاملك معنا',
+    'visit_again' => 'نتمنى رؤيتك مرة أخرى',
+    'tax_invoice' => 'فاتورة ضريبية',
+    
+    // Statistics
+    'total_items' => 'إجمالي المنتجات',
+    'total_amount' => 'المبلغ الإجمالي',
+    'orders_today' => 'طلبات اليوم',
+    'revenue_today' => 'إيرادات اليوم',
+    
+    // Messages & Alerts
+    'success' => 'نجاح',
+    'error' => 'خطأ',
+    'warning' => 'تحذير',
+    'info' => 'معلومة',
+    'order_created' => 'تم إنشاء الطلب بنجاح',
+    'order_cancelled' => 'تم إلغاء الطلب',
+    'item_added' => 'تمت الإضافة إلى السلة',
+    'item_removed' => 'تم الحذف من السلة',
+    'cart_cleared' => 'تم إفراغ السلة',
+    'insufficient_stock' => 'المخزون غير كافٍ',
+    'max_stock_reached' => 'الكمية المطلوبة غير متوفرة',
+    'invalid_quantity' => 'كمية غير صالحة',
+    'min_amount_required' => 'الحد الأدنى للمبلغ غير مستوفى',
+    'payment_successful' => 'تم الدفع بنجاح',
+    'payment_failed' => 'فشل الدفع',
+    'order_held' => 'تم تعليق الطلب',
+    'order_resumed' => 'تم استئناف الطلب',
+    'confirm_delete' => 'هل أنت متأكد من الحذف؟',
+    'confirm_clear_cart' => 'هل تريد إفراغ السلة؟',
+    'confirm_cancel_order' => 'هل تريد إلغاء الطلب؟',
+    
+    // Keyboard Shortcuts
+    'shortcuts' => 'اختصارات لوحة المفاتيح',
+    'search_shortcut' => 'البحث',
+    'checkout_shortcut' => 'الدفع',
+    'hold_shortcut' => 'تعليق',
+    'clear_shortcut' => 'مسح',
+    'new_order_shortcut' => 'طلب جديد',
+    
+    // Business Day
+    'business_day' => 'يوم العمل',
+    'day_closed' => 'يوم العمل مغلق',
+    'day_closed_message' => 'يرجى فتح يوم عمل جديد للمتابعة',
+    'open_day' => 'فتح يوم',
+    'close_day' => 'إغلاق اليوم',
+    'day_summary' => 'ملخص اليوم',
+    
+    // Validation
+    'required_field' => 'هذا الحقل مطلوب',
+    'invalid_input' => 'إدخال غير صالح',
+    'select_payment_method' => 'يرجى اختيار طريقة الدفع',
+    'enter_amount_paid' => 'يرجى إدخال المبلغ المدفوع',
+    'amount_less_than_total' => 'المبلغ المدفوع أقل من الإجمالي',
+    
+    // Status
+    'pending' => 'قيد الانتظار',
+    'completed' => 'مكتمل',
+    'cancelled' => 'ملغي',
+    'paid' => 'مدفوع',
+    'unpaid' => 'غير مدفوع',
+    
+    // Units
+    'unit' => 'وحدة',
+    'units' => 'وحدات',
+    'piece' => 'قطعة',
+    'pieces' => 'قطع',
+    
+    // Miscellaneous
+    'sku' => 'رمز المنتج',
+    'barcode' => 'الباركود',
+    'category' => 'الفئة',
+    'powered_by' => 'مدعوم بواسطة',
+    'version' => 'الإصدار',
+    'refresh' => 'تحديث',
+    'close' => 'إغلاق',
+    'view_details' => 'عرض التفاصيل',
+    'edit' => 'تعديل',
+    'delete' => 'حذف',
+    
+    // Settings
+    'settings' => 'الإعدادات',
+    'system_statistics' => 'إحصائيات النظام',
+    'order_items' => 'عناصر الطلبات',
+    'business_days' => 'أيام العمل',
+    'danger_zone' => 'منطقة الخطر',
+    'danger_zone_warning' => 'هذه الإجراءات لا يمكن التراجع عنها. يرجى توخي الحذر.',
+    'reset_all_data' => 'إعادة تعيين جميع البيانات',
+    'reset_all_data_description' => 'سيؤدي هذا إلى حذف جميع الطلبات وعناصر الطلبات وأيام العمل من النظام بشكل دائم.',
+    'reset_all_data_now' => 'إعادة تعيين جميع البيانات الآن',
+    'reset_orders_only' => 'إعادة تعيين الطلبات فقط',
+    'reset_orders_description' => 'حذف جميع الطلبات وعناصر الطلبات، مع الاحتفاظ بأيام العمل.',
+    'reset_orders' => 'إعادة تعيين الطلبات',
+    'reset_days_only' => 'إعادة تعيين أيام العمل فقط',
+    'reset_days_description' => 'حذف جميع سجلات أيام العمل فقط.',
+    'reset_days' => 'إعادة تعيين الأيام',
+    'will_delete_orders' => 'سيتم حذف جميع الطلبات',
+    'will_delete_order_items' => 'سيتم حذف جميع عناصر الطلبات',
+    'will_delete_days' => 'سيتم حذف جميع أيام العمل',
+    'will_keep_items_categories' => 'سيتم الاحتفاظ بالمنتجات والفئات والمستخدمين',
+    'i_understand_this_action' => 'أنا أفهم أن هذا الإجراء لا يمكن التراجع عنه',
+    'confirm_reset_all' => 'هل أنت متأكد تماماً؟ سيتم حذف جميع البيانات!',
+    'confirm_reset_orders' => 'هل أنت متأكد من حذف جميع الطلبات؟',
+    'confirm_reset_days' => 'هل أنت متأكد من حذف جميع أيام العمل؟',
+    'admin_verification_required' => 'مطلوب بيانات اعتماد المسؤول للأمان',
+    'admin_email' => 'البريد الإلكتروني للمسؤول',
+    'admin_password' => 'كلمة مرور المسؤول',
+    'credentials_verified' => 'لقد تحققت من صحة بيانات الاعتماد الخاصة بي',
+    'invalid_credentials' => 'بيانات اعتماد المسؤول غير صحيحة. تم رفض الوصول.',
+    'data_reset_success' => 'تمت إعادة تعيين البيانات بنجاح! تم حذف :orders طلباً، :items عنصر طلب، و :days يوم عمل.',
+    'orders_reset_success' => 'تمت إعادة تعيين الطلبات بنجاح! تم حذف :count طلباً.',
+    'days_reset_success' => 'تمت إعادة تعيين أيام العمل بنجاح! تم حذف :count يوماً.',
+    'all_data_reset_success' => 'تمت إعادة تعيين جميع البيانات بنجاح!',
+    'data_reset_failed' => 'فشل في إعادة تعيين البيانات. يرجى المحاولة مرة أخرى.',
+    'reset_warning_message' => 'لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع البيانات المحددة بشكل دائم من قاعدة البيانات.',
+];

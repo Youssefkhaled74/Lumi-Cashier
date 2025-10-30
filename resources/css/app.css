@@ -1,0 +1,294 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   RTL/LTR Support for Bilingual POS System
+   ======================================== */
+
+/* Import Arabic & English Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Font Assignment Based on Language */
+[dir="rtl"] {
+    font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+[dir="ltr"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* RTL-specific utility classes */
+[dir="rtl"] .rtl\:text-right {
+    text-align: right;
+}
+
+[dir="rtl"] .rtl\:text-left {
+    text-align: left;
+}
+
+[dir="rtl"] .rtl\:mr-auto {
+    margin-right: auto;
+}
+
+[dir="rtl"] .rtl\:ml-auto {
+    margin-left: auto;
+}
+
+/* Smooth Transitions for All Interactive Elements */
+* {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* POS-Specific Styles */
+.product-card {
+    transform-origin: center;
+    will-change: transform, box-shadow;
+}
+
+.cart-item {
+    animation: slideInFromRight 0.3s ease-out;
+}
+
+[dir="rtl"] .cart-item {
+    animation: slideInFromLeft 0.3s ease-out;
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Payment Method Cards */
+.payment-method-card input:checked ~ div {
+    animation: pulse 0.3s ease-out;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Notification Animations */
+.notification {
+    position: fixed;
+    top: 20px;
+    z-index: 9999;
+    animation: slideDown 0.3s ease-out;
+}
+
+[dir="ltr"] .notification {
+    right: 20px;
+}
+
+[dir="rtl"] .notification {
+    left: 20px;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Skeleton Loading */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Print Styles for Receipt */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    .receipt, .receipt * {
+        visibility: visible;
+    }
+    
+    .receipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 80mm;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* Focus Visible for Accessibility */
+*:focus-visible {
+    outline: 2px solid #4F46E5;
+    outline-offset: 2px;
+}
+
+/* Dark Mode Support (Optional - for future enhancement) */
+@media (prefers-color-scheme: dark) {
+    /* Add dark mode styles here if needed */
+}
+
+/* Modal Backdrop Blur */
+.modal-backdrop {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* Button Gradient Animations */
+.btn-gradient {
+    background-size: 200% auto;
+    transition: background-position 0.3s ease;
+}
+
+.btn-gradient:hover {
+    background-position: right center;
+}
+
+
+/* Cart Badge Animation */
+.cart-badge {
+    animation: bounce 0.5s ease-out;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* Number Input Styling */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    opacity: 1;
+    height: 30px;
+}
+
+/* Grid Auto-fit for Responsive Product Cards */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+/* Floating Action Button */
+.fab {
+    position: fixed;
+    bottom: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+[dir="ltr"] .fab {
+    right: 2rem;
+}
+
+[dir="rtl"] .fab {
+    left: 2rem;
+}
+
+.fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Utility: Text Truncate with Tooltip */
+.truncate-tooltip {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Success Animation */
+@keyframes successCheck {
+    0% {
+        transform: scale(0) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(180deg);
+    }
+    100% {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+.success-icon {
+    animation: successCheck 0.5s ease-out;
+}
+
+/* Price Tag Glow Effect */
+.price-glow {
+    text-shadow: 0 0 10px rgba(79, 70, 229, 0.3);
+}
+
+
+.card {
+    padding: 20px  !important;
+}
