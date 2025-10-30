@@ -117,14 +117,35 @@
                         <p class="text-gray-500 text-sm text-center py-8">No items added yet</p>
                     </div>
 
-                    <div class="border-t border-gray-200 pt-4 mb-4">
-                        <div class="flex justify-between items-center mb-2 text-gray-700">
-                            <span>Total Items:</span>
-                            <span id="totalItems" class="font-semibold">0</span>
+                    <!-- Discount Section -->
+                    <div class="mb-4">
+                        <label for="discount" class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                            <i class="bi bi-percent mr-2"></i> {{ __('pos.discount') }} (%)
+                        </label>
+                        <input type="number" id="discount" name="discount_percentage" min="0" max="100" step="0.01" value="0" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" oninput="calculateTotals()">
+                        <p class="text-xs text-gray-500 mt-1">{{ __('pos.discount_note') }}</p>
+                    </div>
+
+                    <div class="border-t border-gray-200 pt-4 mb-4 space-y-2">
+                        <div class="flex justify-between items-center text-gray-700">
+                            <span>{{ __('pos.subtotal') }}:</span>
+                            <span id="subtotalAmount" class="font-semibold">$0.00</span>
                         </div>
-                        <div class="flex justify-between items-center text-lg font-bold">
-                            <span class="text-gray-900">Total:</span>
+                        <div class="flex justify-between items-center text-gray-700">
+                            <span>{{ __('pos.discount') }}:</span>
+                            <span id="discountAmount" class="font-semibold text-red-600">-$0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center text-gray-700">
+                            <span>{{ __('pos.tax') }} ({{ config('cashier.tax.default_rate', 15) }}%):</span>
+                            <span id="taxAmount" class="font-semibold">$0.00</span>
+                        </div>
+                        <div class="border-t border-gray-200 pt-2 flex justify-between items-center text-lg font-bold">
+                            <span class="text-gray-900">{{ __('pos.grand_total') }}:</span>
                             <span id="totalAmount" class="text-indigo-600">$0.00</span>
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            <span>{{ __('messages.total_items') }}:</span>
+                            <span id="totalItems" class="font-semibold">0</span>
                         </div>
                     </div>
 
@@ -144,6 +165,60 @@
         </div>
     </form>
     @endif
+</div>
+
+<!-- Admin Verification Modal for Discount >5% -->
+<div id="adminModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 transform transition-all">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-bold text-gray-900 flex items-center">
+                <i class="bi bi-shield-lock text-amber-500 mr-2 text-2xl"></i>
+                Admin Verification Required
+            </h3>
+            <button type="button" onclick="closeAdminModal()" class="text-gray-400 hover:text-gray-600">
+                <i class="bi bi-x-lg text-xl"></i>
+            </button>
+        </div>
+        
+        <div class="mb-4 p-3 bg-amber-50 border-l-4 border-amber-500 rounded">
+            <p class="text-sm text-amber-800">
+                <i class="bi bi-exclamation-triangle mr-1"></i>
+                Discount exceeds <strong id="maxDiscountText">5%</strong>. Admin approval required.
+            </p>
+        </div>
+
+        <div id="adminError" class="hidden mb-4 p-3 bg-red-50 border-l-4 border-red-500 rounded">
+            <p class="text-sm text-red-800">
+                <i class="bi bi-x-circle mr-1"></i>
+                Invalid admin credentials. Please try again.
+            </p>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label for="adminEmail" class="block text-sm font-medium text-gray-700 mb-1">
+                    <i class="bi bi-envelope mr-1"></i> Admin Email
+                </label>
+                <input type="email" id="adminEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="admin@cashier.com">
+            </div>
+            
+            <div>
+                <label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-1">
+                    <i class="bi bi-key mr-1"></i> Admin Password
+                </label>
+                <input type="password" id="adminPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="••••••••">
+            </div>
+        </div>
+        
+        <div class="flex space-x-3 mt-6">
+            <button type="button" onclick="closeAdminModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-colors">
+                Cancel
+            </button>
+            <button type="button" onclick="verifyAdmin()" class="flex-1 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors">
+                Verify & Continue
+            </button>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -217,11 +292,43 @@ function updateCart(itemId, itemName, itemPrice, quantity, maxStock) {
 }
 
 function addToCart(itemId, itemName, itemPrice, maxStock) {
-    const input = document.getElementById(`qty-${itemId}`);
-    const currentQty = parseInt(input.value) || 0;
-    const newQty = Math.min(currentQty + 1, maxStock);
-    input.value = newQty;
-    updateCart(itemId, itemName, itemPrice, newQty, maxStock);
+    // If item already in cart, increase quantity
+    if (cart[itemId]) {
+        const newQty = Math.min(cart[itemId].quantity + 1, maxStock);
+        cart[itemId].quantity = newQty;
+        document.getElementById(`qty-${itemId}`).value = newQty;
+    } else {
+        // Add new item to cart with quantity 1
+        cart[itemId] = { name: itemName, price: itemPrice, quantity: 1, max: maxStock };
+        document.getElementById(`qty-${itemId}`).value = 1;
+    }
+    renderCart();
+}
+
+function increaseQuantity(itemId) {
+    if (cart[itemId]) {
+        const newQty = Math.min(cart[itemId].quantity + 1, cart[itemId].max);
+        if (newQty > cart[itemId].quantity) {
+            cart[itemId].quantity = newQty;
+            document.getElementById(`qty-${itemId}`).value = newQty;
+            renderCart();
+        } else {
+            alert(`Only ${cart[itemId].max} units available`);
+        }
+    }
+}
+
+function decreaseQuantity(itemId) {
+    if (cart[itemId]) {
+        const newQty = cart[itemId].quantity - 1;
+        if (newQty > 0) {
+            cart[itemId].quantity = newQty;
+            document.getElementById(`qty-${itemId}`).value = newQty;
+            renderCart();
+        } else {
+            removeFromCart(itemId);
+        }
+    }
 }
 
 function removeFromCart(itemId) {
@@ -233,35 +340,41 @@ function removeFromCart(itemId) {
 function renderCart() {
     const cartItemsEl = document.getElementById('cartItems');
     const totalItemsEl = document.getElementById('totalItems');
-    const totalAmountEl = document.getElementById('totalAmount');
     const submitBtn = document.getElementById('submitOrderBtn');
     
     if (Object.keys(cart).length === 0) {
         cartItemsEl.innerHTML = '<p class="text-gray-500 text-sm text-center py-8">No items added yet</p>';
         totalItemsEl.textContent = '0';
-        totalAmountEl.textContent = '$0.00';
+        calculateTotals();
         submitBtn.disabled = true;
         return;
     }
     
     let html = '';
     let totalQty = 0;
-    let totalPrice = 0;
     
     for (const [itemId, item] of Object.entries(cart)) {
         const itemTotal = item.price * item.quantity;
         totalQty += item.quantity;
-        totalPrice += itemTotal;
         
         html += `
-            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                 <div class="flex-1">
                     <p class="font-medium text-gray-900 text-sm">${item.name}</p>
-                    <p class="text-xs text-gray-500">${item.quantity} × $${item.price.toFixed(2)}</p>
+                    <p class="text-xs text-gray-500">$${item.price.toFixed(2)} × ${item.quantity}</p>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <span class="font-bold text-indigo-600">$${itemTotal.toFixed(2)}</span>
-                    <button type="button" onclick="removeFromCart(${itemId})" class="text-red-500 hover:text-red-700 ml-2">
+                    <div class="flex items-center bg-white rounded-lg border border-gray-300 shadow-sm">
+                        <button type="button" onclick="decreaseQuantity(${itemId})" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-l-lg transition-colors">
+                            <i class="bi bi-dash-lg"></i>
+                        </button>
+                        <span class="px-3 py-1 font-semibold text-sm border-x border-gray-300">${item.quantity}</span>
+                        <button type="button" onclick="increaseQuantity(${itemId})" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-r-lg transition-colors">
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
+                    </div>
+                    <span class="font-bold text-indigo-600 w-16 text-right">$${itemTotal.toFixed(2)}</span>
+                    <button type="button" onclick="removeFromCart(${itemId})" class="text-red-500 hover:text-red-700 p-1 hover:bg-red-50 rounded transition-colors">
                         <i class="bi bi-trash"></i>
                     </button>
                 </div>
@@ -271,13 +384,114 @@ function renderCart() {
     
     cartItemsEl.innerHTML = html;
     totalItemsEl.textContent = totalQty;
-    totalAmountEl.textContent = `$${totalPrice.toFixed(2)}`;
+    calculateTotals();
     submitBtn.disabled = false;
 }
+
+function calculateTotals() {
+    let subtotal = 0;
+    
+    // Calculate subtotal
+    for (const [itemId, item] of Object.entries(cart)) {
+        subtotal += item.price * item.quantity;
+    }
+    
+    // Get discount percentage
+    const discountPercentage = parseFloat(document.getElementById('discount').value) || 0;
+    const discountAmount = (subtotal * discountPercentage) / 100;
+    const afterDiscount = subtotal - discountAmount;
+    
+    // Calculate tax on discounted amount
+    const taxRate = {{ config('cashier.tax.default_rate', 15) }};
+    const taxAmount = (afterDiscount * taxRate) / 100;
+    
+    // Grand total
+    const grandTotal = afterDiscount + taxAmount;
+    
+    // Update display
+    document.getElementById('subtotalAmount').textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById('discountAmount').textContent = `-$${discountAmount.toFixed(2)}`;
+    document.getElementById('taxAmount').textContent = `$${taxAmount.toFixed(2)}`;
+    document.getElementById('totalAmount').textContent = `$${grandTotal.toFixed(2)}`;
+}
+
+// Admin verification
+let adminVerified = false;
+const MAX_DISCOUNT_WITHOUT_APPROVAL = {{ config('cashier.discount.max_without_approval', 5) }};
+
+function openAdminModal() {
+    document.getElementById('adminModal').classList.remove('hidden');
+    document.getElementById('adminEmail').value = '';
+    document.getElementById('adminPassword').value = '';
+    document.getElementById('adminError').classList.add('hidden');
+    document.getElementById('maxDiscountText').textContent = `${MAX_DISCOUNT_WITHOUT_APPROVAL}%`;
+}
+
+function closeAdminModal() {
+    document.getElementById('adminModal').classList.add('hidden');
+    // Reset discount if not verified
+    if (!adminVerified) {
+        document.getElementById('discount').value = MAX_DISCOUNT_WITHOUT_APPROVAL;
+        calculateTotals();
+    }
+}
+
+async function verifyAdmin() {
+    const email = document.getElementById('adminEmail').value;
+    const password = document.getElementById('adminPassword').value;
+    const discount = parseFloat(document.getElementById('discount').value) || 0;
+    
+    try {
+        const response = await fetch('{{ route('orders.verify-discount') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                admin_email: email,
+                admin_password: password,
+                discount_percentage: discount
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            adminVerified = true;
+            closeAdminModal();
+        } else {
+            document.getElementById('adminError').classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('adminError').classList.remove('hidden');
+    }
+}
+
+// Check discount on input change
+document.getElementById('discount').addEventListener('input', function() {
+    const discount = parseFloat(this.value) || 0;
+    
+    if (discount > MAX_DISCOUNT_WITHOUT_APPROVAL) {
+        if (!adminVerified) {
+            openAdminModal();
+        }
+    } else {
+        adminVerified = false; // Reset verification for lower discounts
+    }
+});
 
 // Intercept form submission to add proper array structure
 document.getElementById('orderForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    
+    // Check if discount requires admin verification
+    const discount = parseFloat(document.getElementById('discount').value) || 0;
+    if (discount > MAX_DISCOUNT_WITHOUT_APPROVAL && !adminVerified) {
+        openAdminModal();
+        return false;
+    }
     
     // Remove any existing item inputs
     const existingInputs = this.querySelectorAll('input[name^="items["]');
@@ -302,6 +516,13 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
         
         index++;
     }
+    
+    // Add tax percentage
+    const taxInput = document.createElement('input');
+    taxInput.type = 'hidden';
+    taxInput.name = 'tax_percentage';
+    taxInput.value = {{ config('cashier.tax.default_rate', 15) }};
+    this.appendChild(taxInput);
     
     // Now submit the form
     this.submit();

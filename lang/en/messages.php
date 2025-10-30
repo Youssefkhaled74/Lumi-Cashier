@@ -92,6 +92,7 @@ return [
     'order_pending' => 'Pending',
     'order_cancelled' => 'Cancelled',
     'order_created' => 'Order created successfully',
+    'no_day' => 'No Day',
     
     // POS
     'pos_title' => 'Point of Sale',

@@ -55,7 +55,13 @@
                                 <span class="font-semibold text-indigo-600">#{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $order->created_at->format('M d, Y h:i A') }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Day #{{ $order->day->id }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                @if($order->day)
+                                    Day #{{ $order->day->id }}
+                                @else
+                                    <span class="text-gray-400 italic">{{ __('messages.no_day') }}</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $order->items->count() }} {{ __('messages.items_count') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">${{ number_format($order->total, 2) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">

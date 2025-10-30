@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrderRequest;
 use App\Models\Day;
 use App\Models\Order;
+use App\Models\User;
 use App\Repositories\Contracts\ItemRepositoryInterface;
 use App\Repositories\Contracts\OrderRepositoryInterface;
 use App\Services\OrderService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class OrderController extends Controller
@@ -146,5 +150,47 @@ class OrderController extends Controller
 
         // Download the PDF with a custom filename
         return $pdf->stream("invoice-{$order->id}.pdf");
+    }
+
+    /**
+     * Verify admin credentials for high discount
+     */
+    public function verifyAdminForDiscount(Request $request): JsonResponse
+    {
+        $request->validate([
+            'discount_percentage' => 'required|numeric|min:0|max:100',
+            'admin_email' => 'required_if:discount_percentage,>,5|email',
+            'admin_password' => 'required_if:discount_percentage,>,5|string',
+        ]);
+
+        $discountPercentage = $request->input('discount_percentage');
+        $maxWithoutApproval = config('cashier.discount.max_without_approval', 5);
+
+        // If discount is within allowed range, approve immediately
+        if ($discountPercentage <= $maxWithoutApproval) {
+            return response()->json([
+                'success' => true,
+                'message' => __('pos.discount_approved'),
+                'discount_percentage' => $discountPercentage,
+            ]);
+        }
+
+        // Verify admin credentials for high discount
+        $configEmail = config('cashier.admin.email');
+        $configPassword = config('cashier.admin.password');
+        
+        if ($request->input('admin_email') !== $configEmail || 
+            $request->input('admin_password') !== $configPassword) {
+            return response()->json([
+                'success' => false,
+                'message' => __('pos.invalid_credentials'),
+            ], 403);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => __('pos.discount_approved_by_admin'),
+            'discount_percentage' => $discountPercentage,
+        ]);
     }
 }

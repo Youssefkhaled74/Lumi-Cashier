@@ -22,6 +22,8 @@ class OrderItem extends Model
         'item_unit_id',
         'quantity',
         'price',
+        'discount_percentage',
+        'discount_amount',
         'total',
     ];
 
@@ -33,6 +35,8 @@ class OrderItem extends Model
     protected $casts = [
         'quantity' => 'integer',
         'price' => 'decimal:2',
+        'discount_percentage' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
         'total' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -48,7 +52,18 @@ class OrderItem extends Model
 
         // Automatically calculate total before saving
         static::saving(function ($orderItem) {
-            $orderItem->total = $orderItem->quantity * $orderItem->price;
+            // Calculate base amount
+            $baseAmount = $orderItem->quantity * $orderItem->price;
+            
+            // Calculate discount amount if percentage is set
+            if ($orderItem->discount_percentage > 0) {
+                $orderItem->discount_amount = ($baseAmount * $orderItem->discount_percentage) / 100;
+            } else {
+                $orderItem->discount_amount = 0;
+            }
+            
+            // Calculate total after discount
+            $orderItem->total = $baseAmount - $orderItem->discount_amount;
         });
     }
 

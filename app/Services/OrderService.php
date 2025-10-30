@@ -36,7 +36,16 @@ class OrderService
             $order = $this->orderRepository->create([
                 'day_id' => $currentDay->id,
                 'status' => Order::STATUS_PENDING,
+                'payment_method' => $orderData['payment_method'] ?? Order::PAYMENT_CASH,
+                'customer_name' => $orderData['customer_name'] ?? null,
+                'customer_phone' => $orderData['customer_phone'] ?? null,
+                'customer_email' => $orderData['customer_email'] ?? null,
+                'discount_percentage' => $orderData['discount_percentage'] ?? 0,
+                'tax_percentage' => $orderData['tax_percentage'] ?? config('cashier.tax.default_rate', 0),
                 'notes' => $orderData['notes'] ?? null,
+                'subtotal' => 0,
+                'discount_amount' => 0,
+                'tax_amount' => 0,
                 'total' => 0,
             ]);
 
@@ -66,20 +75,25 @@ class OrderService
 
                 // Create order items
                 foreach ($soldUnits as $unit) {
+                    $itemDiscountPercentage = $itemData['discount_percentage'] ?? 0;
+                    
                     $orderItem = OrderItem::create([
                         'order_id' => $order->id,
                         'item_unit_id' => $unit->id,
                         'quantity' => 1,
                         'price' => $unit->price,
-                        'total' => $unit->price,
+                        'discount_percentage' => $itemDiscountPercentage,
+                        'discount_amount' => 0, // Will be calculated automatically
+                        'total' => $unit->price, // Will be calculated automatically with discount
                     ]);
 
                     $orderTotal += $orderItem->total;
                 }
             }
 
-            // Update order total and mark as completed
-            $order->total = $orderTotal;
+            // Update order totals with discount and tax
+            $order->subtotal = $orderTotal;
+            $order->calculateTotal(); // This will calculate discount and tax
             $order->status = Order::STATUS_COMPLETED;
             $order->save();
 

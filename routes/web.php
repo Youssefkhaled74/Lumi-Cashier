@@ -104,6 +104,7 @@ Route::prefix('admin')->middleware(AdminAuth::class)->group(function (): void {
     Route::resource('orders', OrderController::class)->except(['edit', 'update', 'destroy']);
     Route::get('orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
     Route::post('orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::post('orders/verify-discount', [OrderController::class, 'verifyAdminForDiscount'])->name('orders.verify-discount');
 
     // Reports & Analytics
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');

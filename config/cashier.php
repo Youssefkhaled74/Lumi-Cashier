@@ -22,6 +22,19 @@ return [
     // Default currency symbol used across the app
     'currency' => env('CASHIER_CURRENCY', '$'),
 
+    // Tax configuration
+    'tax' => [
+        'enabled' => env('TAX_ENABLED', true),
+        'default_rate' => env('TAX_DEFAULT_RATE', 15), // Default 15% VAT
+        'label' => env('TAX_LABEL', 'VAT'),
+    ],
+
+    // Discount configuration
+    'discount' => [
+        'max_without_approval' => 5, // Maximum discount % without admin approval
+        'enabled' => true,
+    ],
+
     // Company/Shop information for invoices
     'company' => [
         'name' => env('COMPANY_NAME', 'Lumi POS'),

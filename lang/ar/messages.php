@@ -92,6 +92,7 @@ return [
     'order_pending' => 'قيد الانتظار',
     'order_cancelled' => 'ملغي',
     'order_created' => 'تم إنشاء الطلب بنجاح',
+    'no_day' => 'بدون يوم',
     
     // POS
     'pos_title' => 'نقطة البيع',

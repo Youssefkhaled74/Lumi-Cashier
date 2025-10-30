@@ -25,6 +25,13 @@ class StoreOrderRequest extends FormRequest
             'items' => 'required|array|min:1',
             'items.*.item_id' => 'required|exists:items,id',
             'items.*.quantity' => 'required|integer|min:1',
+            'items.*.discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'tax_percentage' => 'nullable|numeric|min:0|max:100',
+            'payment_method' => 'nullable|in:cash,card,other',
+            'customer_name' => 'nullable|string|max:255',
+            'customer_phone' => 'nullable|string|max:20',
+            'customer_email' => 'nullable|email|max:255',
             'notes' => 'nullable|string|max:500',
         ];
     }

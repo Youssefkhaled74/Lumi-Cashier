@@ -22,14 +22,30 @@ class Order extends Model
     public const STATUS_CANCELLED = 'cancelled';
 
     /**
+     * Payment method constants.
+     */
+    public const PAYMENT_CASH = 'cash';
+    public const PAYMENT_CARD = 'card';
+    public const PAYMENT_OTHER = 'other';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
         'day_id',
+        'subtotal',
+        'discount_percentage',
+        'discount_amount',
+        'tax_percentage',
+        'tax_amount',
         'total',
         'status',
+        'payment_method',
+        'customer_name',
+        'customer_phone',
+        'customer_email',
         'notes',
     ];
 
@@ -39,6 +55,11 @@ class Order extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'subtotal' => 'decimal:2',
+        'discount_percentage' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
+        'tax_percentage' => 'decimal:2',
+        'tax_amount' => 'decimal:2',
         'total' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -52,6 +73,12 @@ class Order extends Model
      */
     protected $attributes = [
         'status' => self::STATUS_PENDING,
+        'payment_method' => self::PAYMENT_CASH,
+        'subtotal' => 0,
+        'discount_percentage' => 0,
+        'discount_amount' => 0,
+        'tax_percentage' => 0,
+        'tax_amount' => 0,
         'total' => 0,
     ];
 
@@ -94,7 +121,61 @@ class Order extends Model
      */
     public function calculateTotal(): void
     {
-        $this->total = $this->items()->sum('total');
+        // Calculate subtotal from order items
+        $this->subtotal = $this->items()->sum('total');
+        
+        // Calculate discount amount
+        if ($this->discount_percentage > 0) {
+            $this->discount_amount = ($this->subtotal * $this->discount_percentage) / 100;
+        }
+        
+        // Calculate amount after discount
+        $amountAfterDiscount = $this->subtotal - $this->discount_amount;
+        
+        // Calculate tax amount
+        if ($this->tax_percentage > 0) {
+            $this->tax_amount = ($amountAfterDiscount * $this->tax_percentage) / 100;
+        }
+        
+        // Calculate final total
+        $this->total = $amountAfterDiscount + $this->tax_amount;
+        
+        $this->save();
+    }
+
+    /**
+     * Apply discount to order
+     * 
+     * @param float $percentage
+     * @return void
+     */
+    public function applyDiscount(float $percentage): void
+    {
+        $this->discount_percentage = $percentage;
+        $this->calculateTotal();
+    }
+
+    /**
+     * Apply tax to order
+     * 
+     * @param float $percentage
+     * @return void
+     */
+    public function applyTax(float $percentage): void
+    {
+        $this->tax_percentage = $percentage;
+        $this->calculateTotal();
+    }
+
+    /**
+     * Set payment method
+     * 
+     * @param string $method
+     * @return void
+     */
+    public function setPaymentMethod(string $method): void
+    {
+        $this->payment_method = $method;
         $this->save();
     }
 
