@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Day;
+use App\Models\Item;
+use App\Models\ItemUnit;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -21,6 +24,8 @@ class SettingsController extends Controller
             'total_orders' => Order::count(),
             'total_order_items' => OrderItem::count(),
             'total_days' => Day::count(),
+            'total_items' => Item::count(),
+            'total_categories' => Category::count(),
         ];
 
         return view('admin.settings.index', compact('stats'));
@@ -110,7 +115,7 @@ class SettingsController extends Controller
     {
         // Validate credentials and type
         $request->validate([
-            'type' => 'required|in:orders,days',
+            'type' => 'required|in:orders,days,items,categories',
             'admin_email' => 'required|email',
             'admin_password' => 'required|string',
         ]);
@@ -166,6 +171,54 @@ class SettingsController extends Controller
                         'user_id' => $user ? $user->id : null,
                         'user_email' => $user ? $user->email : 'unknown',
                         'days_deleted' => $daysCount,
+                    ]);
+                    break;
+
+                case 'items':
+                    $itemsCount = Item::count();
+                    $itemUnitsCount = ItemUnit::count();
+                    
+                    // Delete item units first (foreign key constraint)
+                    ItemUnit::truncate();
+                    Item::truncate();
+                    
+                    $message = __('pos.items_reset_success', [
+                        'count' => $itemsCount
+                    ]);
+
+                    Log::info('Items reset by admin', [
+                        'user_id' => $user ? $user->id : null,
+                        'user_email' => $user ? $user->email : 'unknown',
+                        'items_deleted' => $itemsCount,
+                        'item_units_deleted' => $itemUnitsCount,
+                    ]);
+                    break;
+
+                case 'categories':
+                    $categoriesCount = Category::count();
+                    
+                    // Check if there are items linked to categories
+                    $itemsWithCategories = Item::whereNotNull('category_id')->count();
+                    
+                    if ($itemsWithCategories > 0) {
+                        DB::rollBack();
+                        return redirect()
+                            ->route('settings.index')
+                            ->with('error', __('pos.cannot_delete_categories_with_items', [
+                                'count' => $itemsWithCategories
+                            ]));
+                    }
+                    
+                    Category::truncate();
+                    
+                    $message = __('pos.categories_reset_success', [
+                        'count' => $categoriesCount
+                    ]);
+
+                    Log::info('Categories reset by admin', [
+                        'user_id' => $user ? $user->id : null,
+                        'user_email' => $user ? $user->email : 'unknown',
+                        'categories_deleted' => $categoriesCount,
                     ]);
                     break;
             }

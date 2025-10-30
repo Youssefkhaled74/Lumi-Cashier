@@ -87,6 +87,22 @@ $isRtl = $lang === 'ar';
                         </div>
                         <span class="text-2xl font-bold text-amber-600">{{ number_format($stats['total_days']) }}</span>
                     </div>
+
+                    <div class="flex items-center justify-between p-4 bg-green-50 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <i class="bi bi-box text-green-600 text-2xl"></i>
+                            <span class="font-semibold text-gray-700">@lang('pos.total_items')</span>
+                        </div>
+                        <span class="text-2xl font-bold text-green-600">{{ number_format($stats['total_items']) }}</span>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-cyan-50 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <i class="bi bi-grid text-cyan-600 text-2xl"></i>
+                            <span class="font-semibold text-gray-700">@lang('pos.total_categories')</span>
+                        </div>
+                        <span class="text-2xl font-bold text-cyan-600">{{ number_format($stats['total_categories']) }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -365,6 +381,180 @@ $isRtl = $lang === 'ar';
                                     class="w-full px-6 py-3 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50 flex items-center justify-center gap-3">
                                 <i class="bi bi-calendar-check"></i>
                                 @lang('pos.reset_days')
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Reset Items Only -->
+                    <div class="border-2 border-green-300 rounded-xl p-6 bg-green-50">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-green-900 mb-2 flex items-center gap-2">
+                                    <i class="bi bi-box"></i>
+                                    @lang('pos.reset_items_only')
+                                </h3>
+                                <p class="text-sm text-green-700 mb-2">
+                                    @lang('pos.reset_items_description')
+                                </p>
+                                <div class="text-xs text-red-600 font-semibold mt-2 p-2 bg-red-50 rounded border border-red-200">
+                                    <i class="bi bi-exclamation-triangle-fill"></i>
+                                    @lang('pos.warning_items_in_orders')
+                                </div>
+                            </div>
+                        </div>
+
+                        <form method="POST" action="{{ route('settings.reset-specific') }}" 
+                              x-data="{ confirmedItems: false, showCredentialsItems: false }">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="type" value="items">
+                            
+                            <div class="mb-4 space-y-3">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" 
+                                           x-model="confirmedItems"
+                                           @change="if(!$event.target.checked) showCredentialsItems = false"
+                                           class="w-5 h-5 text-green-600 border-green-300 rounded focus:ring-green-500">
+                                    <span class="text-sm font-semibold text-green-900">
+                                        @lang('pos.confirm_reset_items')
+                                    </span>
+                                </label>
+
+                                <!-- Admin Credentials -->
+                                <div x-show="confirmedItems" 
+                                     x-transition
+                                     class="space-y-3 p-4 bg-white rounded-lg border-2 border-green-200">
+                                    <p class="text-sm font-bold text-green-900 mb-3 flex items-center gap-2">
+                                        <i class="bi bi-shield-lock-fill"></i>
+                                        @lang('pos.admin_verification_required')
+                                    </p>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-green-900 mb-1">
+                                            @lang('pos.admin_email')
+                                        </label>
+                                        <input type="email" 
+                                               name="admin_email" 
+                                               required
+                                               class="w-full px-4 py-2 border-2 border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                               placeholder="admin@example.com">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-green-900 mb-1">
+                                            @lang('pos.admin_password')
+                                        </label>
+                                        <input type="password" 
+                                               name="admin_password" 
+                                               required
+                                               class="w-full px-4 py-2 border-2 border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                               placeholder="••••••••">
+                                    </div>
+
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="checkbox" 
+                                               x-model="showCredentialsItems" 
+                                               class="w-5 h-5 text-green-600 border-green-300 rounded focus:ring-green-500">
+                                        <span class="text-sm font-semibold text-green-900">
+                                            @lang('pos.credentials_verified')
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" 
+                                    :disabled="!confirmedItems || !showCredentialsItems"
+                                    :class="(confirmedItems && showCredentialsItems) ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400 cursor-not-allowed'"
+                                    class="w-full px-6 py-3 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50 flex items-center justify-center gap-3">
+                                <i class="bi bi-box"></i>
+                                @lang('pos.reset_items')
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Reset Categories Only -->
+                    <div class="border-2 border-cyan-300 rounded-xl p-6 bg-cyan-50">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-cyan-900 mb-2 flex items-center gap-2">
+                                    <i class="bi bi-grid"></i>
+                                    @lang('pos.reset_categories_only')
+                                </h3>
+                                <p class="text-sm text-cyan-700 mb-2">
+                                    @lang('pos.reset_categories_description')
+                                </p>
+                                <div class="text-xs text-red-600 font-semibold mt-2 p-2 bg-red-50 rounded border border-red-200">
+                                    <i class="bi bi-exclamation-triangle-fill"></i>
+                                    @lang('pos.warning_categories_with_items')
+                                </div>
+                            </div>
+                        </div>
+
+                        <form method="POST" action="{{ route('settings.reset-specific') }}" 
+                              x-data="{ confirmedCategories: false, showCredentialsCategories: false }">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="type" value="categories">
+                            
+                            <div class="mb-4 space-y-3">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" 
+                                           x-model="confirmedCategories"
+                                           @change="if(!$event.target.checked) showCredentialsCategories = false"
+                                           class="w-5 h-5 text-cyan-600 border-cyan-300 rounded focus:ring-cyan-500">
+                                    <span class="text-sm font-semibold text-cyan-900">
+                                        @lang('pos.confirm_reset_categories')
+                                    </span>
+                                </label>
+
+                                <!-- Admin Credentials -->
+                                <div x-show="confirmedCategories" 
+                                     x-transition
+                                     class="space-y-3 p-4 bg-white rounded-lg border-2 border-cyan-200">
+                                    <p class="text-sm font-bold text-cyan-900 mb-3 flex items-center gap-2">
+                                        <i class="bi bi-shield-lock-fill"></i>
+                                        @lang('pos.admin_verification_required')
+                                    </p>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-cyan-900 mb-1">
+                                            @lang('pos.admin_email')
+                                        </label>
+                                        <input type="email" 
+                                               name="admin_email" 
+                                               required
+                                               class="w-full px-4 py-2 border-2 border-cyan-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                                               placeholder="admin@example.com">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-cyan-900 mb-1">
+                                            @lang('pos.admin_password')
+                                        </label>
+                                        <input type="password" 
+                                               name="admin_password" 
+                                               required
+                                               class="w-full px-4 py-2 border-2 border-cyan-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                                               placeholder="••••••••">
+                                    </div>
+
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="checkbox" 
+                                               x-model="showCredentialsCategories" 
+                                               class="w-5 h-5 text-cyan-600 border-cyan-300 rounded focus:ring-cyan-500">
+                                        <span class="text-sm font-semibold text-cyan-900">
+                                            @lang('pos.credentials_verified')
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" 
+                                    :disabled="!confirmedCategories || !showCredentialsCategories"
+                                    :class="(confirmedCategories && showCredentialsCategories) ? 'bg-cyan-600 hover:bg-cyan-700 cursor-pointer' : 'bg-gray-400 cursor-not-allowed'"
+                                    class="w-full px-6 py-3 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50 flex items-center justify-center gap-3">
+                                <i class="bi bi-grid"></i>
+                                @lang('pos.reset_categories')
                             </button>
                         </form>
                     </div>
