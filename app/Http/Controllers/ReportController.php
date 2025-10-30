@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Models\ItemUnit;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -146,7 +147,7 @@ class ReportController extends Controller
                 'date_range' => [
                     'from' => $from->format('M d, Y'),
                     'to' => $to->format('M d, Y'),
-                    'days' => $from->diffInDays($to) + 1,
+                    'days' => (int) ($from->diffInDays($to) + 1),
                 ],
             ],
             'daily_sales' => $dailySales,
@@ -159,5 +160,43 @@ class ReportController extends Controller
                 'total_inventory_value' => $inventoryStatus->sum('inventory_value'),
             ],
         ];
+    }
+
+    /**
+     * Export report as PDF.
+     */
+    public function exportPdf(Request $request)
+    {
+        $fromDate = $request->input('from_date', Carbon::now()->subDays(30)->format('Y-m-d'));
+        $toDate = $request->input('to_date', Carbon::now()->format('Y-m-d'));
+
+        // Generate report data
+        $reportData = $this->generate($fromDate, $toDate);
+
+        // Get orders for detailed listing
+        $from = Carbon::parse($fromDate)->startOfDay();
+        $to = Carbon::parse($toDate)->endOfDay();
+        
+        $orders = Order::with(['items.itemUnit.item', 'day'])
+            ->where('status', Order::STATUS_COMPLETED)
+            ->whereBetween('created_at', [$from, $to])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Generate PDF
+        $pdf = Pdf::loadView('admin.reports.pdf', [
+            'reportData' => $reportData,
+            'orders' => $orders,
+            'fromDate' => $fromDate,
+            'toDate' => $toDate,
+            'generatedAt' => Carbon::now(),
+        ]);
+
+        // Set paper size and orientation
+        $pdf->setPaper('a4', 'portrait');
+
+        // Download PDF
+        $filename = 'report_' . $fromDate . '_to_' . $toDate . '.pdf';
+        return $pdf->download($filename);
     }
 }

@@ -105,6 +105,7 @@ Route::prefix('admin')->middleware(AdminAuth::class)->group(function (): void {
 
     // Reports & Analytics
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('reports/export-pdf', [ReportController::class, 'exportPdf'])->name('reports.export-pdf');
 
     // Settings
     Route::get('settings', [\App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');

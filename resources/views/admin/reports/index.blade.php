@@ -61,6 +61,18 @@
                     <i class="bi bi-graph-up mr-2"></i>
                     {{ __('messages.generate_report') }}
                 </button>
+                
+                @if($reportData !== null)
+                <a 
+                    href="{{ route('reports.export-pdf', ['from_date' => $fromDate, 'to_date' => $toDate]) }}" 
+                    class="px-6 py-3 bg-gradient-to-r from-red-600 to-orange-600 text-white font-bold rounded-xl hover:from-red-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center"
+                    target="_blank"
+                >
+                    <i class="bi bi-file-pdf-fill mr-2"></i>
+                    {{ __('messages.export_pdf') }}
+                </a>
+                @endif
+                
                 <a 
                     href="{{ route('reports.index') }}" 
                     class="px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all duration-300 shadow-sm flex items-center"
