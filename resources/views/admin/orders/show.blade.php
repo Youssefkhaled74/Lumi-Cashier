@@ -24,7 +24,7 @@
             @if($order->is_completed)
                 <form method="POST" action="{{ route('orders.cancel', $order) }}" class="inline">
                     @csrf
-                    <button type="submit" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center space-x-2" onclick="return confirm('Cancel this order and restore stock?')">
+                    <button type="submit" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center space-x-2" onclick="return confirm('{{ __('messages.confirm_cancel_order') }}')">
                         <i class="bi bi-x-circle"></i>
                         <span>Cancel Order</span>
                     </button>

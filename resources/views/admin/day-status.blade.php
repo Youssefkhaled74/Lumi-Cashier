@@ -166,15 +166,15 @@
                         <i class="bi bi-door-closed text-white text-2xl"></i>
                     </div>
                     <div>
-                        <h4 class="font-bold text-gray-800">Close Day</h4>
-                        <p class="text-sm text-gray-500">End business operations</p>
+                        <h4 class="font-bold text-gray-800">{{ __('messages.close_day') }}</h4>
+                        <p class="text-sm text-gray-500">{{ __('messages.end_business_operations') }}</p>
                     </div>
                 </div>
-                <form action="{{ route('day.close') }}" method="POST" onsubmit="return confirm('Are you sure you want to close the day? This action cannot be undone.');">
+                <form action="{{ route('day.close') }}" method="POST" onsubmit="return confirm('{{ __('messages.confirm_close_day') }}');">
                     @csrf
                     <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-red-600 to-orange-600 text-white font-bold rounded-xl hover:from-red-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
                         <i class="bi bi-x-circle mr-2"></i>
-                        Close Day
+                        {{ __('messages.close_day') }}
                     </button>
                 </form>
             </div>

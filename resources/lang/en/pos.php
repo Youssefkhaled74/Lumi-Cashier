@@ -116,6 +116,7 @@ return [
     
     // Statistics
     'total_items' => 'Total Items',
+    'total_orders' => 'Total Orders',
     'total_amount' => 'Total Amount',
     'orders_today' => 'Orders Today',
     'revenue_today' => 'Revenue Today',

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Order')
+@section('title', __('messages.create_order'))
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -98,14 +98,14 @@
 
                     <div class="mb-4">
                         <label for="notes" class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-                            <i class="bi bi-file-text mr-2"></i> Order Notes (Optional)
+                            <i class="bi bi-file-text mr-2"></i> {{ __('messages.order_notes') }} ({{ __('messages.optional') }})
                         </label>
-                        <textarea name="notes" id="notes" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none" placeholder="Add any notes for this order..."></textarea>
+                        <textarea name="notes" id="notes" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none" placeholder="{{ __('messages.add_notes') }}"></textarea>
                     </div>
 
                     <button type="submit" id="submitOrderBtn" disabled class="w-full btn-gradient py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2">
                         <i class="bi bi-check-circle"></i>
-                        <span>Create Order</span>
+                        <span>{{ __('messages.create_order') }}</span>
                     </button>
                 </div>
             </div>

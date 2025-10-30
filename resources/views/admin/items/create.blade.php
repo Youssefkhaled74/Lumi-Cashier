@@ -116,11 +116,11 @@
                 <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
                     <a href="{{ route('items.index') }}" class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold">
                         <i class="bi bi-x-circle mr-2"></i>
-                        Cancel
+                        {{ __('messages.cancel') }}
                     </a>
                     <button type="submit" class="btn-gradient px-8 py-3 rounded-lg font-semibold flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
                         <i class="bi bi-check-circle"></i>
-                        <span>Create Item</span>
+                        <span>{{ __('messages.create_item') }}</span>
                     </button>
                 </div>
             </div>

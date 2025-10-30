@@ -116,6 +116,7 @@ return [
     
     // Statistics
     'total_items' => 'إجمالي المنتجات',
+    'total_orders' => 'إجمالي الطلبات',
     'total_amount' => 'المبلغ الإجمالي',
     'orders_today' => 'طلبات اليوم',
     'revenue_today' => 'إيرادات اليوم',

@@ -1,17 +1,17 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Category')
+@section('title', __('messages.create_category'))
 
 @section('content')
     <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
             <div>
-                <h2 class="text-3xl font-extrabold text-gray-800 mb-2">Create Category</h2>
-                <p class="text-gray-600">Add a new category to organize your products</p>
+                <h2 class="text-3xl font-extrabold text-gray-800 mb-2">{{ __('messages.create_category') }}</h2>
+                <p class="text-gray-600">{{ __('messages.add_category') }}</p>
             </div>
             <a href="{{ route('categories.index') }}" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300">
                 <i class="bi bi-arrow-left"></i>
-                <span>Back to Categories</span>
+                <span>{{ __('messages.back') }}</span>
             </a>
         </div>
     </div>
@@ -93,14 +93,14 @@
                 <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
                     <a href="{{ route('categories.index') }}" class="px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all duration-300 shadow-sm hover:shadow">
                         <i class="bi bi-x-circle mr-2"></i>
-                        Cancel
+                        {{ __('messages.cancel') }}
                     </a>
                     <button 
                         type="submit" 
                         class="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center"
                     >
                         <i class="bi bi-check-circle mr-2"></i>
-                        Create Category
+                        {{ __('messages.create_category') }}
                     </button>
                 </div>
             </div>

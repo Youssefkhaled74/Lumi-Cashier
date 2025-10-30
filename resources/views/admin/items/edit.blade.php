@@ -109,7 +109,7 @@
                     </a>
                     <button type="submit" class="btn-gradient px-8 py-3 rounded-lg font-semibold flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
                         <i class="bi bi-check-circle"></i>
-                        <span>Update Item</span>
+                        <span>{{ __('messages.update_item') }}</span>
                     </button>
                 </div>
             </div>
