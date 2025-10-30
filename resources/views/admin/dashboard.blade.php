@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Dashboard')
+@section('title', __('messages.dashboard'))
 
 @section('content')
     <!-- Welcome Message -->
@@ -15,8 +15,8 @@
 
     <!-- Page Header -->
     <div class="mb-8">
-        <h2 class="text-4xl font-extrabold text-gray-800 mb-2">Dashboard</h2>
-        <p class="text-lg text-gray-600">Welcome back, <span class="font-semibold text-indigo-600">{{ session('admin_name', 'Admin') }}</span>! Here's your business overview.</p>
+        <h2 class="text-4xl font-extrabold text-gray-800 mb-2">{{ __('messages.dashboard_title') }}</h2>
+        <p class="text-lg text-gray-600">{{ __('messages.dashboard_subtitle') }}</p>
     </div>
 
     <!-- Stats Cards -->
@@ -27,12 +27,12 @@
                 <div class="p-3 bg-white bg-opacity-20 rounded-xl backdrop-blur-sm">
                     <i class="bi bi-currency-dollar text-3xl"></i>
                 </div>
-                <span class="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full font-semibold backdrop-blur-sm">Today</span>
+                <span class="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full font-semibold backdrop-blur-sm">{{ __('messages.today') }}</span>
             </div>
             <p class="text-4xl font-extrabold mb-1">{{ config('cashier.currency', '$') }}{{ number_format($todaySales ?? 0, 2) }}</p>
-            <p class="text-blue-100 text-sm font-medium">Total Sales</p>
+            <p class="text-blue-100 text-sm font-medium">{{ __('messages.todays_sales') }}</p>
             <div class="mt-4 pt-4 border-t border-white border-opacity-20">
-                <p class="text-xs text-blue-100">↑ 0% from yesterday</p>
+                <p class="text-xs text-blue-100">↑ 0% {{ __('messages.yesterday') }}</p>
             </div>
         </div>
 
@@ -42,12 +42,12 @@
                 <div class="p-3 bg-white bg-opacity-20 rounded-xl backdrop-blur-sm">
                     <i class="bi bi-receipt text-3xl"></i>
                 </div>
-                <span class="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full font-semibold backdrop-blur-sm">Today</span>
+                <span class="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full font-semibold backdrop-blur-sm">{{ __('messages.today') }}</span>
             </div>
             <p class="text-4xl font-extrabold mb-1">{{ $todayOrders ?? 0 }}</p>
-            <p class="text-green-100 text-sm font-medium">Orders</p>
+            <p class="text-green-100 text-sm font-medium">{{ __('messages.todays_orders') }}</p>
             <div class="mt-4 pt-4 border-t border-white border-opacity-20">
-                <p class="text-xs text-green-100">↑ 0% from yesterday</p>
+                <p class="text-xs text-green-100">↑ 0% {{ __('messages.yesterday') }}</p>
             </div>
         </div>
 
@@ -57,12 +57,12 @@
                 <div class="p-3 bg-white bg-opacity-20 rounded-xl backdrop-blur-sm">
                     <i class="bi bi-box-seam text-3xl"></i>
                 </div>
-                <span class="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full font-semibold backdrop-blur-sm">Stock</span>
+                <span class="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full font-semibold backdrop-blur-sm">{{ __('messages.item_stock') }}</span>
             </div>
             <p class="text-4xl font-extrabold mb-1">{{ $totalItems ?? \App\Models\Item::count() }}</p>
-            <p class="text-purple-100 text-sm font-medium">Total Items</p>
+            <p class="text-purple-100 text-sm font-medium">{{ __('messages.total_items') }}</p>
             <div class="mt-4 pt-4 border-t border-white border-opacity-20">
-                <a href="{{ route('items.index') }}" class="text-xs text-white hover:underline">View all items →</a>
+                <a href="{{ route('items.index') }}" class="text-xs text-white hover:underline">{{ __('messages.view_details') }} →</a>
             </div>
         </div>
 
@@ -72,12 +72,12 @@
                 <div class="p-3 bg-white bg-opacity-20 rounded-xl backdrop-blur-sm">
                     <i class="bi bi-folder text-3xl"></i>
                 </div>
-                <span class="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full font-semibold backdrop-blur-sm">Active</span>
+                <span class="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full font-semibold backdrop-blur-sm">{{ __('messages.currently_active') }}</span>
             </div>
             <p class="text-4xl font-extrabold mb-1">{{ $totalCategories ?? \App\Models\Category::count() }}</p>
-            <p class="text-orange-100 text-sm font-medium">Categories</p>
+            <p class="text-orange-100 text-sm font-medium">{{ __('messages.total_categories') }}</p>
             <div class="mt-4 pt-4 border-t border-white border-opacity-20">
-                <a href="{{ route('categories.index') }}" class="text-xs text-white hover:underline">View all categories →</a>
+                <a href="{{ route('categories.index') }}" class="text-xs text-white hover:underline">{{ __('messages.view_details') }} →</a>
             </div>
         </div>
     </div>

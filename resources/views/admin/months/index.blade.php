@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Monthly Overview')
+@section('title', __('messages.monthly_overview'))
 
 @section('content')
 <div class="space-y-6">
@@ -11,9 +11,9 @@
                 <div class="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg">
                     <i class="bi bi-calendar-month text-white text-2xl"></i>
                 </div>
-                <span>Monthly Overview</span>
+                <span>{{ __('messages.monthly_overview') }}</span>
             </h1>
-            <p class="text-gray-500 mt-2">View statistics and details for each month</p>
+            <p class="text-gray-500 mt-2">{{ __('messages.month_statistics') }}</p>
         </div>
     </div>
 

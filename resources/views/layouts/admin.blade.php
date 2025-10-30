@@ -449,12 +449,12 @@ $isRtl = $lang === 'ar';
                         
                         <a href="{{ route('reports.index') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('reports.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                             <i class="bi bi-bar-chart-line text-xl"></i>
-                            <span class="font-semibold">Reports</span>
+                            <span class="font-semibold">{{ __('messages.nav.reports') }}</span>
                         </a>
                         
                         <a href="{{ route('day.status') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('day.status') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                             <i class="bi bi-calendar-week text-xl"></i>
-                            <span class="font-semibold">Daily Sessions</span>
+                            <span class="font-semibold">{{ __('messages.nav.daily_sessions') }}</span>
                         </a>
                     </div>
                 </nav>
