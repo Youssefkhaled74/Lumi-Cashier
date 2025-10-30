@@ -2,7 +2,7 @@
 
 return [
     // General
-    'app_name' => 'Cashier Pro',
+    'app_name' => 'Lumi Cashier',
     'app_subtitle' => 'Point of Sale System',
     'welcome' => 'Welcome',
     'dashboard' => 'Dashboard',

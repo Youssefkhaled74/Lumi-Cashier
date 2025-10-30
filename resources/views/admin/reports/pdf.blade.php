@@ -511,7 +511,7 @@
         <!-- Footer -->
         <div class="footer">
             <div class="footer-info">
-                <strong>Cashier Pro</strong> - Point of Sale System
+                <strong>Lumi Cashier</strong> - Point of Sale System
             </div>
             <div class="footer-info">
                 Report generated on {{ $generatedAt->format('l, F j, Y \a\t g:i A') }}
