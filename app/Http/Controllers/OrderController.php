@@ -145,8 +145,8 @@ class OrderController extends Controller
             'company' => $company,
         ]);
 
-        // Set paper size for thermal receipt (80mm width, auto height)
-        $pdf->setPaper([0, 0, 226.77, 841.89], 'portrait'); // 80mm x auto (in points)
+        // Set paper size for thermal receipt (90mm width, auto height)
+        $pdf->setPaper([0, 0, 255.12, 841.89], 'portrait'); // 90mm x auto (in points)
 
         // Download the PDF with a custom filename
         return $pdf->stream("receipt-{$order->id}.pdf");

@@ -1,4 +1,4 @@
-<!DOCTYPE html><!DOCTYPE html>
+﻿<!DOCTYPE html><!DOCTYPE html>
 
 <html lang="en"><html lang="en">
 
@@ -28,7 +28,7 @@
 
             margin: 0;            margin: 0;
 
-            size: 80mm auto; /* Thermal printer width */            size: 80mm auto; /* Thermal printer width */
+            size: 90mm auto;            size: 90mm auto;
 
         }        }
 
@@ -38,17 +38,17 @@
 
             font-family: 'Courier New', 'DejaVu Sans Mono', monospace;            font-family: 'Courier New', 'DejaVu Sans Mono', monospace;
 
-            font-size: 12px;            font-size: 12px;
+            font-size: 10px;            font-size: 10px;
 
             color: #000;            color: #000;
 
             line-height: 1.4;            line-height: 1.4;
 
-            width: 80mm;            width: 80mm;
+            width: 84mm;            width: 84mm;
 
             margin: 0 auto;            margin: 0 auto;
 
-            padding: 5mm;            padding: 5mm;
+            padding: 3mm;            padding: 3mm;
 
         }        }
 
@@ -58,680 +58,1057 @@
 
             width: 100%;            width: 100%;
 
+            max-width: 84mm;        }
+
+        }
+
+        /* Header */
+
+        /* Header */        .header {
+
+        .header {            text-align: center;
+
+            text-align: center;            border-bottom: 2px dashed #000;
+
+            border-bottom: 2px dashed #000;            padding-bottom: 6px;
+
+            padding-bottom: 6px;            margin-bottom: 6px;
+
+            margin-bottom: 8px;        }
+
+        }
+
+        .store-name {
+
+        .store-name {            font-size: 16px;
+
+            font-size: 16px;            font-weight: bold;
+
+            font-weight: bold;            margin-bottom: 3px;
+
+            margin-bottom: 4px;            letter-spacing: 1px;
+
+            letter-spacing: 1px;        }
+
+        }
+
+        .store-info {
+
+        .store-info {            font-size: 8px;
+
+            font-size: 9px;            line-height: 1.3;
+
+            line-height: 1.4;            color: #333;
+
+            color: #333;        }
+
+        }
+
+        /* Dividers */
+
+        /* Dividers */        .divider {
+
+        .divider {            border-top: 1px dashed #000;
+
+            border-top: 1px dashed #000;            margin: 5px 0;
+
+            margin: 6px 0;        }
+
+        }
+
+        .divider-bold {
+
+        .divider-bold {            border-top: 2px solid #000;
+
+            border-top: 2px solid #000;            margin: 6px 0;
+
+            margin: 8px 0;        }
+
+        }
+
+        .divider-double {
+
+        .divider-double {            border-top: 3px double #000;
+
+            border-top: 3px double #000;            margin: 5px 0;
+
+            margin: 6px 0;        }
+
+        }
+
+        /* Receipt Info */
+
+        /* Receipt Info */        .receipt-info {
+
+        .receipt-info {            font-size: 9px;
+
+            font-size: 9px;            margin-bottom: 5px;
+
+            margin-bottom: 6px;        }
+
+        }
+
+        .info-table {
+
+        .info-table {            width: 100%;
+
+            width: 100%;            border-collapse: collapse;
+
+            border-collapse: collapse;            table-layout: fixed;
+
+            table-layout: fixed;        }
+
+        }
+
+        .info-table td {
+
+        .info-table td {            padding: 2px;
+
+            padding: 2px 0;            overflow: hidden;
+
+            overflow: hidden;            word-wrap: break-word;
+
+            word-wrap: break-word;            font-size: 9px;
+
         }        }
 
 
 
-        /* Header Section */        /* Header Section */
-
-        .header {        .header {
-
-            text-align: center;            text-align: center;
-
-            border-bottom: 2px dashed #000;            border-bottom: 2px dashed #000;
-
-            padding-bottom: 8px;            padding-bottom: 8px;
-
-            margin-bottom: 10px;            margin-bottom: 10px;
-
-        }        }
-
-
-
-        .store-name {        .store-name {
-
-            font-size: 18px;            font-size: 18px;
+        .info-table .info-label {        .info-table .info-label {
 
             font-weight: bold;            font-weight: bold;
 
-            margin-bottom: 3px;            margin-bottom: 3px;
+            width: 45%;            width: 45%;
 
-            text-transform: uppercase;            text-transform: uppercase;
-
-        }        }
-
-
-
-        .store-info {        .store-info {
-
-            font-size: 10px;            font-size: 10px;
-
-            line-height: 1.3;            line-height: 1.3;
+            text-align: left;            text-align: left;
 
         }        }
 
 
 
-        .divider {        .divider {
+        .info-table .info-value {        .info-table .info-value {
 
-            border-top: 1px dashed #000;            border-top: 1px dashed #000;
+            width: 55%;            width: 55%;
 
-            margin: 8px 0;            margin: 8px 0;
-
-        }        }
-
-
-
-        .divider-bold {        .divider-bold {
-
-            border-top: 2px solid #000;            border-top: 2px solid #000;
-
-            margin: 8px 0;            margin: 8px 0;
+            text-align: right;            text-align: right;
 
         }        }
 
 
 
-        /* Receipt Info */        /* Receipt Info */
-
-        .receipt-info {        .receipt-info {
-
-            font-size: 11px;            font-size: 11px;
-
-            margin-bottom: 8px;            margin-bottom: 8px;
-
-        }        }
-
-
-
-        .receipt-info-line {        .receipt-info-line {
-
-            display: flex;            display: flex;
-
-            justify-content: space-between;            justify-content: space-between;
-
-            margin-bottom: 2px;            margin-bottom: 2px;
-
-        }        }
-
-
-
-        .label {        .label {
-
-            font-weight: bold;            font-weight: bold;
-
-        }        }
-
-
-
-        /* Items Section */        /* Items Section */
+        /* Items Table */        /* Items Table */
 
         .items-section {        .items-section {
 
-            margin: 10px 0;            margin: 10px 0;
+            margin: 8px 0;            margin: 6px 0;
 
         }        }
 
 
 
-        .item-row {        .item-row {
+        .items-table {        .items-table {
 
-            margin-bottom: 8px;            margin-bottom: 8px;
+            width: 100%;            width: 100%;
 
-            font-size: 11px;            font-size: 11px;
+            border-collapse: collapse;            border-collapse: collapse;
+
+            font-size: 10px;            font-size: 10px;
+
+            table-layout: fixed;            table-layout: fixed;
 
         }        }
 
 
 
-        /* Totals Section */        .item-header {
-
-        .totals-section {            font-weight: bold;
-
-            margin-top: 10px;            margin-bottom: 2px;
-
-            padding-top: 8px;        }
-
-            border-top: 1px dashed #000;
-
-        }        .item-details {
-
-            display: flex;
-
-        .total-line {            justify-content: space-between;
-
-            display: flex;            font-size: 10px;
-
-            justify-content: space-between;        }
-
-            margin-bottom: 4px;
-
-            font-size: 11px;        .item-qty-price {
-
-        }            display: flex;
-
-            justify-content: space-between;
-
-        .total-line.grand-total {            margin-top: 2px;
-
-            font-size: 14px;        }
-
-            font-weight: bold;
-
-            margin-top: 6px;        .qty-section {
-
-            padding-top: 6px;            flex: 1;
-
-            border-top: 2px solid #000;        }
-
-        }
-
-        .price-section {
-
-        .total-label {            text-align: right;
+        .items-table thead {        .items-table thead {
 
             font-weight: bold;            font-weight: bold;
 
-        }        }
-
-
-
-        /* Footer */        /* Totals Section */
-
-        .footer {        .totals-section {
-
-            text-align: center;            margin-top: 10px;
-
-            margin-top: 12px;            padding-top: 8px;
-
-            padding-top: 8px;            border-top: 1px dashed #000;
-
-            border-top: 2px dashed #000;        }
-
-            font-size: 10px;
-
-        }        .total-line {
-
-            display: flex;
-
-        .thank-you {            justify-content: space-between;
-
-            font-size: 13px;            margin-bottom: 4px;
-
-            font-weight: bold;            font-size: 11px;
-
-            margin-bottom: 5px;        }
-
-        }
-
-        .total-line.grand-total {
-
-        .barcode-section {            font-size: 14px;
-
-            text-align: center;            font-weight: bold;
-
-            margin: 10px 0;            margin-top: 6px;
-
-        }            padding-top: 6px;
-
-            border-top: 2px solid #000;
-
-        .barcode-img {        }
-
-            max-width: 60mm;
-
-            height: auto;        .total-label {
-
-        }            font-weight: bold;
-
-        }
-
-        .notes-section {
-
-            margin: 8px 0;        /* Footer */
-
-            padding: 5px;        .footer {
-
-            background-color: #f0f0f0;            text-align: center;
-
-            border: 1px solid #ccc;            margin-top: 12px;
-
-            font-size: 10px;            padding-top: 8px;
-
-        }            border-top: 2px dashed #000;
-
-            font-size: 10px;
-
-        .notes-title {        }
-
-            font-weight: bold;
-
-            margin-bottom: 3px;        .thank-you {
-
-        }            font-size: 13px;
-
-            font-weight: bold;
-
-        .bold {            margin-bottom: 5px;
-
-            font-weight: bold;        }
-
-        }
-
-        .barcode-section {
-
-        .small {            text-align: center;
-
-            font-size: 9px;            margin: 10px 0;
+            border-bottom: 2px solid #000;            border-bottom: 2px solid #000;
 
         }        }
 
 
 
-        .x-small {        .barcode-img {
+        .items-table th {        .items-table th {
 
-            font-size: 8px;            max-width: 60mm;
+            padding: 3px 1px;            padding: 3px 2px;
 
-        }            height: auto;
+            font-weight: bold;            font-weight: bold;
 
-        }
+            text-align: left;            text-align: left;
 
-        /* Table-like layout for items */
-
-        .items-table-header {        .notes-section {
-
-            font-weight: bold;            margin: 8px 0;
-
-            display: flex;            padding: 5px;
-
-            justify-content: space-between;            background-color: #f0f0f0;
-
-            border-bottom: 1px solid #000;            border: 1px solid #ccc;
-
-            padding-bottom: 3px;            font-size: 10px;
-
-            margin-bottom: 5px;        }
-
-            font-size: 10px;
-
-        }        .notes-title {
-
-            font-weight: bold;
-
-        .col-item {            margin-bottom: 3px;
-
-            flex: 2;        }
-
-        }
-
-        .center {
-
-        .col-qty {            text-align: center;
-
-            flex: 0.5;        }
-
-            text-align: center;
-
-        }        .bold {
-
-            font-weight: bold;
-
-        .col-price {        }
-
-            flex: 1;
-
-            text-align: right;        .small {
+            overflow: hidden;            overflow: hidden;
 
         }            font-size: 9px;
 
         }
 
-        .col-total {
+        .items-table td {
 
-            flex: 1;        .x-small {
+            padding: 3px 1px;        .items-table td {
 
-            text-align: right;            font-size: 8px;
+            vertical-align: top;            padding: 3px 2px;
 
-        }        }
+            overflow: hidden;            vertical-align: top;
 
-    </style>
+            word-wrap: break-word;            overflow: hidden;
 
-</head>        /* Table-like layout for items */
-
-<body>        .items-table {
-
-    <div class="receipt-container">            width: 100%;
-
-        {{-- Header --}}            font-size: 10px;
-
-        <div class="header">        }
-
-            <div class="store-name">{{ $company['name'] }}</div>
-
-            <div class="store-info">        .items-table-header {
-
-                {{ $company['address'] }}<br>            font-weight: bold;
-
-                {{ $company['city'] }}<br>            display: flex;
-
-                Tel: {{ $company['phone'] }}<br>            justify-content: space-between;
-
-                {{ $company['email'] }}            border-bottom: 1px solid #000;
-
-            </div>            padding-bottom: 3px;
-
-        </div>            margin-bottom: 5px;
+        }            word-wrap: break-word;
 
         }
 
-        {{-- Receipt Info --}}
+        .items-table .col-item {
 
-        <div class="receipt-info">        .col-item {
+            width: 43%;        .items-table .col-item {
 
-            <div class="receipt-info-line">            flex: 2;
+            text-align: left;            width: 42%;
 
-                <span class="label">Receipt #:</span>        }
+        }            text-align: left;
 
-                <span>{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</span>
+        }
 
-            </div>        .col-qty {
+        .items-table .col-qty {
 
-            <div class="receipt-info-line">            flex: 0.5;
+            width: 12%;        .items-table .col-qty {
 
-                <span class="label">Date:</span>            text-align: center;
+            text-align: center;            width: 12%;
 
-                <span>{{ $order->created_at->format('M d, Y') }}</span>        }
+            font-weight: bold;            text-align: center;
 
-            </div>
+        }            font-weight: bold;
 
-            <div class="receipt-info-line">        .col-price {
+        }
 
-                <span class="label">Time:</span>            flex: 1;
+        .items-table .col-price {
 
-                <span>{{ $order->created_at->format('h:i A') }}</span>            text-align: right;
+            width: 22%;        .items-table .col-price {
 
-            </div>        }
+            text-align: right;            width: 23%;
 
-            @if($order->day)
+        }            text-align: right;
 
-            <div class="receipt-info-line">        .col-total {
+        }
 
-                <span class="label">Day #:</span>            flex: 1;
+        .items-table .col-total {
 
-                <span>{{ $order->day->id }}</span>            text-align: right;
+            width: 23%;        .items-table .col-total {
 
-            </div>        }
+            text-align: right;            width: 23%;
 
-            @endif    </style>
+            font-weight: bold;            text-align: right;
 
-            <div class="receipt-info-line"></head>
+        }            font-weight: bold;
 
-                <span class="label">Cashier:</span><body>
+        }
 
-                <span>{{ config('cashier.admin.email', 'Admin') }}</span>    <div class="receipt-container">
+        .items-table tbody tr {
 
-            </div>        {{-- Header --}}
+            border-bottom: 1px dotted #ccc;        .items-table tbody tr {
 
-            @if($order->payment_method)        <div class="header">
+        }            border-bottom: 1px dotted #ccc;
 
-            <div class="receipt-info-line">            <div class="store-name">{{ $company['name'] }}</div>
+        }
 
-                <span class="label">Payment:</span>            <div class="store-info">
+        .items-table tbody tr:last-child {
 
-                <span>{{ strtoupper($order->payment_method) }}</span>                {{ $company['address'] }}<br>
+            border-bottom: 2px solid #000;        .items-table tbody tr:last-child {
+
+        }            border-bottom: 2px solid #000;
+
+        }
+
+        .item-discount {
+
+            font-size: 8px;        .item-discount {
+
+            color: #555;            font-size: 7px;
+
+            margin-top: 2px;            color: #555;
+
+            font-style: italic;            margin-left: 3px;
+
+            display: block;            font-style: italic;
+
+        }        }
+
+
+
+        /* Totals */        /* Totals */
+
+        .totals-section {        .totals-section {
+
+            margin-top: 8px;            margin-top: 6px;
+
+            padding-top: 6px;            padding-top: 5px;
+
+            border-top: 1px dashed #000;            border-top: 1px dashed #000;
+
+        }        }
+
+
+
+        .totals-table {        .totals-table {
+
+            width: 100%;            width: 100%;
+
+            border-collapse: collapse;            border-collapse: collapse;
+
+            font-size: 10px;            font-size: 10px;
+
+            table-layout: fixed;            table-layout: fixed;
+
+        }        }
+
+
+
+        .totals-table td {        .totals-table td {
+
+            padding: 3px 0;            padding: 3px 2px;
+
+            overflow: hidden;            overflow: hidden;
+
+        }        }
+
+
+
+        .totals-table .total-label {        .totals-table .total-label {
+
+            font-weight: bold;            font-weight: bold;
+
+            width: 60%;            width: 60%;
+
+            text-align: left;            text-align: left;
+
+        }        }
+
+
+
+        .totals-table .total-value {        .totals-table .total-value {
+
+            width: 40%;            width: 40%;
+
+            text-align: right;            text-align: right;
+
+            font-weight: bold;            font-weight: bold;
+
+        }        }
+
+        
+
+        .grand-total {        .grand-total {
+
+            font-size: 13px;            font-size: 13px;
+
+            font-weight: bold;            font-weight: bold;
+
+            margin-top: 6px;            margin-top: 5px;
+
+            padding-top: 6px;            padding-top: 5px;
+
+            border-top: 3px double #000;            border-top: 3px double #000;
+
+        }        }
+
+                
+
+        .grand-total .total-label {        .grand-total .total-label {
+
+            font-size: 12px;            font-size: 12px;
+
+        }        }
+
+                
+
+        .grand-total .total-value {        .grand-total .total-value {
+
+            font-size: 14px;            font-size: 14px;
+
+        }        }
+
+        .grand-total .total-value {
+
+        /* Customer Info */            font-size: 14px;
+
+        .customer-section {        }
+
+            margin: 8px 0;
+
+            padding: 5px;        /* Customer Info */
+
+            background-color: #f5f5f5;        .customer-section {
+
+            border: 1px solid #ddd;            margin: 6px 0;
+
+        }            padding: 4px;
+
+            background-color: #f5f5f5;
+
+        .customer-title {            border: 1px solid #ddd;
+
+            font-weight: bold;        }
+
+            font-size: 9px;
+
+            margin-bottom: 4px;        .customer-title {
+
+            text-transform: uppercase;            font-weight: bold;
+
+        }            font-size: 9px;
+
+            margin-bottom: 3px;
+
+        /* Notes */            text-transform: uppercase;
+
+        .notes-section {        }
+
+            margin: 8px 0;
+
+            padding: 5px;        /* Notes */
+
+            background-color: #fffbf0;        .notes-section {
+
+            border: 1px solid #e0e0e0;            margin: 6px 0;
+
+            font-size: 9px;            padding: 4px;
+
+        }            background-color: #fffbf0;
+
+            border: 1px solid #e0e0e0;
+
+        .notes-title {            font-size: 8px;
+
+            font-weight: bold;        }
+
+            margin-bottom: 3px;
+
+        }        .notes-title {
+
+            font-weight: bold;
+
+        /* Barcode */            margin-bottom: 2px;
+
+        .barcode-section {        }
+
+            text-align: center;
+
+            margin: 10px 0;        /* Barcode */
+
+        }        .barcode-section {
+
+            text-align: center;
+
+        .barcode-img {            margin: 8px 0;
+
+            max-width: 70mm;        }
+
+            height: auto;
+
+        }        .barcode-img {
+
+            max-width: 60mm;
+
+        .barcode-text {            height: auto;
+
+            font-size: 8px;        }
+
+            margin-top: 3px;
+
+            letter-spacing: 1px;        .barcode-text {
+
+        }            font-size: 7px;
+
+            margin-top: 2px;
+
+        /* Footer */            letter-spacing: 1px;
+
+        .footer {        }
+
+            text-align: center;
+
+            margin-top: 10px;        /* Footer */
+
+            padding-top: 8px;        .footer {
+
+            border-top: 2px dashed #000;            text-align: center;
+
+        }            margin-top: 8px;
+
+            padding-top: 6px;
+
+        .thank-you {            border-top: 2px dashed #000;
+
+            font-size: 13px;        }
+
+            font-weight: bold;
+
+            margin-bottom: 5px;        .thank-you {
+
+            letter-spacing: 1px;            font-size: 12px;
+
+        }            font-weight: bold;
+
+            margin-bottom: 4px;
+
+        .footer-msg {            letter-spacing: 1px;
+
+            font-size: 10px;        }
+
+            margin-bottom: 6px;
+
+        }        .footer-msg {
+
+            font-size: 9px;
+
+        .footer-info {            margin-bottom: 5px;
+
+            font-size: 8px;        }
+
+            color: #666;
+
+            line-height: 1.4;        .footer-info {
+
+        }            font-size: 7px;
+
+            color: #666;
+
+        .bold {            line-height: 1.3;
+
+            font-weight: bold;        }
+
+        }
+
+    </style>        .bold {
+
+</head>            font-weight: bold;
+
+<body>        }
+
+    <div class="receipt-container">    </style>
+
+        {{-- Header --}}</head>
+
+        <div class="header"><body>
+
+            <div class="store-name">{{ $company['name'] }}</div>    <div class="receipt-container">
+
+            <div class="store-info">        {{-- Header --}}
+
+                {{ $company['address'] }}<br>        <div class="header">
+
+                {{ $company['city'] }}<br>            <div class="store-name">{{ $company['name'] }}</div>
+
+                Tel: {{ $company['phone'] }}<br>            <div class="store-info">
+
+                {{ $company['email'] }}                {{ $company['address'] }}<br>
 
             </div>                {{ $company['city'] }}<br>
 
-            @endif                Tel: {{ $company['phone'] }}<br>
+        </div>                Tel: {{ $company['phone'] }}<br>
 
-        </div>                {{ $company['email'] }}
+                {{ $company['email'] }}
 
-            </div>
-
-        <div class="divider-bold"></div>        </div>
-
-
-
-        {{-- Items --}}        {{-- Receipt Info --}}
-
-        <div class="items-section">        <div class="receipt-info">
-
-            <div class="items-table-header">            <div class="receipt-info-line">
-
-                <div class="col-item">ITEM</div>                <span class="label">Receipt #:</span>
-
-                <div class="col-qty">QTY</div>                <span>{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</span>
-
-                <div class="col-price">PRICE</div>            </div>
-
-                <div class="col-total">TOTAL</div>            <div class="receipt-info-line">
-
-            </div>                <span class="label">Date:</span>
-
-                <span>{{ $order->created_at->format('M d, Y') }}</span>
-
-            @foreach($order->items as $orderItem)            </div>
-
-                @php            <div class="receipt-info-line">
-
-                    $item = $orderItem->itemUnit->item;                <span class="label">Time:</span>
-
-                @endphp                <span>{{ $order->created_at->format('h:i A') }}</span>
-
-                <div class="item-row">            </div>
-
-                    <div style="display: flex; justify-content: space-between;">            @if($order->day)
-
-                        <div class="col-item">{{ $item->name }}</div>            <div class="receipt-info-line">
-
-                        <div class="col-qty" style="text-align: center;">{{ $orderItem->quantity }}</div>                <span class="label">Day #:</span>
-
-                        <div class="col-price" style="text-align: right;">${{ number_format($orderItem->price, 2) }}</div>                <span>{{ $order->day->id }}</span>
-
-                        <div class="col-total" style="text-align: right; font-weight: bold;">${{ number_format($orderItem->total, 2) }}</div>            </div>
-
-                    </div>            @endif
-
-                    @if($orderItem->discount_percentage > 0)            <div class="receipt-info-line">
-
-                    <div class="small" style="margin-left: 5px; color: #666;">                <span class="label">Cashier:</span>
-
-                        Discount: {{ $orderItem->discount_percentage }}% (-${{ number_format($orderItem->discount_amount, 2) }})                <span>{{ config('cashier.admin.email', 'Admin') }}</span>
-
-                    </div>            </div>
-
-                    @endif            @if($order->payment_method)
-
-                </div>            <div class="receipt-info-line">
-
-            @endforeach                <span class="label">Payment:</span>
-
-        </div>                <span>{{ strtoupper($order->payment_method) }}</span>
-
-            </div>
-
-        <div class="divider"></div>            @endif
-
-        </div>
-
-        {{-- Totals --}}
-
-        <div class="totals-section">        <div class="divider-bold"></div>
-
-            <div class="total-line">
-
-                <span class="total-label">Subtotal:</span>        {{-- Items --}}
-
-                <span>${{ number_format($order->subtotal ?? $order->items->sum('total'), 2) }}</span>        <div class="items-section">
-
-            </div>            <div class="items-table-header">
-
-                <div class="col-item">ITEM</div>
-
-            @if($order->discount_percentage > 0)                <div class="col-qty">QTY</div>
-
-            <div class="total-line">                <div class="col-price">PRICE</div>
-
-                <span class="total-label">Discount ({{ $order->discount_percentage }}%):</span>                <div class="col-total">TOTAL</div>
-
-                <span>-${{ number_format($order->discount_amount, 2) }}</span>            </div>
-
-            </div>
-
-            @endif            @foreach($order->items as $orderItem)
-
-                @php
-
-            @if($order->tax_percentage > 0)                    $item = $orderItem->itemUnit->item;
-
-            <div class="total-line">                @endphp
-
-                <span class="total-label">Tax ({{ $order->tax_percentage }}%):</span>                <div class="item-row">
-
-                <span>${{ number_format($order->tax_amount, 2) }}</span>                    <div style="display: flex; justify-content: space-between;">
-
-            </div>                        <div class="col-item">{{ $item->name }}</div>
-
-            @endif                        <div class="col-qty" style="text-align: center;">{{ $orderItem->quantity }}</div>
-
-                        <div class="col-price" style="text-align: right;">${{ number_format($orderItem->price, 2) }}</div>
-
-            <div class="total-line grand-total">                        <div class="col-total" style="text-align: right; font-weight: bold;">${{ number_format($orderItem->total, 2) }}</div>
-
-                <span>TOTAL:</span>                    </div>
-
-                <span>${{ number_format($order->total, 2) }}</span>                    @if($orderItem->discount_percentage > 0)
-
-            </div>                    <div class="small" style="margin-left: 5px; color: #666;">
-
-        </div>                        Discount: {{ $orderItem->discount_percentage }}% (-${{ number_format($orderItem->discount_amount, 2) }})
-
-                    </div>
-
-        {{-- Customer Info --}}                    @endif
-
-        @if($order->customer_name || $order->customer_phone)                </div>
-
-        <div class="divider"></div>            @endforeach
+        {{-- Receipt Info --}}            </div>
 
         <div class="receipt-info">        </div>
 
-            <div class="bold" style="margin-bottom: 3px;">CUSTOMER INFO:</div>
+            <table class="info-table">
 
-            @if($order->customer_name)        <div class="divider"></div>
+                <tr>        {{-- Receipt Info --}}
 
-            <div class="receipt-info-line">
+                    <td class="info-label">Receipt #:</td>        <div class="receipt-info">
 
-                <span class="label">Name:</span>        {{-- Totals --}}
+                    <td class="info-value">{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</td>            <table class="info-table">
 
-                <span>{{ $order->customer_name }}</span>        <div class="totals-section">
+                </tr>                <tr>
 
-            </div>            <div class="total-line">
+                <tr>                    <td class="info-label">Receipt #:</td>
 
-            @endif                <span class="total-label">Subtotal:</span>
+                    <td class="info-label">Date:</td>                    <td class="info-value">{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</td>
 
-            @if($order->customer_phone)                <span>${{ number_format($order->subtotal ?? $order->items->sum('total'), 2) }}</span>
+                    <td class="info-value">{{ $order->created_at->format('M d, Y') }}</td>                </tr>
 
-            <div class="receipt-info-line">            </div>
+                </tr>                <tr>
 
-                <span class="label">Phone:</span>
+                <tr>                    <td class="info-label">Date:</td>
 
-                <span>{{ $order->customer_phone }}</span>            @if($order->discount_percentage > 0)
+                    <td class="info-label">Time:</td>                    <td class="info-value">{{ $order->created_at->format('M d, Y') }}</td>
 
-            </div>            <div class="total-line">
+                    <td class="info-value">{{ $order->created_at->format('h:i A') }}</td>                </tr>
 
-            @endif                <span class="total-label">Discount ({{ $order->discount_percentage }}%):</span>
+                </tr>                <tr>
 
-            @if($order->customer_email)                <span>-${{ number_format($order->discount_amount, 2) }}</span>
+                @if($order->day)                    <td class="info-label">Time:</td>
 
-            <div class="receipt-info-line small">            </div>
+                <tr>                    <td class="info-value">{{ $order->created_at->format('h:i A') }}</td>
 
-                <span class="label">Email:</span>            @endif
+                    <td class="info-label">Day #:</td>                </tr>
 
-                <span>{{ $order->customer_email }}</span>
+                    <td class="info-value">{{ $order->day->id }}</td>                @if($order->day)
 
-            </div>            @if($order->tax_percentage > 0)
+                </tr>                <tr>
 
-            @endif            <div class="total-line">
+                @endif                    <td class="info-label">Day #:</td>
 
-        </div>                <span class="total-label">Tax ({{ $order->tax_percentage }}%):</span>
+                <tr>                    <td class="info-value">{{ $order->day->id }}</td>
 
-        @endif                <span>${{ number_format($order->tax_amount, 2) }}</span>
+                    <td class="info-label">Cashier:</td>                </tr>
+
+                    <td class="info-value">{{ config('cashier.admin.email', 'Admin') }}</td>                @endif
+
+                </tr>                <tr>
+
+                @if($order->payment_method)                    <td class="info-label">Cashier:</td>
+
+                <tr>                    <td class="info-value">{{ config('cashier.admin.email', 'Admin') }}</td>
+
+                    <td class="info-label">Payment:</td>                </tr>
+
+                    <td class="info-value">{{ strtoupper($order->payment_method) }}</td>                @if($order->payment_method)
+
+                </tr>                <tr>
+
+                @endif                    <td class="info-label">Payment:</td>
+
+            </table>                    <td class="info-value">{{ strtoupper($order->payment_method) }}</td>
+
+        </div>                </tr>
+
+                @endif
+
+        <div class="divider-bold"></div>            </table>
+
+        </div>
+
+        {{-- Items --}}
+
+        <div class="items-section">        <div class="divider-bold"></div>
+
+            <table class="items-table">
+
+                <thead>        {{-- Items --}}
+
+                    <tr>        <div class="items-section">
+
+                        <th class="col-item">ITEM</th>            <table class="items-table">
+
+                        <th class="col-qty">QTY</th>                <thead>
+
+                        <th class="col-price">PRICE</th>                    <tr>
+
+                        <th class="col-total">TOTAL</th>                        <th class="col-item">ITEM</th>
+
+                    </tr>                        <th class="col-qty">QTY</th>
+
+                </thead>                        <th class="col-price">PRICE</th>
+
+                <tbody>                        <th class="col-total">TOTAL</th>
+
+                    @php                    </tr>
+
+                        // Group items by item ID and sum quantities                </thead>
+
+                        $groupedItems = $order->items->groupBy(function($orderItem) {                <tbody>
+
+                            return $orderItem->itemUnit->item->id;                    @php
+
+                        })->map(function($items) {                        // Group items by item ID and sum quantities
+
+                            $firstItem = $items->first();                        $groupedItems = $order->items->groupBy(function($orderItem) {
+
+                            $item = $firstItem->itemUnit->item;                            return $orderItem->itemUnit->item->id;
+
+                            $totalQuantity = $items->sum('quantity');                        })->map(function($items) {
+
+                            $totalAmount = $items->sum('total');                            $firstItem = $items->first();
+
+                            $totalDiscountAmount = $items->sum('discount_amount');                            $item = $firstItem->itemUnit->item;
+
+                            $avgDiscountPercentage = $items->avg('discount_percentage');                            $totalQuantity = $items->sum('quantity');
+
+                                                        $totalAmount = $items->sum('total');
+
+                            return (object)[                            $totalDiscountAmount = $items->sum('discount_amount');
+
+                                'name' => $item->name,                            $avgDiscountPercentage = $items->avg('discount_percentage');
+
+                                'quantity' => $totalQuantity,                            
+
+                                'price' => $firstItem->price,                            return (object)[
+
+                                'total' => $totalAmount,                                'name' => $item->name,
+
+                                'discount_percentage' => $avgDiscountPercentage,                                'quantity' => $totalQuantity,
+
+                                'discount_amount' => $totalDiscountAmount,                                'price' => $firstItem->price,
+
+                            ];                                'total' => $totalAmount,
+
+                        });                                'discount_percentage' => $avgDiscountPercentage,
+
+                    @endphp                                'discount_amount' => $totalDiscountAmount,
+
+                                                ];
+
+                    @foreach($groupedItems as $item)                        });
+
+                        <tr>                    @endphp
+
+                            <td class="col-item">                    
+
+                                {{ $item->name }}                    @foreach($groupedItems as $item)
+
+                                @if($item->discount_percentage > 0)                        <tr>
+
+                                <span class="item-discount">Disc {{ number_format($item->discount_percentage, 0) }}% (-${{ number_format($item->discount_amount, 2) }})</span>                            <td class="col-item">
+
+                                @endif                                {{ $item->name }}
+
+                            </td>                                @if($item->discount_percentage > 0)
+
+                            <td class="col-qty">{{ $item->quantity }}</td>                                <br><span class="item-discount">- Discount {{ number_format($item->discount_percentage, 0) }}% (-${{ number_format($item->discount_amount, 2) }})</span>
+
+                            <td class="col-price">${{ number_format($item->price, 2) }}</td>                                @endif
+
+                            <td class="col-total">${{ number_format($item->total, 2) }}</td>                            </td>
+
+                        </tr>                            <td class="col-qty">{{ $item->quantity }}</td>
+
+                    @endforeach                            <td class="col-price">${{ number_format($item->price, 2) }}</td>
+
+                </tbody>                            <td class="col-total">${{ number_format($item->total, 2) }}</td>
+
+            </table>                        </tr>
+
+        </div>                    @endforeach
+
+                </tbody>
+
+        {{-- Totals --}}            </table>
+
+        <div class="totals-section">        </div>
+
+            <table class="totals-table">        {{-- Totals --}}
+
+                <tr>        <div class="totals-section">
+
+                    <td class="total-label">Subtotal:</td>            <table class="totals-table">
+
+                    <td class="total-value">${{ number_format($order->subtotal ?? $order->items->sum('total'), 2) }}</td>                <tr>
+
+                </tr>                    <td class="total-label">Subtotal:</td>
+
+                    <td class="total-value">${{ number_format($order->subtotal ?? $order->items->sum('total'), 2) }}</td>
+
+                @if($order->discount_percentage > 0)                </tr>
+
+                <tr>
+
+                    <td class="total-label">Discount ({{ $order->discount_percentage }}%):</td>                @if($order->discount_percentage > 0)
+
+                    <td class="total-value">-${{ number_format($order->discount_amount, 2) }}</td>                <tr>
+
+                </tr>                    <td class="total-label">Discount ({{ $order->discount_percentage }}%):</td>
+
+                @endif                    <td class="total-value">-${{ number_format($order->discount_amount, 2) }}</td>
+
+                </tr>
+
+                @if($order->tax_percentage > 0)                @endif
+
+                <tr>
+
+                    <td class="total-label">Tax ({{ $order->tax_percentage }}%):</td>                @if($order->tax_percentage > 0)
+
+                    <td class="total-value">${{ number_format($order->tax_amount, 2) }}</td>                <tr>
+
+                </tr>                    <td class="total-label">Tax ({{ $order->tax_percentage }}%):</td>
+
+                @endif                    <td class="total-value">${{ number_format($order->tax_amount, 2) }}</td>
+
+                </tr>
+
+                <tr class="grand-total">                @endif
+
+                    <td class="total-label">TOTAL:</td>
+
+                    <td class="total-value">${{ number_format($order->total, 2) }}</td>                <tr class="grand-total">
+
+                </tr>                    <td class="total-label">TOTAL:</td>
+
+            </table>                    <td class="total-value">${{ number_format($order->total, 2) }}</td>
+
+        </div>                </tr>
+
+            </table>
+
+        {{-- Customer Info --}}        </div>  <div class="total-label">TOTAL:</div>
+
+        @if($order->customer_name || $order->customer_phone)                <div class="total-value">${{ number_format($order->total, 2) }}</div>
+
+        <div class="divider"></div>            </div>
+
+        <div class="customer-section">        {{-- Customer Info --}}
+
+            <div class="customer-title">Customer Information</div>        @if($order->customer_name || $order->customer_phone)
+
+            <table class="info-table">        <div class="divider"></div>
+
+                @if($order->customer_name)        <div class="customer-section">
+
+                <tr>            <div class="customer-title">Customer Information</div>
+
+                    <td class="info-label">Name:</td>            <table class="info-table">
+
+                    <td class="info-value">{{ $order->customer_name }}</td>                @if($order->customer_name)
+
+                </tr>                <tr>
+
+                @endif                    <td class="info-label">Name:</td>
+
+                @if($order->customer_phone)                    <td class="info-value">{{ $order->customer_name }}</td>
+
+                <tr>                </tr>
+
+                    <td class="info-label">Phone:</td>                @endif
+
+                    <td class="info-value">{{ $order->customer_phone }}</td>                @if($order->customer_phone)
+
+                </tr>                <tr>
+
+                @endif                    <td class="info-label">Phone:</td>
+
+                @if($order->customer_email)                    <td class="info-value">{{ $order->customer_phone }}</td>
+
+                <tr>                </tr>
+
+                    <td class="info-label">Email:</td>                @endif
+
+                    <td class="info-value">{{ $order->customer_email }}</td>                @if($order->customer_email)
+
+                </tr>                <tr>
+
+                @endif                    <td class="info-label">Email:</td>
+
+            </table>                    <td class="info-value">{{ $order->customer_email }}</td>
+
+        </div>                </tr>
+
+        @endif                @endif
+
+            </table>
+
+        {{-- Notes --}}        </div>
+
+        @if($order->notes)        @endifndif
+
+        <div class="divider"></div>        </div>
+
+        <div class="notes-section">        @endif
+
+            <div class="notes-title">Notes:</div>
+
+            <div>{{ $order->notes }}</div>        {{-- Notes --}}
+
+        </div>        @if($order->notes)
+
+        @endif        <div class="divider"></div>
+
+        <div class="notes-section">
+
+        {{-- Barcode --}}            <div class="notes-title">Notes:</div>
+
+        <div class="divider"></div>            <div>{{ $order->notes }}</div>
+
+        <div class="barcode-section">        </div>
+
+            @php        @endif
+
+                $orderBarcode = 'ORD' . str_pad($order->id, 6, '0', STR_PAD_LEFT);
+
+                $barcodeBase64 = \Milon\Barcode\Facades\DNS1DFacade::getBarcodePNG($orderBarcode, 'C128', 2, 40);        {{-- Barcode --}}
+
+            @endphp        <div class="divider"></div>
+
+            <img src="data:image/png;base64,{{ $barcodeBase64 }}"         <div class="barcode-section">
+
+                 alt="order barcode"             @php
+
+                 class="barcode-img" />                $orderBarcode = 'ORD' . str_pad($order->id, 6, '0', STR_PAD_LEFT);
+
+            <div class="barcode-text">{{ $orderBarcode }}</div>                $barcodeBase64 = \Milon\Barcode\Facades\DNS1DFacade::getBarcodePNG($orderBarcode, 'C128', 2, 40);
+
+        </div>            @endphp
+
+            <img src="data:image/png;base64,{{ $barcodeBase64 }}" 
+
+        {{-- Footer --}}                 alt="order barcode" 
+
+        <div class="footer">                 class="barcode-img" />
+
+            <div class="thank-you">THANK YOU!</div>            <div class="barcode-text">{{ $orderBarcode }}</div>
+
+            <div class="footer-msg">Please come again</div>        </div>
+
+            <div class="divider"></div>
+
+            <div class="footer-info">        {{-- Footer --}}
+
+                Printed: {{ now()->format('M d, Y h:i A') }}<br>        <div class="footer">
+
+                Status: {{ strtoupper($order->status) }}<br>            <div class="thank-you">THANK YOU!</div>
+
+                {{ config('app.name', 'Lumi POS') }}            <div class="footer-msg">Please come again</div>
+
+            </div>            <div class="divider"></div>
+
+        </div>            <div class="footer-info">
+
+    </div>                Printed: {{ now()->format('M d, Y h:i A') }}<br>
+
+</body>                Status: {{ strtoupper($order->status) }}<br>
+
+</html>                {{ config('app.name', 'Lumi POS') }}
 
             </div>
+        </div>
+    </div>
+</body>
+</html>
+<body>
+    <div class="receipt-container">
+        <div class="header">
+            <div class="store-name">{{ $company['name'] }}</div>
+            <div class="store-info">
+                {{ $company['address'] }}<br>
+                {{ $company['city'] }}<br>
+                Tel: {{ $company['phone'] }}<br>
+                {{ $company['email'] }}
+            </div>
+        </div>
 
-        {{-- Notes --}}            @endif
+        <div class="receipt-info">
+            <div class="receipt-info-line">
+                <span class="label">Receipt #:</span>
+                <span>{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</span>
+            </div>
+            <div class="receipt-info-line">
+                <span class="label">Date:</span>
+                <span>{{ $order->created_at->format('M d, Y') }}</span>
+            </div>
+            <div class="receipt-info-line">
+                <span class="label">Time:</span>
+                <span>{{ $order->created_at->format('h:i A') }}</span>
+            </div>
+            @if($order->day)
+            <div class="receipt-info-line">
+                <span class="label">Day #:</span>
+                <span>{{ $order->day->id }}</span>
+            </div>
+            @endif
+            <div class="receipt-info-line">
+                <span class="label">Cashier:</span>
+                <span>{{ config('cashier.admin.email', 'Admin') }}</span>
+            </div>
+            @if($order->payment_method)
+            <div class="receipt-info-line">
+                <span class="label">Payment:</span>
+                <span>{{ strtoupper($order->payment_method) }}</span>
+            </div>
+            @endif
+        </div>
 
-        @if($order->notes)
+        <div class="divider-bold"></div>
 
-        <div class="divider"></div>            <div class="total-line grand-total">
+        <div class="items-section">
+            <div class="items-table-header">
+                <div class="col-item">ITEM</div>
+                <div class="col-qty">QTY</div>
+                <div class="col-price">PRICE</div>
+                <div class="col-total">TOTAL</div>
+            </div>
 
-        <div class="notes-section">                <span>TOTAL:</span>
+            @foreach($order->items as $orderItem)
+                @php
+                    $item = $orderItem->itemUnit->item;
+                @endphp
+                <div class="item-row">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="col-item">{{ $item->name }}</div>
+                        <div class="col-qty" style="text-align: center;">{{ $orderItem->quantity }}</div>
+                        <div class="col-price" style="text-align: right;">${{ number_format($orderItem->price, 2) }}</div>
+                        <div class="col-total" style="text-align: right; font-weight: bold;">${{ number_format($orderItem->total, 2) }}</div>
+                    </div>
+                    @if($orderItem->discount_percentage > 0)
+                    <div class="small" style="margin-left: 5px; color: #666;">
+                        Discount: {{ $orderItem->discount_percentage }}% (-${{ number_format($orderItem->discount_amount, 2) }})
+                    </div>
+                    @endif
+                </div>
+            @endforeach
+        </div>
 
-            <div class="notes-title">Notes:</div>                <span>${{ number_format($order->total, 2) }}</span>
+        <div class="divider"></div>
 
-            <div>{{ $order->notes }}</div>            </div>
+        <div class="totals-section">
+            <div class="total-line">
+                <span class="total-label">Subtotal:</span>
+                <span>${{ number_format($order->subtotal ?? $order->items->sum('total'), 2) }}</span>
+            </div>
 
-        </div>        </div>
+            @if($order->discount_percentage > 0)
+            <div class="total-line">
+                <span class="total-label">Discount ({{ $order->discount_percentage }}%):</span>
+                <span>-${{ number_format($order->discount_amount, 2) }}</span>
+            </div>
+            @endif
 
+            @if($order->tax_percentage > 0)
+            <div class="total-line">
+                <span class="total-label">Tax ({{ $order->tax_percentage }}%):</span>
+                <span>${{ number_format($order->tax_amount, 2) }}</span>
+            </div>
+            @endif
+
+            <div class="total-line grand-total">
+                <span>TOTAL:</span>
+                <span>${{ number_format($order->total, 2) }}</span>
+            </div>
+        </div>
+
+        @if($order->customer_name || $order->customer_phone)
+        <div class="divider"></div>
+        <div class="receipt-info">
+            <div class="bold" style="margin-bottom: 3px;">CUSTOMER INFO:</div>
+            @if($order->customer_name)
+            <div class="receipt-info-line">
+                <span class="label">Name:</span>
+                <span>{{ $order->customer_name }}</span>
+            </div>
+            @endif
+            @if($order->customer_phone)
+            <div class="receipt-info-line">
+                <span class="label">Phone:</span>
+                <span>{{ $order->customer_phone }}</span>
+            </div>
+            @endif
+            @if($order->customer_email)
+            <div class="receipt-info-line small">
+                <span class="label">Email:</span>
+                <span>{{ $order->customer_email }}</span>
+            </div>
+            @endif
+        </div>
         @endif
 
-        {{-- Customer Info --}}
-
-        {{-- Order Barcode --}}        @if($order->customer_name || $order->customer_phone)
-
-        <div class="divider"></div>        <div class="divider"></div>
-
-        <div class="barcode-section">        <div class="receipt-info">
-
-            @php            <div class="bold" style="margin-bottom: 3px;">CUSTOMER INFO:</div>
-
-                $orderBarcode = 'ORD' . str_pad($order->id, 6, '0', STR_PAD_LEFT);            @if($order->customer_name)
-
-                $barcodeBase64 = \Milon\Barcode\Facades\DNS1DFacade::getBarcodePNG($orderBarcode, 'C128', 2, 40);            <div class="receipt-info-line">
-
-            @endphp                <span class="label">Name:</span>
-
-            <img src="data:image/png;base64,{{ $barcodeBase64 }}"                 <span>{{ $order->customer_name }}</span>
-
-                 alt="order barcode"             </div>
-
-                 class="barcode-img" />            @endif
-
-            <div class="x-small">{{ $orderBarcode }}</div>            @if($order->customer_phone)
-
-        </div>            <div class="receipt-info-line">
-
-                <span class="label">Phone:</span>
-
-        {{-- Footer --}}                <span>{{ $order->customer_phone }}</span>
-
-        <div class="footer">            </div>
-
-            <div class="thank-you">THANK YOU!</div>            @endif
-
-            <div class="small">Please come again</div>            @if($order->customer_email)
-
-            <div class="divider"></div>            <div class="receipt-info-line small">
-
-            <div class="x-small">                <span class="label">Email:</span>
-
-                Printed: {{ now()->format('M d, Y h:i A') }}<br>                <span>{{ $order->customer_email }}</span>
-
-                Status: {{ strtoupper($order->status) }}            </div>
-
-            </div>            @endif
-
-            <div class="x-small" style="margin-top: 5px;">        </div>
-
-                {{ config('app.name', 'Lumi POS') }} - www.lumipos.com        @endif
-
-            </div>
-
-        </div>        {{-- Notes --}}
-
-    </div>        @if($order->notes)
-
-</body>        <div class="divider"></div>
-
-</html>        <div class="notes-section">
-
+        @if($order->notes)
+        <div class="divider"></div>
+        <div class="notes-section">
             <div class="notes-title">Notes:</div>
             <div>{{ $order->notes }}</div>
         </div>
         @endif
 
-        {{-- Order Barcode --}}
         <div class="divider"></div>
         <div class="barcode-section">
             @php
@@ -744,7 +1121,6 @@
             <div class="x-small">{{ $orderBarcode }}</div>
         </div>
 
-        {{-- Footer --}}
         <div class="footer">
             <div class="thank-you">THANK YOU!</div>
             <div class="small">Please come again</div>
@@ -760,367 +1136,3 @@
     </div>
 </body>
 </html>
-
-        .invoice-container {
-            max-width: 100%;
-            margin: 0 auto;
-        }
-
-        /* Header Section */
-        .header {
-            border-bottom: 3px solid #4F46E5;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .header-grid {
-            display: table;
-            width: 100%;
-        }
-
-        .header-left {
-            display: table-cell;
-            width: 60%;
-            vertical-align: top;
-        }
-
-        .header-right {
-            display: table-cell;
-            width: 40%;
-            text-align: right;
-            vertical-align: top;
-        }
-
-        .company-name {
-            font-size: 22px;
-            font-weight: bold;
-            color: #4F46E5;
-            margin-bottom: 5px;
-        }
-
-        .company-info {
-            font-size: 9px;
-            color: #666;
-            line-height: 1.5;
-        }
-
-        .invoice-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #1F2937;
-            margin-bottom: 8px;
-        }
-
-        .invoice-meta {
-            font-size: 10px;
-            color: #666;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 10px;
-            font-size: 9px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-top: 5px;
-        }
-
-        .status-completed {
-            background-color: #D1FAE5;
-            color: #065F46;
-        }
-
-        /* Info Section */
-        .info-section {
-            background-color: #F9FAFB;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-        }
-
-        .info-grid {
-            display: table;
-            width: 100%;
-        }
-
-        .info-col {
-            display: table-cell;
-            width: 33.33%;
-            padding: 5px;
-        }
-
-        .info-label {
-            font-size: 9px;
-            color: #6B7280;
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 3px;
-        }
-
-        .info-value {
-            font-size: 11px;
-            color: #111827;
-            font-weight: 500;
-        }
-
-        /* Items Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        table thead {
-            background-color: #4F46E5;
-            color: white;
-        }
-
-        table th {
-            padding: 10px 8px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 10px;
-            text-transform: uppercase;
-        }
-
-        table th.text-right {
-            text-align: right;
-        }
-
-        table th.text-center {
-            text-align: center;
-        }
-
-        table td {
-            padding: 8px;
-            border-bottom: 1px solid #E5E7EB;
-            font-size: 10px;
-        }
-
-        table tbody tr:last-child td {
-            border-bottom: 2px solid #4F46E5;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .item-name {
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 2px;
-        }
-
-        .item-sku {
-            font-size: 9px;
-            color: #6B7280;
-        }
-
-        .barcode-img {
-            height: 35px;
-            margin: 2px 0;
-        }
-
-        .barcode-text {
-            font-size: 8px;
-            color: #6B7280;
-            font-family: 'Courier New', monospace;
-        }
-
-        /* Totals Section */
-        .totals-section {
-            float: right;
-            width: 280px;
-            margin-top: 10px;
-        }
-
-        .totals-table td {
-            padding: 6px 12px;
-            border: none;
-            font-size: 11px;
-        }
-
-        .total-row {
-            background-color: #4F46E5;
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        /* Notes */
-        .notes {
-            clear: both;
-            margin-top: 20px;
-            padding: 12px;
-            background-color: #FEF3C7;
-            border-left: 4px solid #F59E0B;
-            font-size: 10px;
-        }
-
-        .notes-title {
-            font-weight: bold;
-            margin-bottom: 4px;
-            color: #92400E;
-        }
-
-        /* Footer */
-        .footer {
-            clear: both;
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 2px solid #E5E7EB;
-            text-align: center;
-            font-size: 9px;
-            color: #6B7280;
-        }
-
-        .footer-highlight {
-            font-weight: bold;
-            color: #111827;
-            margin-bottom: 5px;
-        }
-    </style>
-</head>
-<body>
-    <div class="invoice-container">
-        {{-- Header --}}
-        <div class="header">
-            <div class="header-grid">
-                <div class="header-left">
-                    <div class="company-name">{{ $company['name'] }}</div>
-                    <div class="company-info">
-                        {{ $company['address'] }}<br>
-                        {{ $company['city'] }}<br>
-                        Phone: {{ $company['phone'] }} | Email: {{ $company['email'] }}
-                    </div>
-                </div>
-                <div class="header-right">
-                    <div class="invoice-title">INVOICE</div>
-                    <div class="invoice-meta">
-                        <strong>Invoice #:</strong> {{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}<br>
-                        <strong>Date:</strong> {{ $order->created_at->format('M d, Y h:i A') }}
-                    </div>
-                    <span class="status-badge status-{{ strtolower($order->status) }}">
-                        {{ $order->status }}
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        {{-- Order Information --}}
-        <div class="info-section">
-            <div class="info-grid">
-                <div class="info-col">
-                    <div class="info-label">Business Day</div>
-                    <div class="info-value">Day #{{ $order->day->id }} - {{ $order->day->date->format('M d, Y') }}</div>
-                </div>
-                <div class="info-col">
-                    <div class="info-label">Cashier</div>
-                    <div class="info-value">{{ config('cashier.admin.email', 'Admin') }}</div>
-                </div>
-                <div class="info-col">
-                    <div class="info-label">Payment Method</div>
-                    <div class="info-value">Cash</div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Items Table --}}
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 5%">#</th>
-                    <th style="width: 30%">Item Description</th>
-                    <th style="width: 20%" class="text-center">Barcode</th>
-                    <th style="width: 15%" class="text-right">Unit Price</th>
-                    <th style="width: 10%" class="text-center">Qty</th>
-                    <th style="width: 20%" class="text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $groupedItems = $order->items->groupBy(function($item) {
-                        return $item->itemUnit->item->id;
-                    });
-                @endphp
-
-                @foreach($groupedItems as $itemId => $orderItems)
-                    @php
-                        $firstItem = $orderItems->first();
-                        $item = $firstItem->itemUnit->item;
-                        $quantity = $orderItems->count();
-                        $unitPrice = $firstItem->price;
-                        $total = $orderItems->sum('total');
-                    @endphp
-                    <tr>
-                        <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>
-                            <div class="item-name">{{ $item->name }}</div>
-                            <div class="item-sku">{{ $item->category->name }} | SKU: {{ $item->sku }}</div>
-                        </td>
-                        <td class="text-center">
-                            @if($item->barcode)
-                                @php
-                                    $barcodeBase64 = \Milon\Barcode\Facades\DNS1DFacade::getBarcodePNG($item->barcode, 'C128', 1.5, 35);
-                                @endphp
-                                <img src="data:image/png;base64,{{ $barcodeBase64 }}" 
-                                     alt="barcode" 
-                                     class="barcode-img" />
-                                <div class="barcode-text">{{ $item->barcode }}</div>
-                            @else
-                                <span class="barcode-text">N/A</span>
-                            @endif
-                        </td>
-                        <td class="text-right">${{ number_format($unitPrice, 2) }}</td>
-                        <td class="text-center"><strong>{{ $quantity }}</strong></td>
-                        <td class="text-right"><strong>${{ number_format($total, 2) }}</strong></td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        {{-- Totals --}}
-        <div class="totals-section">
-            <table class="totals-table">
-                <tr>
-                    <td><strong>Subtotal:</strong></td>
-                    <td class="text-right">${{ number_format($order->total, 2) }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Tax (0%):</strong></td>
-                    <td class="text-right">$0.00</td>
-                </tr>
-                <tr>
-                    <td><strong>Discount:</strong></td>
-                    <td class="text-right">$0.00</td>
-                </tr>
-                <tr class="total-row">
-                    <td><strong>TOTAL:</strong></td>
-                    <td class="text-right"><strong>${{ number_format($order->total, 2) }}</strong></td>
-                </tr>
-            </table>
-        </div>
-
-        {{-- Notes --}}
-        @if($order->notes)
-        <div class="notes">
-            <div class="notes-title">Notes:</div>
-            <div>{{ $order->notes }}</div>
-        </div>
-        @endif
-
-        {{-- Footer --}}
-        <div class="footer">
-            <p class="footer-highlight">Thank you for your business!</p>
-            <p>This is a computer-generated invoice. For inquiries, please contact {{ $company['email'] }}</p>
-            <p style="margin-top: 8px;">Generated: {{ now()->format('F d, Y \a\t h:i A') }}</p>
-        </div>
-    </div>
-</body>
-</html>
-
