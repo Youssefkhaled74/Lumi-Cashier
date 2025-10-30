@@ -8,6 +8,7 @@ use App\Models\Item;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\ItemRepositoryInterface;
 use App\Services\InventoryService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -144,5 +145,46 @@ class ItemController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to add stock: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Export all items to PDF.
+     */
+    public function exportPdf()
+    {
+        $items = Item::with(['category', 'units'])
+            ->withCount([
+                'units as available_stock' => function ($query) {
+                    $query->where('status', 'available');
+                },
+                'units as sold_stock' => function ($query) {
+                    $query->where('status', 'sold');
+                }
+            ])
+            ->get();
+
+        // Calculate totals
+        $totalItems = $items->count();
+        $totalInventoryValue = $items->sum(function ($item) {
+            return $item->price * $item->available_stock;
+        });
+        $totalAvailableUnits = $items->sum('available_stock');
+        $totalSoldUnits = $items->sum('sold_stock');
+        $lowStockItems = $items->filter(fn($item) => $item->available_stock > 0 && $item->available_stock < 5)->count();
+        $outOfStockItems = $items->filter(fn($item) => $item->available_stock == 0)->count();
+
+        $pdf = Pdf::loadView('admin.items.pdf', compact(
+            'items',
+            'totalItems',
+            'totalInventoryValue',
+            'totalAvailableUnits',
+            'totalSoldUnits',
+            'lowStockItems',
+            'outOfStockItems'
+        ));
+
+        $pdf->setPaper('A4', 'portrait');
+
+        return $pdf->download('items_inventory_' . now()->format('Y-m-d') . '.pdf');
     }
 }

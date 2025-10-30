@@ -226,6 +226,7 @@ return [
     'to_date' => 'To Date',
     'generate_report' => 'Generate Report',
     'export_pdf' => 'Export PDF',
+    'export_report' => 'Export Report',
     'reset' => 'Reset',
     'ready_to_generate' => 'Ready to Generate Report',
     'select_date_range' => 'Select a date range above and click "Generate Report" to view detailed analytics and insights.',

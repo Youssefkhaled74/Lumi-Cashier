@@ -44,32 +44,64 @@
             <div class="lg:col-span-2">
                 <div class="bg-white shadow-xl rounded-xl p-6 hover:shadow-2xl transition-shadow">
                     <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                        <i class="bi bi-box-seam text-indigo-600 mr-3 text-2xl"></i> Available Items
+                        <i class="bi bi-box-seam text-indigo-600 mr-3 text-2xl"></i> {{ __('messages.available_items') }}
                     </h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[600px] overflow-y-auto pr-2">
+                    <!-- Search and Filter Section -->
+                    <div class="mb-6 space-y-4">
+                        <!-- Search Bar -->
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="bi bi-search text-gray-400"></i>
+                            </div>
+                            <input type="text" id="searchInput" placeholder="{{ __('messages.search_items') }}..." class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" onkeyup="filterItems()">
+                        </div>
+
+                        <!-- Category Filter -->
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" onclick="filterByCategory('all')" class="category-filter-btn active px-4 py-2 rounded-lg font-semibold transition-all" data-category="all">
+                                <i class="bi bi-grid-fill mr-1"></i> {{ __('messages.all_categories') }}
+                            </button>
+                            @foreach($categories as $category)
+                                <button type="button" onclick="filterByCategory('{{ $category->id }}')" class="category-filter-btn px-4 py-2 rounded-lg font-semibold transition-all" data-category="{{ $category->id }}">
+                                    <i class="bi bi-folder mr-1"></i> {{ $category->name }}
+                                </button>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div id="itemsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[600px] overflow-y-auto pr-2">
                         @foreach($items as $item)
-                        <div class="border-2 border-gray-200 rounded-xl p-4 hover:border-indigo-400 transition-all hover:shadow-md">
+                        <div class="item-card border-2 border-gray-200 rounded-xl p-4 hover:border-indigo-400 transition-all hover:shadow-md" data-item-id="{{ $item->id }}" data-item-name="{{ strtolower($item->name) }}" data-item-sku="{{ strtolower($item->sku) }}" data-category-id="{{ $item->category_id }}">
                             <div class="flex justify-between items-start mb-3">
                                 <div class="flex-1">
                                     <h3 class="font-semibold text-gray-900">{{ $item->name }}</h3>
-                                    <p class="text-xs text-gray-500">SKU: {{ $item->sku }}</p>
+                                    <p class="text-xs text-gray-500">{{ __('messages.sku') }}: {{ $item->sku }}</p>
                                     <span class="inline-block mt-1 px-2 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800">
                                         {{ $item->category->name }}
                                     </span>
                                 </div>
                                 <div class="text-right ml-2">
                                     <p class="text-lg font-bold text-indigo-600">${{ number_format($item->price, 2) }}</p>
-                                    <p class="text-xs text-gray-500">{{ $item->available_stock }} available</p>
+                                    <p class="text-xs text-gray-500">{{ $item->available_stock }} {{ __('messages.available') }}</p>
                                 </div>
                             </div>
 
                             <div class="flex items-center space-x-2">
                                 <input type="number" id="qty-{{ $item->id }}" min="0" max="{{ $item->available_stock }}" value="0" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" onchange="updateCart({{ $item->id }}, '{{ addslashes($item->name) }}', {{ $item->price }}, this.value, {{ $item->available_stock }})">
-                                <button type="button" onclick="addToCart({{ $item->id }}, '{{ addslashes($item->name) }}', {{ $item->price }}, {{ $item->available_stock }})" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-md transition-all"><i class="bi bi-plus-circle"></i> Add</button>
+                                <button type="button" onclick="addToCart({{ $item->id }}, '{{ addslashes($item->name) }}', {{ $item->price }}, {{ $item->available_stock }})" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-md transition-all">
+                                    <i class="bi bi-plus-circle"></i> {{ __('messages.add') }}
+                                </button>
                             </div>
                         </div>
                         @endforeach
+                    </div>
+
+                    <!-- No Results Message -->
+                    <div id="noResults" class="hidden text-center py-8">
+                        <i class="bi bi-search text-gray-300 text-5xl mb-3"></i>
+                        <p class="text-gray-500 font-medium">{{ __('messages.no_items_found') }}</p>
+                        <p class="text-gray-400 text-sm">{{ __('messages.try_different_search') }}</p>
                     </div>
                 </div>
             </div>

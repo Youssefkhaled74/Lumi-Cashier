@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\ItemUnit;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -103,5 +105,56 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to delete category: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Export category report to PDF.
+     */
+    public function exportPdf()
+    {
+        $categories = Category::with(['items.units'])
+            ->withCount('items')
+            ->get()
+            ->map(function ($category) {
+                $availableStock = 0;
+                $soldStock = 0;
+                $inventoryValue = 0;
+
+                foreach ($category->items as $item) {
+                    $itemAvailable = $item->units()->where('status', ItemUnit::STATUS_AVAILABLE)->count();
+                    $itemSold = $item->units()->where('status', ItemUnit::STATUS_SOLD)->count();
+                    
+                    $availableStock += $itemAvailable;
+                    $soldStock += $itemSold;
+                    $inventoryValue += $item->price * $itemAvailable;
+                }
+
+                $category->available_stock = $availableStock;
+                $category->sold_stock = $itemSold;
+                $category->inventory_value = $inventoryValue;
+                $category->total_units = $availableStock + $soldStock;
+
+                return $category;
+            });
+
+        // Calculate totals
+        $totalCategories = $categories->count();
+        $totalItems = $categories->sum('items_count');
+        $totalInventoryValue = $categories->sum('inventory_value');
+        $totalAvailableUnits = $categories->sum('available_stock');
+        $totalSoldUnits = $categories->sum('sold_stock');
+
+        $pdf = Pdf::loadView('admin.categories.pdf', compact(
+            'categories',
+            'totalCategories',
+            'totalItems',
+            'totalInventoryValue',
+            'totalAvailableUnits',
+            'totalSoldUnits'
+        ));
+
+        $pdf->setPaper('A4', 'portrait');
+
+        return $pdf->download('categories_report_' . now()->format('Y-m-d') . '.pdf');
     }
 }

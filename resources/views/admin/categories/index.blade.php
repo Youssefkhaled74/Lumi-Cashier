@@ -8,10 +8,16 @@
             <h2 class="text-3xl font-extrabold text-gray-800 mb-2">{{ __('messages.categories') }}</h2>
             <p class="text-gray-600">{{ __('messages.organize_products') }}</p>
         </div>
-        <a href="{{ route('categories.create') }}" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-            <i class="bi bi-plus-circle text-xl"></i>
-            <span class="font-semibold">{{ __('messages.new_category') }}</span>
-        </a>
+        <div class="flex items-center space-x-3">
+            <a href="{{ route('categories.export-pdf') }}" target="_blank" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                <i class="bi bi-file-pdf text-xl"></i>
+                <span class="font-semibold">{{ __('messages.export_report') }}</span>
+            </a>
+            <a href="{{ route('categories.create') }}" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                <i class="bi bi-plus-circle text-xl"></i>
+                <span class="font-semibold">{{ __('messages.new_category') }}</span>
+            </a>
+        </div>
     </div>
 
     @if(session('success'))
