@@ -43,13 +43,12 @@ class SettingsController extends Controller
             'admin_password' => 'required|string',
         ]);
 
-        // Verify admin credentials
-        $credentials = [
-            'email' => $request->input('admin_email'),
-            'password' => $request->input('admin_password'),
-        ];
-
-        if (!Auth::attempt($credentials)) {
+        // Verify admin credentials against config
+        $configEmail = config('cashier.admin.email');
+        $configPassword = config('cashier.admin.password');
+        
+        if ($request->input('admin_email') !== $configEmail || 
+            $request->input('admin_password') !== $configPassword) {
             return redirect()
                 ->route('settings.index')
                 ->with('error', __('pos.invalid_credentials'));
@@ -74,10 +73,11 @@ class SettingsController extends Controller
 
             DB::commit();
 
-            $user = Auth::user();
+            $currentUser = Auth::user();
             Log::info('System data reset by admin', [
-                'user_id' => $user ? $user->id : null,
-                'user_email' => $user ? $user->email : 'unknown',
+                'user_id' => $currentUser ? $currentUser->id : null,
+                'user_email' => $currentUser ? $currentUser->email : $configEmail,
+                'verified_as' => $configEmail,
                 'orders_deleted' => $ordersCount,
                 'order_items_deleted' => $orderItemsCount,
                 'days_deleted' => $daysCount,
@@ -95,10 +95,10 @@ class SettingsController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             
-            $user = Auth::user();
+            $currentUser = Auth::user();
             Log::error('Failed to reset system data', [
                 'error' => $e->getMessage(),
-                'user_id' => $user ? $user->id : 'unknown',
+                'user_id' => $currentUser ? $currentUser->id : null,
             ]);
 
             return redirect()
@@ -120,13 +120,12 @@ class SettingsController extends Controller
             'admin_password' => 'required|string',
         ]);
 
-        // Verify admin credentials
-        $credentials = [
-            'email' => $request->input('admin_email'),
-            'password' => $request->input('admin_password'),
-        ];
-
-        if (!Auth::attempt($credentials)) {
+        // Verify admin credentials against config
+        $configEmail = config('cashier.admin.email');
+        $configPassword = config('cashier.admin.password');
+        
+        if ($request->input('admin_email') !== $configEmail || 
+            $request->input('admin_password') !== $configPassword) {
             return redirect()
                 ->route('settings.index')
                 ->with('error', __('pos.invalid_credentials'));
@@ -137,7 +136,7 @@ class SettingsController extends Controller
 
             $type = $request->input('type');
             $message = '';
-            $user = Auth::user();
+            $currentUser = Auth::user();
 
             switch ($type) {
                 case 'orders':
@@ -152,8 +151,9 @@ class SettingsController extends Controller
                     ]);
 
                     Log::info('Orders reset by admin', [
-                        'user_id' => $user ? $user->id : null,
-                        'user_email' => $user ? $user->email : 'unknown',
+                        'user_id' => $currentUser ? $currentUser->id : null,
+                        'user_email' => $currentUser ? $currentUser->email : $configEmail,
+                        'verified_as' => $configEmail,
                         'orders_deleted' => $ordersCount,
                         'order_items_deleted' => $orderItemsCount,
                     ]);
@@ -168,8 +168,9 @@ class SettingsController extends Controller
                     ]);
 
                     Log::info('Business days reset by admin', [
-                        'user_id' => $user ? $user->id : null,
-                        'user_email' => $user ? $user->email : 'unknown',
+                        'user_id' => $currentUser ? $currentUser->id : null,
+                        'user_email' => $currentUser ? $currentUser->email : $configEmail,
+                        'verified_as' => $configEmail,
                         'days_deleted' => $daysCount,
                     ]);
                     break;
@@ -187,8 +188,9 @@ class SettingsController extends Controller
                     ]);
 
                     Log::info('Items reset by admin', [
-                        'user_id' => $user ? $user->id : null,
-                        'user_email' => $user ? $user->email : 'unknown',
+                        'user_id' => $currentUser ? $currentUser->id : null,
+                        'user_email' => $currentUser ? $currentUser->email : $configEmail,
+                        'verified_as' => $configEmail,
                         'items_deleted' => $itemsCount,
                         'item_units_deleted' => $itemUnitsCount,
                     ]);
@@ -216,8 +218,9 @@ class SettingsController extends Controller
                     ]);
 
                     Log::info('Categories reset by admin', [
-                        'user_id' => $user ? $user->id : null,
-                        'user_email' => $user ? $user->email : 'unknown',
+                        'user_id' => $currentUser ? $currentUser->id : null,
+                        'user_email' => $currentUser ? $currentUser->email : $configEmail,
+                        'verified_as' => $configEmail,
                         'categories_deleted' => $categoriesCount,
                     ]);
                     break;
@@ -232,11 +235,11 @@ class SettingsController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             
-            $user = Auth::user();
+            $currentUser = Auth::user();
             Log::error('Failed to reset specific data', [
                 'error' => $e->getMessage(),
                 'type' => $request->input('type'),
-                'user_id' => $user ? $user->id : 'unknown',
+                'user_id' => $currentUser ? $currentUser->id : null,
             ]);
             
             return redirect()
