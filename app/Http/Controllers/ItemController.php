@@ -185,6 +185,6 @@ class ItemController extends Controller
 
         $pdf->setPaper('A4', 'portrait');
 
-        return $pdf->download('items_inventory_' . now()->format('Y-m-d') . '.pdf');
+        return $pdf->stream('items_inventory_' . now()->format('Y-m-d') . '.pdf');
     }
 }

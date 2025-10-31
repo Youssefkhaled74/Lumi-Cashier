@@ -22,3 +22,12 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Laravel Desktop Specific
+/storage/framework/views/*.php
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/logs/*.log
+/bootstrap/cache/*.php
+database/database.sqlite
+database/database.sqlite-journal

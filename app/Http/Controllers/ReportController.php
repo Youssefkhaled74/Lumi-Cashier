@@ -195,8 +195,8 @@ class ReportController extends Controller
         // Set paper size and orientation
         $pdf->setPaper('a4', 'portrait');
 
-        // Download PDF
+        // Stream PDF (better for desktop app)
         $filename = 'report_' . $fromDate . '_to_' . $toDate . '.pdf';
-        return $pdf->download($filename);
+        return $pdf->stream($filename);
     }
 }

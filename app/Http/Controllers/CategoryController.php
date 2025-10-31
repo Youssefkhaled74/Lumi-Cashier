@@ -155,6 +155,6 @@ class CategoryController extends Controller
 
         $pdf->setPaper('A4', 'portrait');
 
-        return $pdf->download('categories_report_' . now()->format('Y-m-d') . '.pdf');
+        return $pdf->stream('categories_report_' . now()->format('Y-m-d') . '.pdf');
     }
 }
