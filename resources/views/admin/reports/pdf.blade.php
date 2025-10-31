@@ -31,6 +31,32 @@
             border-radius: 0 0 15px 15px;
         }
 
+        .header-top {
+            display: table;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .header-logo {
+            display: table-cell;
+            vertical-align: middle;
+            width: 80px;
+        }
+
+        .header-logo img {
+            max-width: 70px;
+            max-height: 70px;
+            border-radius: 8px;
+            background: white;
+            padding: 5px;
+        }
+
+        .header-title {
+            display: table-cell;
+            vertical-align: middle;
+            padding-left: 15px;
+        }
+
         .header h1 {
             font-size: 24px;
             font-weight: bold;
@@ -351,13 +377,25 @@
             font-size: 12px;
         }
     </style>
+@php
+    $shopSettings = \App\Models\ShopSettings::current();
+@endphp
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>📊 Sales & Inventory Report</h1>
-            <p>Comprehensive business analytics and performance metrics</p>
+            <div class="header-top">
+                @if($shopSettings->logo_url)
+                <div class="header-logo">
+                    <img src="{{ public_path($shopSettings->logo_path) }}" alt="Logo">
+                </div>
+                @endif
+                <div class="header-title">
+                    <h1>{{ $shopSettings->shop_name_localized }}</h1>
+                    <p>📊 Sales & Inventory Report - Comprehensive business analytics and performance metrics</p>
+                </div>
+            </div>
             
             <div class="header-info">
                 <div class="header-info-item">
@@ -511,7 +549,7 @@
         <!-- Footer -->
         <div class="footer">
             <div class="footer-info">
-                <strong>Lumi Cashier</strong> - Point of Sale System
+                <strong>{{ $shopSettings->shop_name_localized }}</strong> - Point of Sale System
             </div>
             <div class="footer-info">
                 Report generated on {{ $generatedAt->format('l, F j, Y \a\t g:i A') }}

@@ -10,6 +10,7 @@
         body { font-family: 'Courier New', monospace; font-size: 10px; color: #000; line-height: 1.4; width: 84mm; margin: 0 auto; padding: 3mm; }
         .receipt-container { width: 100%; max-width: 84mm; }
         .header { text-align: center; border-bottom: 2px dashed #000; padding-bottom: 6px; margin-bottom: 8px; }
+        .logo-img { max-width: 50mm; max-height: 20mm; margin: 0 auto 5px; display: block; }
         .store-name { font-size: 16px; font-weight: bold; margin-bottom: 4px; }
         .store-info { font-size: 9px; line-height: 1.4; color: #333; }
         .divider { border-top: 1px dashed #000; margin: 6px 0; }
@@ -51,12 +52,26 @@
         .footer-msg { font-size: 10px; margin-bottom: 6px; }
         .footer-info { font-size: 8px; color: #666; line-height: 1.4; }
     </style>
+@php
+    $shopSettings = \App\Models\ShopSettings::current();
+@endphp
 </head>
 <body>
 <div class="receipt-container">
 <div class="header">
-<div class="store-name">{{ $company['name'] }}</div>
-<div class="store-info">{{ $company['address'] }}<br>{{ $company['city'] }}<br>Tel: {{ $company['phone'] }}<br>{{ $company['email'] }}</div>
+@if($shopSettings->logo_url)
+<img src="{{ $shopSettings->logo_url }}" alt="Logo" class="logo-img">
+@endif
+<div class="store-name">{{ $shopSettings->shop_name_localized }}</div>
+<div class="store-info">
+@if($shopSettings->address_localized)
+{{ $shopSettings->address_localized }}<br>
+@endif
+@if($shopSettings->phone)
+Tel: {{ $shopSettings->phone }}<br>
+@endif
+{{ $company['email'] }}
+</div>
 </div>
 <div class="receipt-info">
 <table class="info-table">
