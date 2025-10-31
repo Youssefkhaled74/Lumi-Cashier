@@ -217,4 +217,10 @@ return [
     'important_note' => 'Important Note',
     'settings_warning' => 'Changes will appear in reports, invoices, and throughout the system. Make sure information is correct before saving.',
     'error_occurred' => 'An error occurred',
+    
+    // Orders
+    'business_day' => 'Business Day',
+    'day' => 'Day',
+    'no_day_assigned' => 'No Day Assigned',
+    'order_not_linked_to_day' => 'This order is not linked to any business day',
 ];

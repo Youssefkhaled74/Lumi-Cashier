@@ -491,7 +491,7 @@ $shopSettings = \App\Models\ShopSettings::current();
         <div class="modal-content">
             <div id="modalContentLoader" class="p-8 text-center">
                 <div class="spinner mx-auto mb-4"></div>
-                <p class="text-gray-500">Loading...</p>
+                <p class="text-gray-500">{{ __('messages.loading') }}</p>
             </div>
             <div id="modalContentBody" style="display: none;">
                 <!-- Content will be loaded dynamically -->

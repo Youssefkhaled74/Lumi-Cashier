@@ -126,3 +126,7 @@ Route::prefix('admin')->middleware(AdminAuth::class)->group(function (): void {
     Route::get('pos', [OrderController::class, 'create'])->name('pos.index');
 });
 
+// Marketing Materials (Public - no auth required)
+Route::get('/marketing', [\App\Http\Controllers\MarketingController::class, 'index'])->name('marketing.index');
+Route::get('/marketing/brochure', [\App\Http\Controllers\MarketingController::class, 'brochure'])->name('marketing.brochure');
+Route::get('/marketing/brochure/download', [\App\Http\Controllers\MarketingController::class, 'downloadBrochure'])->name('marketing.brochure.download');
