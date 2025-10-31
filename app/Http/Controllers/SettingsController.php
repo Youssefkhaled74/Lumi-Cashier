@@ -32,6 +32,14 @@ class SettingsController extends Controller
     }
 
     /**
+     * Show the printer settings page
+     */
+    public function printer()
+    {
+        return view('admin.settings.printer');
+    }
+
+    /**
      * Reset all transactional data (orders, order items, days)
      * Requires admin credentials verification
      */

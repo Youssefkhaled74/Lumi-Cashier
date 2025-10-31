@@ -55,8 +55,54 @@ $isRtl = $lang === 'ar';
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        <!-- Statistics Card -->
+        <!-- Quick Links Card -->
         <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-xl p-6 border-2 border-indigo-200 mb-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <i class="bi bi-link-45deg text-indigo-600 text-2xl"></i>
+                    Quick Links
+                </h2>
+
+                <div class="space-y-3">
+                    <a href="{{ route('settings.printer') }}" 
+                       class="flex items-center justify-between p-4 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-all group">
+                        <div class="flex items-center gap-3">
+                            <i class="bi bi-printer-fill text-indigo-600 text-2xl"></i>
+                            <div>
+                                <div class="font-semibold text-gray-900">Printer Settings</div>
+                                <div class="text-xs text-gray-600">Configure receipt printing</div>
+                            </div>
+                        </div>
+                        <i class="bi bi-arrow-{{ $isRtl ? 'left' : 'right' }} text-indigo-600 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+
+                    <a href="{{ route('admin.dashboard') }}" 
+                       class="flex items-center justify-between p-4 bg-purple-50 hover:bg-purple-100 rounded-xl transition-all group">
+                        <div class="flex items-center gap-3">
+                            <i class="bi bi-speedometer2 text-purple-600 text-2xl"></i>
+                            <div>
+                                <div class="font-semibold text-gray-900">Dashboard</div>
+                                <div class="text-xs text-gray-600">View analytics</div>
+                            </div>
+                        </div>
+                        <i class="bi bi-arrow-{{ $isRtl ? 'left' : 'right' }} text-purple-600 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+
+                    <a href="{{ route('orders.index') }}" 
+                       class="flex items-center justify-between p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-all group">
+                        <div class="flex items-center gap-3">
+                            <i class="bi bi-receipt-cutoff text-green-600 text-2xl"></i>
+                            <div>
+                                <div class="font-semibold text-gray-900">Recent Orders</div>
+                                <div class="text-xs text-gray-600">View order history</div>
+                            </div>
+                        </div>
+                        <i class="bi bi-arrow-{{ $isRtl ? 'left' : 'right' }} text-green-600 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Statistics Card -->
             <div class="bg-white rounded-2xl shadow-xl p-6 border-2 border-gray-200">
                 <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                     <i class="bi bi-bar-chart-fill text-indigo-600 text-2xl"></i>

@@ -112,6 +112,7 @@ Route::prefix('admin')->middleware(AdminAuth::class)->group(function (): void {
 
     // Settings
     Route::get('settings', [\App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
+    Route::get('settings/printer', [\App\Http\Controllers\SettingsController::class, 'printer'])->name('settings.printer');
     Route::delete('settings/reset-data', [\App\Http\Controllers\SettingsController::class, 'resetData'])->name('settings.reset-data');
     Route::delete('settings/reset-specific', [\App\Http\Controllers\SettingsController::class, 'resetSpecific'])->name('settings.reset-specific');
 

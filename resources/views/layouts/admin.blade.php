@@ -489,6 +489,13 @@ $isRtl = $lang === 'ar';
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     
+    <!-- Printer Support -->
+    <script>
+        // Printer configuration from backend
+        window.printerConfig = @json(config('printer'));
+    </script>
+    <script src="{{ asset('js/printer.js') }}"></script>
+    
     <script>
         // Global Barcode Scanner
         document.addEventListener('DOMContentLoaded', function() {

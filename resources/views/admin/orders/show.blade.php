@@ -17,6 +17,13 @@
             </div>
         </div>
         <div class="flex space-x-3">
+            <x-print-button 
+                :orderId="$order->id" 
+                label="Print Receipt" 
+                icon="bi-printer" 
+                class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center space-x-2"
+                :autoPrint="$order->is_completed && !session('printed_order_' . $order->id)"
+            />
             <a href="{{ route('orders.invoice', $order) }}" target="_blank" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center space-x-2">
                 <i class="bi bi-file-pdf"></i>
                 <span>Download Invoice</span>
@@ -156,4 +163,30 @@
         @endif
     </div>
 </div>
+
+@push('scripts')
+<script>
+// Dispatch order completion event for auto-print
+document.addEventListener('DOMContentLoaded', function() {
+    @if($order->is_completed && !session('printed_order_' . $order->id))
+        // Trigger auto-print event
+        setTimeout(() => {
+            document.dispatchEvent(new CustomEvent('orderCompleted', {
+                detail: { 
+                    orderId: {{ $order->id }},
+                    total: {{ $order->total }},
+                    timestamp: new Date().toISOString()
+                }
+            }));
+        }, 500);
+        
+        // Mark as printed in session to avoid reprinting on page refresh
+        @php
+            session(['printed_order_' . $order->id => true]);
+        @endphp
+    @endif
+});
+</script>
+@endpush
 @endsection
+
