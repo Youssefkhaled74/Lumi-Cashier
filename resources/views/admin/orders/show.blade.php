@@ -81,8 +81,13 @@
                 <i class="bi bi-calendar-check mr-2"></i>
                 Business Day
             </h3>
-            <p class="text-lg font-semibold text-gray-900">Day #{{ $order->day->id }}</p>
-            <p class="text-sm text-gray-500">{{ $order->day->date->format('F d, Y') }}</p>
+            @if($order->day)
+                <p class="text-lg font-semibold text-gray-900">Day #{{ $order->day->id }}</p>
+                <p class="text-sm text-gray-500">{{ $order->day->date->format('F d, Y') }}</p>
+            @else
+                <p class="text-lg font-semibold text-gray-400">No Day Assigned</p>
+                <p class="text-sm text-gray-400">This order is not linked to any business day</p>
+            @endif
         </div>
 
         <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
