@@ -1,6 +1,7 @@
 @php
 $lang = app()->getLocale();
 $isRtl = $lang === 'ar';
+$shopSettings = \App\Models\ShopSettings::current();
 @endphp
 
 <!DOCTYPE html>
@@ -342,11 +343,17 @@ $isRtl = $lang === 'ar';
                 <!-- Logo & Brand -->
                 <div class="flex items-center space-x-3">
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 group">
-                        <div class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-xl shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                            <i class="bi bi-cart-check-fill text-white text-xl"></i>
-                        </div>
+                        @if($shopSettings->logo_url)
+                            <div class="flex items-center justify-center w-12 h-12 rounded-xl shadow-lg transform group-hover:scale-110 transition-transform duration-300 overflow-hidden bg-white">
+                                <img src="{{ $shopSettings->logo_url }}" alt="Logo" class="w-full h-full object-contain">
+                            </div>
+                        @else
+                            <div class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-xl shadow-lg transform group-hover:scale-110 transition-transform duration-300">
+                                <i class="bi bi-cart-check-fill text-white text-xl"></i>
+                            </div>
+                        @endif
                         <div>
-                            <h1 class="text-xl font-extrabold text-gradient">{{ __('messages.app_name') }}</h1>
+                            <h1 class="text-xl font-extrabold text-gradient">{{ $shopSettings->shop_name_localized }}</h1>
                             <p class="text-xs text-gray-500 font-medium">{{ __('messages.app_subtitle') }}</p>
                         </div>
                     </a>
@@ -455,6 +462,16 @@ $isRtl = $lang === 'ar';
                         <a href="{{ route('day.status') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('day.status') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                             <i class="bi bi-calendar-week text-xl"></i>
                             <span class="font-semibold">{{ __('messages.nav.daily_sessions') }}</span>
+                        </a>
+                    </div>
+
+                    <!-- Settings Section -->
+                    <div class="pt-6 mt-6 border-t border-gray-200">
+                        <p class="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">{{ __('messages.nav.settings') }}</p>
+                        
+                        <a href="{{ route('settings.shop.index') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('settings.shop.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
+                            <i class="bi bi-shop text-xl"></i>
+                            <span class="font-semibold">{{ __('messages.nav.shop_settings') }}</span>
                         </a>
                     </div>
                 </nav>

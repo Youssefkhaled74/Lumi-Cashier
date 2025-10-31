@@ -116,6 +116,12 @@ Route::prefix('admin')->middleware(AdminAuth::class)->group(function (): void {
     Route::delete('settings/reset-data', [\App\Http\Controllers\SettingsController::class, 'resetData'])->name('settings.reset-data');
     Route::delete('settings/reset-specific', [\App\Http\Controllers\SettingsController::class, 'resetSpecific'])->name('settings.reset-specific');
 
+    // Shop Settings (Protected)
+    Route::get('settings/shop', [\App\Http\Controllers\ShopSettingsController::class, 'index'])->name('settings.shop.index');
+    Route::post('settings/shop/verify', [\App\Http\Controllers\ShopSettingsController::class, 'verifyPassword'])->name('settings.shop.verify');
+    Route::put('settings/shop', [\App\Http\Controllers\ShopSettingsController::class, 'update'])->name('settings.shop.update');
+    Route::delete('settings/shop/logo', [\App\Http\Controllers\ShopSettingsController::class, 'deleteLogo'])->name('settings.shop.deleteLogo');
+
     // POS - Point of Sale (uses order creation interface)
     Route::get('pos', [OrderController::class, 'create'])->name('pos.index');
 });
