@@ -657,6 +657,9 @@ $isRtl = $lang === 'ar';
         });
     </script>
     
+    <!-- PDF Desktop Handler for PHP Desktop -->
+    <script src="{{ asset('js/pdf-desktop-handler.js') }}"></script>
+    
     @stack('scripts')
 </body>
 </html>
