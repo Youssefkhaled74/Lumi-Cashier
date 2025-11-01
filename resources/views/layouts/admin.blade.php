@@ -341,8 +341,8 @@ $shopSettings = \App\Models\ShopSettings::current();
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo & Brand -->
-                <div class="flex items-center space-x-3">
-                    <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 group">
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 group {{ $isRtl ? 'flex-row-reverse' : '' }}">
                         @if($shopSettings->logo_url)
                             <div class="flex items-center justify-center w-12 h-12 rounded-xl shadow-lg transform group-hover:scale-110 transition-transform duration-300 overflow-hidden bg-white">
                                 <img src="{{ $shopSettings->logo_url }}" alt="Logo" class="w-full h-full object-contain">
@@ -374,9 +374,9 @@ $shopSettings = \App\Models\ShopSettings::current();
                 </div>
 
                 <!-- User Menu -->
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center gap-4 {{ $isRtl ? 'flex-row-reverse' : '' }}">
                     <!-- Language Switcher -->
-                    <div class="flex items-center space-x-2 bg-gray-100 rounded-xl p-1">
+                    <div class="flex items-center gap-2 bg-gray-100 rounded-xl p-1 {{ $isRtl ? 'flex-row-reverse' : '' }}">
                         <a href="{{ route('lang.switch', 'en') }}" 
                            class="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 {{ app()->getLocale() == 'en' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-600 hover:text-gray-900' }}">
                             EN
@@ -387,7 +387,7 @@ $shopSettings = \App\Models\ShopSettings::current();
                         </a>
                     </div>
                     
-                    <div class="hidden md:flex items-center space-x-3 px-4 py-2 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
+                    <div class="hidden md:flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl {{ $isRtl ? 'flex-row-reverse' : '' }}">
                         <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
                             <span class="text-white font-bold text-sm">{{ substr(session('admin_name', 'A'), 0, 1) }}</span>
                         </div>
@@ -402,7 +402,7 @@ $shopSettings = \App\Models\ShopSettings::current();
                         <button 
                             type="submit" 
                             aria-label="{{ __('messages.logout') }}"
-                            class="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                            class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 {{ $isRtl ? 'flex-row-reverse' : '' }}"
                         >
                             <i class="bi bi-box-arrow-right"></i>
                             <span class="hidden sm:inline font-medium">{{ __('messages.logout') }}</span>
