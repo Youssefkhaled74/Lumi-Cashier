@@ -152,14 +152,28 @@ class ShopSettingsController extends Controller
                     $filename = uniqid('logo_') . '.' . $ext;
                     $logoPath = 'logos/' . $filename;
 
-                    $putResult = Storage::disk('public')->put($logoPath, $contents);
-                    if ($putResult === false) {
-                        Log::error('ShopSettingsController::update - Storage::put returned false when writing logo', ['path' => $logoPath]);
+                    // Avoid using Storage::put here because underlying libraries may attempt to
+                    // instantiate the finfo class which isn't available on some PHP builds.
+                    // Write directly to the storage path to bypass any MIME guessers.
+                    try {
+                        $fullPath = storage_path('app/public/' . $logoPath);
+                        $dir = dirname($fullPath);
+                        if (!is_dir($dir)) {
+                            mkdir($dir, 0755, true);
+                        }
+
+                        $bytes = file_put_contents($fullPath, $contents);
+                        if ($bytes === false) {
+                            Log::error('ShopSettingsController::update - file_put_contents returned false when writing logo', ['path' => $fullPath]);
+                            return redirect()->back()->with('error', __('messages.logo_upload_failed'));
+                        }
+
+                        $exists = file_exists($fullPath);
+                        Log::info('ShopSettingsController::update - manual logo write result (direct filesystem)', ['storage_path' => $fullPath, 'exists_after_put' => $exists, 'bytes_written' => $bytes]);
+                    } catch (\Throwable $e) {
+                        Log::error('ShopSettingsController::update - exception while writing logo directly to storage', ['error' => $e->getMessage()]);
                         return redirect()->back()->with('error', __('messages.logo_upload_failed'));
                     }
-                    // Confirm file exists
-                    $exists = Storage::disk('public')->exists($logoPath);
-                    Log::info('ShopSettingsController::update - manual logo write result', ['path' => $logoPath, 'exists_after_put' => $exists]);
                 } catch (\Throwable $e) {
                     Log::error('ShopSettingsController::update - failed to store uploaded logo manually', ['error' => $e->getMessage()]);
                     return redirect()->back()->with('error', __('messages.logo_upload_failed'));
