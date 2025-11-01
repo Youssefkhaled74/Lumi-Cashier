@@ -177,13 +177,47 @@ class OrderController extends Controller
                 $html = @iconv('UTF-8', 'UTF-8//IGNORE', $html);
 
                 if (!mb_check_encoding($html, 'UTF-8')) {
-                    Log::warning('OrderController::invoice - HTML contains invalid UTF-8 after sanitization', ['order_id' => $order->id]);
+                    // Try a set of likely source encodings (Arabic locales often use CP1256 or ISO-8859-6)
+                    $tried = ['Windows-1256', 'CP1256', 'ISO-8859-6', 'Windows-1252', 'ISO-8859-1'];
+                    $converted = false;
+
+                    foreach ($tried as $enc) {
+                        $try = @mb_convert_encoding($html, 'UTF-8', $enc);
+                        $try = @iconv('UTF-8', 'UTF-8//IGNORE', $try);
+                        if ($try !== false && mb_check_encoding($try, 'UTF-8')) {
+                            $html = $try;
+                            $converted = true;
+                            Log::info('OrderController::invoice - converted HTML from encoding', ['order_id' => $order->id, 'from' => $enc]);
+                            break;
+                        }
+                    }
+
+                    if (!$converted) {
+                        Log::warning('OrderController::invoice - HTML contains invalid UTF-8 after sanitization (no conversion succeeded)', ['order_id' => $order->id]);
+                        // Mark for dompdf fallback (mPDF will fail on invalid UTF-8)
+                        $useDompdfFallback = true;
+                    }
                 }
             } catch (\Throwable $e) {
                 // Defensive: log and continue; iconv/mb_* may throw on some setups
                 Log::warning('OrderController::invoice - UTF-8 sanitization failed', ['order_id' => $order->id, 'error' => $e->getMessage()]);
                 // Attempt a last-resort cleanup
                 $html = @iconv('UTF-8', 'UTF-8//IGNORE', (string) $html);
+            }
+
+            // If we flagged a dompdf fallback due to encoding issues, use dompdf instead of mPDF
+            if (!empty($useDompdfFallback)) {
+                Log::warning('OrderController::invoice - falling back to dompdf due to UTF-8 issues', ['order_id' => $order->id]);
+
+                $pdf = Pdf::setOptions([
+                    'isHtml5ParserEnabled' => true,
+                    'isRemoteEnabled' => true,
+                    'isFontSubsettingEnabled' => true,
+                ])->loadHTML($html);
+
+                $pdf->setPaper([0, 0, 255.12, 841.89], 'portrait');
+
+                return $pdf->stream("receipt-{$order->id}.pdf");
             }
 
             $mpdf->WriteHTML($html);
