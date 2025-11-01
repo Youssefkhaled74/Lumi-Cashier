@@ -38,8 +38,22 @@ class ShopSettings extends Model
      */
     public function getLogoUrlAttribute()
     {
-        if ($this->logo_path && Storage::disk('public')->exists($this->logo_path)) {
-            return Storage::url($this->logo_path);
+        // Avoid calling Storage::disk(...)->exists() when the php_fileinfo extension
+        // is not available because Flysystem's MIME detectors may try to instantiate
+        // the finfo class and crash (observed on some PHP builds).
+        if ($this->logo_path) {
+            if (extension_loaded('fileinfo')) {
+                if (Storage::disk('public')->exists($this->logo_path)) {
+                    return Storage::url($this->logo_path);
+                }
+            } else {
+                // Fallback: check the file directly on disk and construct a public URL
+                $full = storage_path('app/public/' . $this->logo_path);
+                if (file_exists($full)) {
+                    // Public URL should be /storage/{path} when `php artisan storage:link` is used
+                    return asset('storage/' . ltrim($this->logo_path, '/'));
+                }
+            }
         }
         return null;
     }
