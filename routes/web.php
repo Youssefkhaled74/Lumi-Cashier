@@ -39,18 +39,22 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->midd
 Route::prefix('admin')->middleware(AdminAuth::class)->group(function (): void {
     // Dashboard
     Route::get('/', function () {
-        // Get today's day record (open or closed)
-        $todayDay = \App\Models\Day::whereDate('date', today())->first();
-        
+        // Prefer the current open day (if any) — falls back to querying orders by created_at
+        $todayDay = \App\Models\Day::query()->current()->first();
+
         // Get today's stats
         $todayOrders = 0;
         $todaySales = 0;
-        
+
         if ($todayDay) {
             $todayOrders = $todayDay->orders()->count();
             $todaySales = $todayDay->orders()->where('status', \App\Models\Order::STATUS_COMPLETED)->sum('total');
+        } else {
+            // Fallback: compute from orders created today in case a Day record wasn't created or opened
+            $todayOrders = \App\Models\Order::whereDate('created_at', today())->count();
+            $todaySales = \App\Models\Order::whereDate('created_at', today())->where('status', \App\Models\Order::STATUS_COMPLETED)->sum('total');
         }
-        
+
         return view('admin.dashboard', [
             'todayOrders' => $todayOrders,
             'todaySales' => $todaySales,
@@ -60,18 +64,22 @@ Route::prefix('admin')->middleware(AdminAuth::class)->group(function (): void {
     })->name('admin.dashboard');
 
     Route::get('/dashboard', function () {
-        // Get today's day record (open or closed)
-        $todayDay = \App\Models\Day::whereDate('date', today())->first();
-        
+        // Prefer the current open day (if any) — falls back to querying orders by created_at
+        $todayDay = \App\Models\Day::query()->current()->first();
+
         // Get today's stats
         $todayOrders = 0;
         $todaySales = 0;
-        
+
         if ($todayDay) {
             $todayOrders = $todayDay->orders()->count();
             $todaySales = $todayDay->orders()->where('status', \App\Models\Order::STATUS_COMPLETED)->sum('total');
+        } else {
+            // Fallback: compute from orders created today in case a Day record wasn't created or opened
+            $todayOrders = \App\Models\Order::whereDate('created_at', today())->count();
+            $todaySales = \App\Models\Order::whereDate('created_at', today())->where('status', \App\Models\Order::STATUS_COMPLETED)->sum('total');
         }
-        
+
         return view('admin.dashboard', [
             'todayOrders' => $todayOrders,
             'todaySales' => $todaySales,
