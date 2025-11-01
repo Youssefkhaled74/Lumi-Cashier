@@ -75,7 +75,21 @@ class ShopSettingsController extends Controller
             $rules['logo'] = 'nullable|file|max:2048';
         }
 
-        $request->validate($rules);
+        // Add defensive logging so we can diagnose why uploads sometimes fail in certain envs.
+        Log::info('ShopSettingsController::update - starting', [
+            'fileinfo_loaded' => extension_loaded('fileinfo'),
+            'has_logo_file' => $request->hasFile('logo'),
+        ]);
+
+        try {
+            $request->validate($rules);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Log validation errors so we can see if the request was rejected by our rules
+            Log::warning('ShopSettingsController::update - validation failed', [
+                'errors' => $e->errors(),
+            ]);
+            throw $e; // rethrow so normal Laravel handling applies
+        }
 
         $settings = ShopSettings::current();
 
@@ -100,17 +114,52 @@ class ShopSettingsController extends Controller
             // رفع اللوجو الجديد
             $uploaded = $request->file('logo');
 
+            // Log a handful of safe metadata about the uploaded file for diagnostics.
+            try {
+                $meta = [
+                    'class' => is_object($uploaded) ? get_class($uploaded) : gettype($uploaded),
+                    'client_name' => method_exists($uploaded, 'getClientOriginalName') ? $uploaded->getClientOriginalName() : null,
+                    'size' => method_exists($uploaded, 'getSize') ? $uploaded->getSize() : null,
+                    'error' => method_exists($uploaded, 'getError') ? $uploaded->getError() : null,
+                    'realpath' => method_exists($uploaded, 'getRealPath') ? $uploaded->getRealPath() : null,
+                ];
+                $meta['realpath_readable'] = isset($meta['realpath']) ? is_readable($meta['realpath']) : null;
+                Log::info('ShopSettingsController::update - uploaded file metadata', $meta);
+            } catch (\Throwable $e) {
+                Log::warning('ShopSettingsController::update - error while reading uploaded metadata', ['error' => $e->getMessage()]);
+            }
+
             if (extension_loaded('fileinfo')) {
                 // Use the framework's store helper when fileinfo is available (safer/mime-aware)
-                $logoPath = $uploaded->store('logos', 'public');
+                try {
+                    $logoPath = $uploaded->store('logos', 'public');
+                } catch (\Throwable $e) {
+                    Log::error('ShopSettingsController::update - exception storing uploaded logo (store helper)', ['error' => $e->getMessage()]);
+                    return redirect()->back()->with('error', __('messages.logo_upload_failed'));
+                }
             } else {
                 // Manual fallback: read raw file bytes and write to storage to avoid Symfony Mime guesser
                 try {
-                    $contents = file_get_contents($uploaded->getRealPath());
-                    $ext = pathinfo($uploaded->getClientOriginalName(), PATHINFO_EXTENSION) ?: 'bin';
+                    $real = method_exists($uploaded, 'getRealPath') ? $uploaded->getRealPath() : null;
+                    if (!$real || !is_readable($real)) {
+                        Log::error('ShopSettingsController::update - uploaded temp file missing or not readable', ['realpath' => $real]);
+                        return redirect()->back()->with('error', __('messages.logo_upload_failed'));
+                    }
+
+                    $contents = file_get_contents($real);
+                    $ext = method_exists($uploaded, 'getClientOriginalName') ? pathinfo($uploaded->getClientOriginalName(), PATHINFO_EXTENSION) : null;
+                    $ext = $ext ?: 'bin';
                     $filename = uniqid('logo_') . '.' . $ext;
                     $logoPath = 'logos/' . $filename;
-                    Storage::disk('public')->put($logoPath, $contents);
+
+                    $putResult = Storage::disk('public')->put($logoPath, $contents);
+                    if ($putResult === false) {
+                        Log::error('ShopSettingsController::update - Storage::put returned false when writing logo', ['path' => $logoPath]);
+                        return redirect()->back()->with('error', __('messages.logo_upload_failed'));
+                    }
+                    // Confirm file exists
+                    $exists = Storage::disk('public')->exists($logoPath);
+                    Log::info('ShopSettingsController::update - manual logo write result', ['path' => $logoPath, 'exists_after_put' => $exists]);
                 } catch (\Throwable $e) {
                     Log::error('ShopSettingsController::update - failed to store uploaded logo manually', ['error' => $e->getMessage()]);
                     return redirect()->back()->with('error', __('messages.logo_upload_failed'));
