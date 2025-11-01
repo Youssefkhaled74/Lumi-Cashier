@@ -129,6 +129,32 @@
                     </div>
                 </div>
 
+                <!-- TAX SETTINGS -->
+                <div class="mt-6">
+                    <h4 class="block text-gray-700 font-semibold mb-2">{{ __('messages.tax_settings') }}</h4>
+
+                    <div class="flex items-center gap-4 mb-3">
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" name="tax_enabled" value="1" {{ old('tax_enabled', $settings->tax_enabled ?? true) ? 'checked' : '' }} class="rounded">
+                            <span class="text-sm">{{ __('pos.tax_enabled') }}</span>
+                        </label>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">{{ __('pos.tax_percentage') }}</label>
+                            <input type="number" step="0.01" min="0" max="100" name="tax_percentage" value="{{ old('tax_percentage', $settings->tax_percentage ?? config('cashier.tax.default_rate', 15)) }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                            @error('tax_percentage')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-gray-700 font-semibold mb-2">{{ __('pos.tax_label') }}</label>
+                            <input type="text" name="tax_label" value="{{ old('tax_label', $settings->tax_label ?? config('cashier.tax.label', 'VAT')) }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                            @error('tax_label')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+                        </div>
+                    </div>
+                </div>
+
                 <!-- العنوان بالعربية -->
                 <div class="mt-6">
                     <label class="block text-gray-700 font-semibold mb-2">

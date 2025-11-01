@@ -85,6 +85,8 @@ return [
     'tax_amount' => 'Tax Amount',
     'apply_tax' => 'Apply Tax',
     'vat' => 'VAT',
+    'tax_enabled' => 'Enable Tax',
+    'tax_label' => 'Tax Label',
     'total_before_tax' => 'Total Before Tax',
     'total_after_tax' => 'Total After Tax',
     'grand_total' => 'Grand Total',

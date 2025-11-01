@@ -344,6 +344,7 @@ return [
     'preview' => 'معاينة',
     'save_changes' => 'حفظ التغييرات',
     'settings_updated_successfully' => 'تم تحديث الإعدادات بنجاح',
+    'tax_settings' => 'إعدادات الضريبة',
     'logo_deleted_successfully' => 'تم حذف الشعار بنجاح',
     'no_logo_found' => 'لم يتم العثور على شعار',
     'confirm_delete_logo' => 'هل أنت متأكد من حذف الشعار؟',

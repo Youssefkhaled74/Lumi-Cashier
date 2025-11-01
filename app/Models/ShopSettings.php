@@ -14,6 +14,9 @@ class ShopSettings extends Model
         'phone',
         'address',
         'address_en',
+        'tax_enabled',
+        'tax_percentage',
+        'tax_label',
     ];
 
     /**
@@ -24,6 +27,9 @@ class ShopSettings extends Model
         return static::first() ?? static::create([
             'shop_name' => 'نظام لومي POS',
             'shop_name_en' => 'Lumi POS System',
+            'tax_enabled' => true,
+            'tax_percentage' => 15,
+            'tax_label' => 'VAT',
         ]);
     }
 

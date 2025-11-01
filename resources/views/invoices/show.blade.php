@@ -72,6 +72,8 @@
     </style>
 @php
     $shopSettings = \App\Models\ShopSettings::current();
+    $taxEnabled = (bool) ($shopSettings->tax_enabled ?? true);
+    $taxLabel = $shopSettings->tax_label ?? config('cashier.tax.label', 'VAT');
 @endphp
 </head>
 <body>
@@ -137,7 +139,12 @@ $groupedItems = $order->items->groupBy(function($orderItem) {
 <table class="totals-table">
 <tr><td class="total-label">Subtotal:</td><td class="total-value">${{ number_format($order->subtotal ?? $order->items->sum('total'), 2) }}</td></tr>
 @if($order->discount_percentage > 0)<tr><td class="total-label">Discount ({{ $order->discount_percentage }}%):</td><td class="total-value">-${{ number_format($order->discount_amount, 2) }}</td></tr>@endif
-@if($order->tax_percentage > 0)<tr><td class="total-label">Tax ({{ $order->tax_percentage }}%):</td><td class="total-value">${{ number_format($order->tax_amount, 2) }}</td></tr>@endif
+@if($taxEnabled && $order->tax_percentage > 0)
+<tr>
+    <td class="total-label">{{ $taxLabel }} ({{ $order->tax_percentage }}%):</td>
+    <td class="total-value">${{ number_format($order->tax_amount, 2) }}</td>
+</tr>
+@endif
 <tr class="grand-total"><td class="total-label">TOTAL:</td><td class="total-value">${{ number_format($order->total, 2) }}</td></tr>
 </table>
 </div>

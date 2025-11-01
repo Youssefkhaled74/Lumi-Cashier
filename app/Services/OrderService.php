@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Repositories\Contracts\OrderRepositoryInterface;
+use App\Models\ShopSettings;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
@@ -41,7 +42,8 @@ class OrderService
                 'customer_phone' => $orderData['customer_phone'] ?? null,
                 'customer_email' => $orderData['customer_email'] ?? null,
                 'discount_percentage' => $orderData['discount_percentage'] ?? 0,
-                'tax_percentage' => $orderData['tax_percentage'] ?? config('cashier.tax.default_rate', 0),
+                // Prefer an explicit tax percentage in orderData, otherwise use shop default then config default
+                'tax_percentage' => $orderData['tax_percentage'] ?? ShopSettings::current()->tax_percentage ?? config('cashier.tax.default_rate', 0),
                 'notes' => $orderData['notes'] ?? null,
                 'subtotal' => 0,
                 'discount_amount' => 0,

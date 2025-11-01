@@ -344,6 +344,7 @@ return [
     'preview' => 'Preview',
     'save_changes' => 'Save Changes',
     'settings_updated_successfully' => 'Settings updated successfully',
+    'tax_settings' => 'Tax settings',
     'logo_deleted_successfully' => 'Logo deleted successfully',
     'no_logo_found' => 'No logo found',
     'confirm_delete_logo' => 'Are you sure you want to delete the logo?',
