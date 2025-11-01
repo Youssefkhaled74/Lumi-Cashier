@@ -98,7 +98,25 @@ class ShopSettingsController extends Controller
             }
 
             // رفع اللوجو الجديد
-            $logoPath = $request->file('logo')->store('logos', 'public');
+            $uploaded = $request->file('logo');
+
+            if (extension_loaded('fileinfo')) {
+                // Use the framework's store helper when fileinfo is available (safer/mime-aware)
+                $logoPath = $uploaded->store('logos', 'public');
+            } else {
+                // Manual fallback: read raw file bytes and write to storage to avoid Symfony Mime guesser
+                try {
+                    $contents = file_get_contents($uploaded->getRealPath());
+                    $ext = pathinfo($uploaded->getClientOriginalName(), PATHINFO_EXTENSION) ?: 'bin';
+                    $filename = uniqid('logo_') . '.' . $ext;
+                    $logoPath = 'logos/' . $filename;
+                    Storage::disk('public')->put($logoPath, $contents);
+                } catch (\Throwable $e) {
+                    Log::error('ShopSettingsController::update - failed to store uploaded logo manually', ['error' => $e->getMessage()]);
+                    return redirect()->back()->with('error', __('messages.logo_upload_failed'));
+                }
+            }
+
             $settings->logo_path = $logoPath;
         }
 
