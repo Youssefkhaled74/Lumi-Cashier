@@ -366,6 +366,7 @@ $shopSettings = \App\Models\ShopSettings::current();
                             type="text" 
                             id="globalBarcodeScanner"
                             placeholder="{{ __('messages.scan_barcode') }}"
+                            aria-label="{{ __('messages.scan_barcode') }}"
                             class="w-full px-4 py-2 pl-12 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300"
                             autocomplete="off"
                         >
@@ -400,6 +401,7 @@ $shopSettings = \App\Models\ShopSettings::current();
                         @csrf
                         <button 
                             type="submit" 
+                            aria-label="{{ __('messages.logout') }}"
                             class="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                         >
                             <i class="bi bi-box-arrow-right"></i>
@@ -410,6 +412,9 @@ $shopSettings = \App\Models\ShopSettings::current();
             </div>
         </div>
     </nav>
+
+    {{-- Global flash messages partial --}}
+    @include('partials.flash')
 
     <div class="flex min-h-screen">
         <!-- Sidebar -->
