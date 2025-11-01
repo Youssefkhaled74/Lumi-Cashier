@@ -26,39 +26,41 @@
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
             min-height: 100vh;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
         
         /* Animated Background Shapes */
         .bg-shape {
-            position: absolute;
+            position: fixed;
             border-radius: 50%;
             filter: blur(80px);
             opacity: 0.15;
             animation: float 20s infinite ease-in-out;
+            z-index: 0;
         }
         
         .shape-1 {
-            width: 500px;
-            height: 500px;
+            width: 350px;
+            height: 350px;
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            top: -200px;
-            left: -200px;
+            top: -150px;
+            left: -150px;
             animation-delay: 0s;
         }
         
         .shape-2 {
-            width: 400px;
-            height: 400px;
+            width: 300px;
+            height: 300px;
             background: linear-gradient(135deg, #ec4899, #f97316);
-            bottom: -150px;
-            right: -150px;
+            bottom: -100px;
+            right: -100px;
             animation-delay: 5s;
         }
         
         .shape-3 {
-            width: 300px;
-            height: 300px;
+            width: 250px;
+            height: 250px;
             background: linear-gradient(135deg, #06b6d4, #3b82f6);
             top: 50%;
             right: 10%;
@@ -91,12 +93,12 @@
         
         @keyframes logoFloat {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-5px); }
         }
         
         .logo-glow {
-            box-shadow: 0 0 40px rgba(59, 130, 246, 0.5),
-                        0 0 80px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4),
+                        0 0 60px rgba(139, 92, 246, 0.2);
         }
         
         /* Input Animations */
@@ -213,7 +215,7 @@
         }
     </style>
 </head>
-<body class="flex items-center justify-center p-4 md:p-8">
+<body class="flex items-center justify-center p-3 md:p-6 min-h-screen">
     <!-- Animated Background Shapes -->
     <div class="bg-shape shape-1"></div>
     <div class="bg-shape shape-2"></div>
@@ -221,12 +223,12 @@
     
     <div class="login-container w-full max-w-md">
         <!-- Logo/Brand -->
-        <div class="text-center mb-8">
-            <div class="logo-container inline-flex items-center justify-center w-16 h-16 mb-4">
+        <div class="text-center mb-4">
+            <div class="logo-container inline-flex items-center justify-center w-12 h-12 mb-3">
                 <div class="relative">
-                    <div class="logo-glow absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 animate-pulse"></div>
-                    <div class="relative bg-white rounded-xl p-3 shadow-2xl">
-                        <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div class="logo-glow absolute inset-0 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 animate-pulse"></div>
+                    <div class="relative bg-white rounded-lg p-2 shadow-xl">
+                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="lumiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                     <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
@@ -241,58 +243,58 @@
                     </div>
                 </div>
             </div>
-            <h1 class="text-4xl font-extrabold mb-2">
+            <h1 class="text-3xl font-extrabold mb-1">
                 <span class="gradient-text">Lumi</span>
             </h1>
-            <p class="text-white text-sm font-light tracking-wide glass-effect px-5 py-1.5 rounded-full inline-block">
+            <p class="text-white text-xs font-light tracking-wide glass-effect px-4 py-1 rounded-full inline-block">
                 Smart Cashier System
             </p>
         </div>
 
         <!-- Login Card -->
-        <div class="login-card rounded-2xl p-6 md:p-8">
+        <div class="login-card rounded-xl p-5 md:p-6">
             <!-- Header -->
-            <div class="mb-6 text-center">
-                <h2 class="text-2xl font-bold text-gray-800 mb-1">Welcome Back</h2>
-                <p class="text-gray-500 text-sm font-medium">Sign in to access your dashboard</p>
+            <div class="mb-4 text-center">
+                <h2 class="text-xl font-bold text-gray-800 mb-1">Welcome Back</h2>
+                <p class="text-gray-500 text-xs font-medium">Sign in to access your dashboard</p>
             </div>
 
             <!-- Success Message -->
             @if(session('success'))
-                <div class="alert bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded-xl shadow-lg">
+                <div class="alert bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 text-green-700 p-3 mb-4 rounded-lg shadow-lg">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <i class="bi bi-check-circle-fill text-xl mr-3"></i>
+                            <i class="bi bi-check-circle-fill text-lg mr-2"></i>
                         </div>
-                        <span class="font-medium">{{ session('success') }}</span>
+                        <span class="font-medium text-sm">{{ session('success') }}</span>
                     </div>
                 </div>
             @endif
 
             <!-- Error Message -->
             @if(session('error'))
-                <div class="alert bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-xl shadow-lg">
+                <div class="alert bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded-lg shadow-lg">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <i class="bi bi-exclamation-circle-fill text-xl mr-3"></i>
+                            <i class="bi bi-exclamation-circle-fill text-lg mr-2"></i>
                         </div>
-                        <span class="font-medium">{{ session('error') }}</span>
+                        <span class="font-medium text-sm">{{ session('error') }}</span>
                     </div>
                 </div>
             @endif
 
             <!-- Login Form -->
-            <form method="POST" action="{{ route('login.post') }}" class="space-y-6">
+            <form method="POST" action="{{ route('login.post') }}" class="space-y-4">
                 @csrf
 
                 <!-- Email Field -->
                 <div class="input-group">
-                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                    <label for="email" class="block text-xs font-semibold text-gray-700 mb-1.5">
                         Email Address
                     </label>
                     <div class="input-wrapper">
                         <div class="relative">
-                            <div class="input-icon absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                            <div class="input-icon absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
                                 <i class="bi bi-envelope-fill"></i>
                             </div>
                             <input 
@@ -300,14 +302,14 @@
                                 id="email" 
                                 name="email" 
                                 value="{{ old('email') }}"
-                                class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 @error('email') border-red-500 @enderror"
+                                class="w-full pl-10 pr-3 py-2.5 text-sm border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-all duration-300 @error('email') border-red-500 @enderror"
                                 placeholder="admin@lumi.com"
                                 required
                                 autofocus
                             >
                         </div>
                         @error('email')
-                            <p class="text-red-500 text-xs mt-1.5 flex items-center font-medium">
+                            <p class="text-red-500 text-xs mt-1 flex items-center font-medium">
                                 <i class="bi bi-exclamation-circle mr-1"></i>
                                 {{ $message }}
                             </p>
@@ -317,32 +319,32 @@
 
                 <!-- Password Field -->
                 <div class="input-group">
-                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+                    <label for="password" class="block text-xs font-semibold text-gray-700 mb-1.5">
                         Password
                     </label>
                     <div class="input-wrapper">
                         <div class="relative">
-                            <div class="input-icon absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                            <div class="input-icon absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
                                 <i class="bi bi-lock-fill"></i>
                             </div>
                             <input 
                                 type="password" 
                                 id="password" 
                                 name="password"
-                                class="w-full pl-10 pr-11 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 @error('password') border-red-500 @enderror"
+                                class="w-full pl-10 pr-11 py-2.5 text-sm border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-all duration-300 @error('password') border-red-500 @enderror"
                                 placeholder="••••••••"
                                 required
                             >
                             <button 
                                 type="button" 
                                 onclick="togglePassword()"
-                                class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600"
+                                class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600 text-sm"
                             >
                                 <i class="bi bi-eye-fill" id="toggleIcon"></i>
                             </button>
                         </div>
                         @error('password')
-                            <p class="text-red-500 text-xs mt-1.5 flex items-center font-medium">
+                            <p class="text-red-500 text-xs mt-1 flex items-center font-medium">
                                 <i class="bi bi-exclamation-circle mr-1"></i>
                                 {{ $message }}
                             </p>
@@ -357,9 +359,9 @@
                             type="checkbox" 
                             id="remember" 
                             name="remember"
-                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer"
+                            class="w-3.5 h-3.5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer"
                         >
-                        <label for="remember" class="ml-2 text-sm font-medium text-gray-700 cursor-pointer">
+                        <label for="remember" class="ml-2 text-xs font-medium text-gray-700 cursor-pointer">
                             Keep me signed in
                         </label>
                     </div>
@@ -368,7 +370,7 @@
                 <!-- Login Button -->
                 <button 
                     type="submit" 
-                    class="btn-login w-full py-3.5 text-white font-bold rounded-xl shadow-xl flex items-center justify-center space-x-2"
+                    class="btn-login w-full py-2.5 text-white text-sm font-bold rounded-lg shadow-lg flex items-center justify-center space-x-2"
                 >
                     <span>Sign In</span>
                     <i class="bi bi-arrow-right-circle-fill"></i>
@@ -376,15 +378,15 @@
             </form>
 
             <!-- Footer Info -->
-            <div class="mt-6 pt-5 border-t-2 border-gray-100">
+            <div class="mt-4 pt-4 border-t-2 border-gray-100">
                 <div class="text-center">
-                    <div class="glass-effect px-3 py-2 rounded-lg inline-block">
+                    <div class="glass-effect px-2.5 py-1.5 rounded-lg inline-block">
                         <p class="text-xs text-gray-600 font-medium mb-0.5">
                             <i class="bi bi-shield-check text-blue-600"></i> Default Credentials
                         </p>
                         <p class="text-xs">
                             <span class="font-bold text-gray-800">admin@cashier.com</span>
-                            <span class="text-gray-400 mx-1.5">•</span>
+                            <span class="text-gray-400 mx-1">•</span>
                             <span class="font-bold text-gray-800">secret123</span>
                         </p>
                     </div>
@@ -393,12 +395,12 @@
         </div>
 
         <!-- Copyright -->
-        <div class="text-center mt-6">
-            <div class="glass-effect px-5 py-2 rounded-full inline-block">
+        <div class="text-center mt-4">
+            <div class="glass-effect px-4 py-1.5 rounded-full inline-block">
                 <p class="text-white text-xs font-medium">
                     <i class="bi bi-c-circle mr-1"></i>
                     {{ date('Y') }} <span class="gradient-text font-bold">Lumi</span> Cashier
-                    <span class="mx-1.5">•</span>
+                    <span class="mx-1">•</span>
                     <span class="text-blue-200">All rights reserved</span>
                 </p>
             </div>

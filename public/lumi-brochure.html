@@ -23,14 +23,16 @@
         /* حجم صفحة A4 */
         .page {
             width: 210mm;
-            height: 297mm;
+            min-height: 297mm;
+            height: auto;
             padding: 15mm;
             margin: 0 auto 20px;
             background: white;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             page-break-after: always;
             page-break-inside: avoid;
-            overflow: hidden;
+            break-inside: avoid;
+            position: relative;
         }
         
         /* صفحة الغلاف */
@@ -44,6 +46,9 @@
             text-align: center;
             padding: 30mm 15mm;
             height: 100%;
+            min-height: 297mm;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
         
         .logo {
@@ -84,11 +89,14 @@
         }
         
         .cover-feature {
-            background: rgba(255,255,255,0.2) !important;
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.15) !important;
             padding: 18px 12px;
             border-radius: 12px;
-            border: 2px solid rgba(255,255,255,0.4);
+            border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
         
         .cover-feature-icon {
@@ -149,12 +157,13 @@
         
         /* البطاقات */
         .card {
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%) !important;
+            background: #f8fafc !important;
             padding: 15px;
             border-radius: 10px;
             border-right: 4px solid #667eea;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             page-break-inside: avoid;
+            break-inside: avoid;
         }
         
         .card-icon {
@@ -182,12 +191,14 @@
         }
         
         .list li {
-            padding: 6px 0;
+            padding: 8px 0;
             border-bottom: 1px solid #e2e8f0;
             font-size: 14px;
             display: flex;
             align-items: center;
             gap: 10px;
+            position: relative;
+            break-inside: avoid;
         }
         
         .list li:last-child {
@@ -198,6 +209,9 @@
             color: #48bb78;
             font-size: 18px;
             font-weight: 900;
+            flex-shrink: 0;
+            line-height: 1;
+            margin-top: 2px;
         }
         
         /* صندوق النصائح */
@@ -208,6 +222,7 @@
             border-radius: 8px;
             border-right: 4px solid #48bb78;
             page-break-inside: avoid;
+            break-inside: avoid;
         }
         
         .tip-title {
@@ -230,6 +245,7 @@
             margin: 15px 0;
             border-right: 4px solid #667eea;
             page-break-inside: avoid;
+            break-inside: avoid;
         }
         
         .step-number {
@@ -258,25 +274,32 @@
             width: 100%;
             border-collapse: collapse;
             margin: 15px 0;
+            page-break-inside: avoid;
+            break-inside: avoid;
         }
         
         th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-            color: white;
-            padding: 10px;
+            background: #667eea !important;
+            color: white !important;
+            padding: 12px 10px;
             text-align: right;
             font-size: 15px;
+            font-weight: 700;
             border: 2px solid #e2e8f0;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
         
         td {
-            padding: 10px;
+            padding: 12px 10px;
             border: 2px solid #e2e8f0;
             font-size: 13px;
         }
         
         tr:nth-child(even) {
             background: #f7fafc !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
         
         /* التواصل */
@@ -286,6 +309,7 @@
             border-radius: 15px;
             margin: 20px 0;
             page-break-inside: avoid;
+            break-inside: avoid;
         }
         
         .contact-grid {
@@ -319,13 +343,16 @@
         
         /* الأسعار */
         .pricing {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-            color: white;
+            background: #667eea !important;
+            color: white !important;
             padding: 30px 25px;
             border-radius: 15px;
             text-align: center;
             margin: 20px 0;
             page-break-inside: avoid;
+            break-inside: avoid;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
         
         .pricing-title {
@@ -340,44 +367,119 @@
             margin: 15px 0;
         }
         
-        /* الطباعة */
+        /* قائمة الأسعار المحسنة */
+        .pricing-list {
+            text-align: right;
+            max-width: 600px;
+            margin: 20px auto;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        
+        .pricing-list div {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+        
+        .pricing-list div:last-child {
+            border-bottom: none;
+        }
+        
+        .pricing-check {
+            color: #48bb78;
+            font-size: 18px;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+        
+        /* العناصر المخصصة */
+        .stat-box {
+            text-align: center;
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        
+        .blue-stat {
+            background: #667eea !important;
+        }
+        
+        .green-stat {
+            background: #48bb78 !important;
+        }
+        
+        .orange-stat {
+            background: #ed8936 !important;
+        }
+        
+        .final-cta {
+            background: #667eea !important;
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 25px;
+            page-break-inside: avoid;
+            break-inside: avoid;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        
+        /* الطباعة المحسنة */
         @media print {
             body {
-                background: white;
-                margin: 0;
-                padding: 0;
+                background: white !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 210mm !important;
+                height: 297mm !important;
             }
             
             .page {
-                margin: 0;
-                padding: 15mm;
-                box-shadow: none;
-                width: 210mm;
-                height: 297mm;
+                margin: 0 !important;
+                padding: 15mm !important;
+                box-shadow: none !important;
+                width: 210mm !important;
+                min-height: 297mm !important;
+                height: auto !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                break-after: always !important;
+                break-inside: avoid !important;
             }
             
             * {
-                print-color-adjust: exact !important;
                 -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
                 color-adjust: exact !important;
             }
             
             .cover {
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
                 color: white !important;
+                min-height: 297mm !important;
+                height: 100% !important;
             }
             
             .card {
-                background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%) !important;
-                page-break-inside: avoid;
+                background: #f8fafc !important;
             }
             
             .cover-feature {
-                background: rgba(255,255,255,0.2) !important;
+                background: rgba(255,255,255,0.15) !important;
+                border: 2px solid rgba(255,255,255,0.3) !important;
+                backdrop-filter: blur(10px) !important;
+                -webkit-backdrop-filter: blur(10px) !important;
             }
             
             th {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                background: #667eea !important;
                 color: white !important;
             }
             
@@ -385,9 +487,46 @@
                 background: #f7fafc !important;
             }
             
-            .tip, .step, .contact {
-                page-break-inside: avoid;
+            .pricing {
+                background: #667eea !important;
+                color: white !important;
             }
+            
+            .tip, .step, .contact, .card, table {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            
+            .list li {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            
+            /* إخفاء العناصر المطلوبة عند الطباعة */
+            .remove-print {
+                display: none !important;
+            }
+            
+            .blue-stat {
+                background: #667eea !important;
+            }
+            
+            .green-stat {
+                background: #48bb78 !important;
+            }
+            
+            .orange-stat {
+                background: #ed8936 !important;
+            }
+            
+            .final-cta {
+                background: #667eea !important;
+            }
+        }
+        
+        @page {
+            size: A4;
+            margin: 0;
         }
     </style>
 </head>
@@ -467,15 +606,15 @@
             مميزات إضافية
         </h3>
         <div class="grid-3">
-            <div style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px;">
+            <div class="stat-box blue-stat">
                 <div style="font-size: 48px; font-weight: 900;">100%</div>
                 <div style="font-size: 18px; opacity: 0.95;">آمن وموثوق</div>
             </div>
-            <div style="text-align: center; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; padding: 25px; border-radius: 15px;">
+            <div class="stat-box green-stat">
                 <div style="font-size: 48px; font-weight: 900;">24/7</div>
                 <div style="font-size: 18px; opacity: 0.95;">يعمل دائمًا</div>
             </div>
-            <div style="text-align: center; background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); color: white; padding: 25px; border-radius: 15px;">
+            <div class="stat-box orange-stat">
                 <div style="font-size: 48px; font-weight: 900;">∞</div>
                 <div style="font-size: 18px; opacity: 0.95;">لا حدود</div>
             </div>
@@ -669,31 +808,15 @@
             <h3 class="pricing-title">🎉 عرض خاص - نظام كامل 🎉</h3>
             <div class="price">السعر حسب الاتفاق</div>
             
-            <div style="text-align: right; max-width: 600px; margin: 20px auto; font-size: 15px; line-height: 1.8;">
-                <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.3);">
-                    <span class="check">✓</span> النظام الكامل بكل المميزات
-                </div>
-                <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.3);">
-                    <span class="check">✓</span> التنصيب والإعداد الأولي
-                </div>
-                <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.3);">
-                    <span class="check">✓</span> شرح كامل للاستخدام
-                </div>
-                <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.3);">
-                    <span class="check">✓</span> دعم فني لمدة شهر
-                </div>
-                <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.3);">
-                    <span class="check">✓</span> تحديثات مجانية
-                </div>
-                <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.3);">
-                    <span class="check">✓</span> تخصيص حسب احتياجاتك
-                </div>
-                <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.3);">
-                    <span class="check">✓</span> إضافة لوجو شركتك
-                </div>
-                <div style="padding: 8px 0;">
-                    <span class="check">✓</span> تدريب الموظفين
-                </div>
+            <div class="pricing-list">
+                <div><span class="pricing-check">✓</span> النظام الكامل بكل المميزات</div>
+                <div><span class="pricing-check">✓</span> التنصيب والإعداد الأولي</div>
+                <div><span class="pricing-check">✓</span> شرح كامل للاستخدام</div>
+                <div><span class="pricing-check">✓</span> دعم فني لمدة شهر</div>
+                <div class="remove-print"><span class="pricing-check">✓</span> تحديثات مجانية</div>
+                <div class="remove-print"><span class="pricing-check">✓</span> تخصيص حسب احتياجاتك</div>
+                <div class="remove-print"><span class="pricing-check">✓</span> إضافة لوجو شركتك</div>
+                <div class="remove-print"><span class="pricing-check">✓</span> تدريب الموظفين</div>
             </div>
         </div>
         
@@ -771,7 +894,7 @@
             </div>
         </div>
         
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white; padding: 25px; border-radius: 20px; text-align: center; margin-top: 25px; page-break-inside: avoid; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;">
+        <div class="final-cta">
             <div style="font-size: 60px; margin-bottom: 12px;">🛒</div>
             <h3 style="font-size: 26px; font-weight: 800; margin-bottom: 15px;">ابدأ الآن!</h3>
             <p style="font-size: 16px; margin-bottom: 18px;">احصل على نظام إدارة مبيعات احترافي بسعر مميز</p>
