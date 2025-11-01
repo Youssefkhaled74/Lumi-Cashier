@@ -155,6 +155,7 @@ return [
     'statistics' => 'الإحصائيات',
     'total_sales' => 'إجمالي المبيعات',
     'completed_orders' => 'الطلبات المكتملة',
+    'total_orders' => 'إجمالي الطلبات',
     'avg_per_day' => 'المتوسط/يوم',
     'currently_active' => 'نشط حالياً',
     

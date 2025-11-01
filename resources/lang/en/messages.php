@@ -155,6 +155,7 @@ return [
     'statistics' => 'Statistics',
     'total_sales' => 'Total Sales',
     'completed_orders' => 'Completed Orders',
+    'total_orders' => 'Total Orders',
     'avg_per_day' => 'Avg/day',
     'currently_active' => 'Currently active',
     
