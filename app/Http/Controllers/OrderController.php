@@ -220,14 +220,29 @@ class OrderController extends Controller
                 return $pdf->stream("receipt-{$order->id}.pdf");
             }
 
-            $mpdf->WriteHTML($html);
+            try {
+                $mpdf->WriteHTML($html);
 
-            $pdfOutput = $mpdf->Output("receipt-{$order->id}.pdf", \Mpdf\Output\Destination::STRING_RETURN);
+                $pdfOutput = $mpdf->Output("receipt-{$order->id}.pdf", \Mpdf\Output\Destination::STRING_RETURN);
 
-            return response($pdfOutput, 200, [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="receipt-' . $order->id . '.pdf"',
-            ]);
+                return response($pdfOutput, 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="receipt-' . $order->id . '.pdf"',
+                ]);
+            } catch (\Throwable $e) {
+                // If mPDF fails (e.g., invalid UTF-8), fall back to dompdf with sanitized HTML
+                Log::warning('OrderController::invoice - mPDF failed, falling back to dompdf', ['order_id' => $order->id, 'error' => $e->getMessage()]);
+
+                $pdf = Pdf::setOptions([
+                    'isHtml5ParserEnabled' => true,
+                    'isRemoteEnabled' => true,
+                    'isFontSubsettingEnabled' => true,
+                ])->loadHTML($html);
+
+                $pdf->setPaper([0, 0, 255.12, 841.89], 'portrait');
+
+                return $pdf->stream("receipt-{$order->id}.pdf");
+            }
         }
 
         // Fallback to dompdf (existing behavior)

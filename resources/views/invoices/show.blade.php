@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,23 +8,24 @@
         /* Optional: if you place an Arabic-capable TTF in public/fonts (e.g. Tajawal-Regular.ttf), dompdf can load it from the filesystem.
            Create public/fonts and drop the TTF files there. Uncommenting these @font-face rules will make the PDF renderer use them. */
         @if(file_exists(public_path('fonts/Tajawal-Regular.ttf')))
+        /* Use HTTP asset URLs so dompdf (with isRemoteEnabled) can fetch fonts when rendering */
         @font-face {
             font-family: 'Tajawal';
             font-style: normal;
             font-weight: 400;
-            src: url("{{ public_path('fonts/Tajawal-Regular.ttf') }}") format('truetype');
+            src: url("{{ asset('fonts/Tajawal-Regular.ttf') }}") format('truetype');
         }
         @font-face {
             font-family: 'Tajawal';
             font-style: normal;
             font-weight: 700;
-            src: url("{{ public_path('fonts/Tajawal-Bold.ttf') }}") format('truetype');
+            src: url("{{ asset('fonts/Tajawal-Bold.ttf') }}") format('truetype');
         }
         @endif
         * { margin: 0; padding: 0; box-sizing: border-box; }
         @page { margin: 0; size: 90mm auto; }
     /* Use Tajawal if available, otherwise DejaVu Sans (bundled with dompdf). */
-    body { font-family: {{ file_exists(public_path('fonts/Tajawal-Regular.ttf')) ? "'Tajawal', 'DejaVu Sans', 'Tahoma', sans-serif" : "'DejaVu Sans', 'Tahoma', sans-serif" }}; font-size: 10px; color: #000; line-height: 1.4; width: 84mm; margin: 0 auto; padding: 3mm; direction: {{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}; text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }} }
+    body { font-family: {{ file_exists(public_path('fonts/Tajawal-Regular.ttf')) ? "'Tajawal', 'DejaVu Sans', 'Tahoma', sans-serif" : "'DejaVu Sans', 'Tahoma', sans-serif" }}; font-size: 10px; color: #000; line-height: 1.4; width: 84mm; margin: 0 auto; padding: 3mm; direction: {{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}; text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }}; unicode-bidi: embed; }
         .receipt-container { width: 100%; max-width: 84mm; }
         .header { text-align: center; border-bottom: 2px dashed #000; padding-bottom: 6px; margin-bottom: 8px; }
         .logo-img { max-width: 50mm; max-height: 20mm; margin: 0 auto 5px; display: block; }
