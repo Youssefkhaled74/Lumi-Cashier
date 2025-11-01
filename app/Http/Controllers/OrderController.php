@@ -10,6 +10,7 @@ use App\Repositories\Contracts\ItemRepositoryInterface;
 use App\Repositories\Contracts\OrderRepositoryInterface;
 use App\Services\OrderService;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -135,12 +136,73 @@ class OrderController extends Controller
             'name' => 'Lumi POS',
             'address' => '123 Main Street',
             'city' => 'Your City, State 12345',
-            'phone' => '+1 (555) 123-4567',
+            'phone' => '01064338132',
             'email' => 'info@lumipos.com',
         ]);
 
-        // Generate PDF
-        $pdf = Pdf::loadView('invoices.show', [
+        // Prefer mPDF for complex-script (Arabic) support if available
+        if (class_exists(\Mpdf\Mpdf::class)) {
+            $html = view('invoices.show', [
+                'order' => $order,
+                'company' => $company,
+            ])->render();
+
+            // mPDF setup: utf-8 mode, use DejaVu fonts by default which support Arabic shaping
+            $mpdf = new \Mpdf\Mpdf([
+                'mode' => 'utf-8',
+                'format' => [90, 297], // width mm x height (approx); we'll let it paginate
+                'default_font' => 'dejavusans',
+            ]);
+
+            // Allow RTL if locale is Arabic
+            if (app()->getLocale() === 'ar') {
+                $mpdf->SetDirectionality('rtl');
+            }
+
+            // Ensure the rendered HTML is valid UTF-8. mPDF throws when invalid bytes are present.
+            // Try a few safe sanitizations: convert from an unknown encoding, strip control chars,
+            // and finally drop any remaining invalid sequences using iconv with //IGNORE.
+            try {
+                $html = (string) $html;
+
+                if (!mb_check_encoding($html, 'UTF-8')) {
+                    // Try to convert from whatever encoding PHP thinks it is
+                    $html = mb_convert_encoding($html, 'UTF-8', 'auto');
+                }
+
+                // Remove C0 control characters that can break XML/HTML handling in mPDF
+                $html = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $html);
+
+                // Final pass: drop any leftover invalid UTF-8 byte sequences
+                $html = @iconv('UTF-8', 'UTF-8//IGNORE', $html);
+
+                if (!mb_check_encoding($html, 'UTF-8')) {
+                    Log::warning('OrderController::invoice - HTML contains invalid UTF-8 after sanitization', ['order_id' => $order->id]);
+                }
+            } catch (\Throwable $e) {
+                // Defensive: log and continue; iconv/mb_* may throw on some setups
+                Log::warning('OrderController::invoice - UTF-8 sanitization failed', ['order_id' => $order->id, 'error' => $e->getMessage()]);
+                // Attempt a last-resort cleanup
+                $html = @iconv('UTF-8', 'UTF-8//IGNORE', (string) $html);
+            }
+
+            $mpdf->WriteHTML($html);
+
+            $pdfOutput = $mpdf->Output("receipt-{$order->id}.pdf", \Mpdf\Output\Destination::STRING_RETURN);
+
+            return response($pdfOutput, 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="receipt-' . $order->id . '.pdf"',
+            ]);
+        }
+
+        // Fallback to dompdf (existing behavior)
+        $pdf = Pdf::setOptions([
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            // allow unicode font subsetting
+            'isFontSubsettingEnabled' => true,
+        ])->loadView('invoices.show', [
             'order' => $order,
             'company' => $company,
         ]);

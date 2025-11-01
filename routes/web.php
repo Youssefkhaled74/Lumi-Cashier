@@ -17,6 +17,19 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+// Quick PDF Arabic rendering test (public)
+Route::get('/pdf-test-ar', function () {
+    $html = '<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:"DejaVu Sans", "Tahoma", sans-serif; direction: rtl; text-align: right;}</style></head><body><p style="font-size:18px">مرحبا بالعالم — Arabic rendering test</p></body></html>';
+
+    $pdf = \Barryvdh\DomPDF\Facade\Pdf::setOptions([
+        'isHtml5ParserEnabled' => true,
+        'isRemoteEnabled' => true,
+        'isFontSubsettingEnabled' => true,
+    ])->loadHTML($html);
+
+    return $pdf->stream('test-ar.pdf');
+});
+
 // Language Switcher Route
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'ar'])) {
