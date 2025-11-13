@@ -7,7 +7,7 @@ use App\Models\Item;
 use App\Models\ItemUnit;
 use App\Models\Order;
 use App\Models\OrderItem;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\PdfGenerator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -183,20 +183,14 @@ class ReportController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Generate PDF
-        $pdf = Pdf::loadView('admin.reports.pdf', [
+        $filename = 'report_' . $fromDate . '_to_' . $toDate . '.pdf';
+
+        return app(PdfGenerator::class)->streamView('admin.reports.pdf', [
             'reportData' => $reportData,
             'orders' => $orders,
             'fromDate' => $fromDate,
             'toDate' => $toDate,
             'generatedAt' => Carbon::now(),
-        ]);
-
-        // Set paper size and orientation
-        $pdf->setPaper('a4', 'portrait');
-
-        // Stream PDF (better for desktop app)
-        $filename = 'report_' . $fromDate . '_to_' . $toDate . '.pdf';
-        return $pdf->stream($filename);
+        ], $filename, 'A4', 'portrait');
     }
 }

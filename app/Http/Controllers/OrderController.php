@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Repositories\Contracts\ItemRepositoryInterface;
 use App\Repositories\Contracts\OrderRepositoryInterface;
 use App\Services\OrderService;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\PdfGenerator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -140,127 +140,16 @@ class OrderController extends Controller
             'email' => 'info@lumipos.com',
         ]);
 
-        // Prefer mPDF for complex-script (Arabic) support if available
-        if (class_exists(\Mpdf\Mpdf::class)) {
-            $html = view('invoices.show', [
-                'order' => $order,
-                'company' => $company,
-            ])->render();
-
-            // mPDF setup: utf-8 mode, use DejaVu fonts by default which support Arabic shaping
-            $mpdf = new \Mpdf\Mpdf([
-                'mode' => 'utf-8',
-                'format' => [90, 297], // width mm x height (approx); we'll let it paginate
-                'default_font' => 'dejavusans',
-            ]);
-
-            // Allow RTL if locale is Arabic
-            if (app()->getLocale() === 'ar') {
-                $mpdf->SetDirectionality('rtl');
-            }
-
-            // Ensure the rendered HTML is valid UTF-8. mPDF throws when invalid bytes are present.
-            // Try a few safe sanitizations: convert from an unknown encoding, strip control chars,
-            // and finally drop any remaining invalid sequences using iconv with //IGNORE.
-            try {
-                $html = (string) $html;
-
-                if (!mb_check_encoding($html, 'UTF-8')) {
-                    // Try to convert from whatever encoding PHP thinks it is
-                    $html = mb_convert_encoding($html, 'UTF-8', 'auto');
-                }
-
-                // Remove C0 control characters that can break XML/HTML handling in mPDF
-                $html = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $html);
-
-                // Final pass: drop any leftover invalid UTF-8 byte sequences
-                $html = @iconv('UTF-8', 'UTF-8//IGNORE', $html);
-
-                if (!mb_check_encoding($html, 'UTF-8')) {
-                    // Try a set of likely source encodings (Arabic locales often use CP1256 or ISO-8859-6)
-                    $tried = ['Windows-1256', 'CP1256', 'ISO-8859-6', 'Windows-1252', 'ISO-8859-1'];
-                    $converted = false;
-
-                    foreach ($tried as $enc) {
-                        $try = @mb_convert_encoding($html, 'UTF-8', $enc);
-                        $try = @iconv('UTF-8', 'UTF-8//IGNORE', $try);
-                        if ($try !== false && mb_check_encoding($try, 'UTF-8')) {
-                            $html = $try;
-                            $converted = true;
-                            Log::info('OrderController::invoice - converted HTML from encoding', ['order_id' => $order->id, 'from' => $enc]);
-                            break;
-                        }
-                    }
-
-                    if (!$converted) {
-                        Log::warning('OrderController::invoice - HTML contains invalid UTF-8 after sanitization (no conversion succeeded)', ['order_id' => $order->id]);
-                        // Mark for dompdf fallback (mPDF will fail on invalid UTF-8)
-                        $useDompdfFallback = true;
-                    }
-                }
-            } catch (\Throwable $e) {
-                // Defensive: log and continue; iconv/mb_* may throw on some setups
-                Log::warning('OrderController::invoice - UTF-8 sanitization failed', ['order_id' => $order->id, 'error' => $e->getMessage()]);
-                // Attempt a last-resort cleanup
-                $html = @iconv('UTF-8', 'UTF-8//IGNORE', (string) $html);
-            }
-
-            // If we flagged a dompdf fallback due to encoding issues, use dompdf instead of mPDF
-            if (!empty($useDompdfFallback)) {
-                Log::warning('OrderController::invoice - falling back to dompdf due to UTF-8 issues', ['order_id' => $order->id]);
-
-                $pdf = Pdf::setOptions([
-                    'isHtml5ParserEnabled' => true,
-                    'isRemoteEnabled' => true,
-                    'isFontSubsettingEnabled' => true,
-                ])->loadHTML($html);
-
-                $pdf->setPaper([0, 0, 255.12, 841.89], 'portrait');
-
-                return $pdf->stream("receipt-{$order->id}.pdf");
-            }
-
-            try {
-                $mpdf->WriteHTML($html);
-
-                $pdfOutput = $mpdf->Output("receipt-{$order->id}.pdf", \Mpdf\Output\Destination::STRING_RETURN);
-
-                return response($pdfOutput, 200, [
-                    'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="receipt-' . $order->id . '.pdf"',
-                ]);
-            } catch (\Throwable $e) {
-                // If mPDF fails (e.g., invalid UTF-8), fall back to dompdf with sanitized HTML
-                Log::warning('OrderController::invoice - mPDF failed, falling back to dompdf', ['order_id' => $order->id, 'error' => $e->getMessage()]);
-
-                $pdf = Pdf::setOptions([
-                    'isHtml5ParserEnabled' => true,
-                    'isRemoteEnabled' => true,
-                    'isFontSubsettingEnabled' => true,
-                ])->loadHTML($html);
-
-                $pdf->setPaper([0, 0, 255.12, 841.89], 'portrait');
-
-                return $pdf->stream("receipt-{$order->id}.pdf");
-            }
-        }
-
-        // Fallback to dompdf (existing behavior)
-        $pdf = Pdf::setOptions([
-            'isHtml5ParserEnabled' => true,
-            'isRemoteEnabled' => true,
-            // allow unicode font subsetting
-            'isFontSubsettingEnabled' => true,
-        ])->loadView('invoices.show', [
+        // Render invoice HTML and let PdfGenerator choose the best engine (mPDF preferred)
+        $html = view('invoices.show', [
             'order' => $order,
             'company' => $company,
-        ]);
+        ])->render();
 
-        // Set paper size for thermal receipt (90mm width, auto height)
-        $pdf->setPaper([0, 0, 255.12, 841.89], 'portrait'); // 90mm x auto (in points)
+        // Thermal receipt width (90mm) converted to approximate points used previously
+        $paper = [0, 0, 255.12, 841.89];
 
-        // Download the PDF with a custom filename
-        return $pdf->stream("receipt-{$order->id}.pdf");
+        return app(PdfGenerator::class)->streamHtml($html, "receipt-{$order->id}.pdf", $paper, 'portrait');
     }
 
     /**

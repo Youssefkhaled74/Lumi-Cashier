@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\ItemUnit;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\PdfGenerator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -144,17 +144,15 @@ class CategoryController extends Controller
         $totalAvailableUnits = $categories->sum('available_stock');
         $totalSoldUnits = $categories->sum('sold_stock');
 
-        $pdf = Pdf::loadView('admin.categories.pdf', compact(
-            'categories',
-            'totalCategories',
-            'totalItems',
-            'totalInventoryValue',
-            'totalAvailableUnits',
-            'totalSoldUnits'
-        ));
+        $filename = 'categories_report_' . now()->format('Y-m-d') . '.pdf';
 
-        $pdf->setPaper('A4', 'portrait');
-
-        return $pdf->stream('categories_report_' . now()->format('Y-m-d') . '.pdf');
+        return app(PdfGenerator::class)->streamView('admin.categories.pdf', [
+            'categories' => $categories,
+            'totalCategories' => $totalCategories,
+            'totalItems' => $totalItems,
+            'totalInventoryValue' => $totalInventoryValue,
+            'totalAvailableUnits' => $totalAvailableUnits,
+            'totalSoldUnits' => $totalSoldUnits,
+        ], $filename, 'A4', 'portrait');
     }
 }

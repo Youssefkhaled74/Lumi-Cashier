@@ -8,7 +8,7 @@ use App\Models\Item;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\ItemRepositoryInterface;
 use App\Services\InventoryService;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\PdfGenerator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -173,18 +173,16 @@ class ItemController extends Controller
         $lowStockItems = $items->filter(fn($item) => $item->available_stock > 0 && $item->available_stock < 5)->count();
         $outOfStockItems = $items->filter(fn($item) => $item->available_stock == 0)->count();
 
-        $pdf = Pdf::loadView('admin.items.pdf', compact(
-            'items',
-            'totalItems',
-            'totalInventoryValue',
-            'totalAvailableUnits',
-            'totalSoldUnits',
-            'lowStockItems',
-            'outOfStockItems'
-        ));
+        $filename = 'items_inventory_' . now()->format('Y-m-d') . '.pdf';
 
-        $pdf->setPaper('A4', 'portrait');
-
-        return $pdf->stream('items_inventory_' . now()->format('Y-m-d') . '.pdf');
+        return app(PdfGenerator::class)->streamView('admin.items.pdf', [
+            'items' => $items,
+            'totalItems' => $totalItems,
+            'totalInventoryValue' => $totalInventoryValue,
+            'totalAvailableUnits' => $totalAvailableUnits,
+            'totalSoldUnits' => $totalSoldUnits,
+            'lowStockItems' => $lowStockItems,
+            'outOfStockItems' => $outOfStockItems,
+        ], $filename, 'A4', 'portrait');
     }
 }

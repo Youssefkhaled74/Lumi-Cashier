@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\PdfGenerator;
 
 class MarketingController extends Controller
 {
@@ -20,15 +20,8 @@ class MarketingController extends Controller
      */
     public function brochure()
     {
-        $pdf = Pdf::loadView('marketing.brochure')
-            ->setPaper('a4', 'portrait')
-            ->setOptions([
-                'isHtml5ParserEnabled' => true,
-                'isRemoteEnabled' => true,
-                'defaultFont' => 'DejaVu Sans',
-            ]);
-
-        return $pdf->stream('Lumi-Cashier-Marketing-Brochure.pdf');
+        $filename = 'Lumi-Cashier-Marketing-Brochure.pdf';
+        return app(PdfGenerator::class)->streamView('marketing.brochure', [], $filename, 'A4', 'portrait');
     }
 
     /**
@@ -36,14 +29,7 @@ class MarketingController extends Controller
      */
     public function downloadBrochure()
     {
-        $pdf = Pdf::loadView('marketing.brochure')
-            ->setPaper('a4', 'portrait')
-            ->setOptions([
-                'isHtml5ParserEnabled' => true,
-                'isRemoteEnabled' => true,
-                'defaultFont' => 'DejaVu Sans',
-            ]);
-
-        return $pdf->download('Lumi-Cashier-Brochure-' . date('Y-m-d') . '.pdf');
+        $filename = 'Lumi-Cashier-Brochure-' . date('Y-m-d') . '.pdf';
+        return app(PdfGenerator::class)->downloadView('marketing.brochure', [], $filename, 'A4', 'portrait');
     }
 }
