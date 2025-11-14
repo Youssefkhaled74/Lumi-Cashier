@@ -36,7 +36,17 @@ Route::get('/lang/{locale}', function ($locale) {
         Session::put('locale', $locale);
         App::setLocale($locale);
     }
-    return redirect()->back();
+    
+    // Get the previous URL, but prevent redirect loops
+    $previousUrl = url()->previous();
+    $currentUrl = url()->current();
+    
+    // If previous URL is the same as current (language switcher), redirect to dashboard
+    if ($previousUrl === $currentUrl || str_contains($previousUrl, '/lang/')) {
+        return redirect()->route('admin.dashboard');
+    }
+    
+    return redirect($previousUrl);
 })->name('lang.switch');
 
 // Authentication routes (guest only)

@@ -20,17 +20,34 @@ class ShopSettings extends Model
     ];
 
     /**
+     * Boot the model and clear cache on update
+     */
+    protected static function booted()
+    {
+        static::saved(function () {
+            cache()->forget('shop_settings');
+        });
+        
+        static::deleted(function () {
+            cache()->forget('shop_settings');
+        });
+    }
+
+    /**
      * الحصول على إعدادات المحل الحالية
      */
     public static function current()
     {
-        return static::first() ?? static::create([
-            'shop_name' => 'نظام لومي POS',
-            'shop_name_en' => 'Lumi POS System',
-            'tax_enabled' => true,
-            'tax_percentage' => 15,
-            'tax_label' => 'VAT',
-        ]);
+        // Cache the shop settings for 1 hour to prevent repeated DB queries
+        return cache()->remember('shop_settings', 3600, function () {
+            return static::first() ?? static::create([
+                'shop_name' => 'نظام لومي POS',
+                'shop_name_en' => 'Lumi POS System',
+                'tax_enabled' => true,
+                'tax_percentage' => 15,
+                'tax_label' => 'VAT',
+            ]);
+        });
     }
 
     /**
