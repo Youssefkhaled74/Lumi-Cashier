@@ -1,114 +1,65 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DayController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\MonthController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PdfTestController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ShopSettingsController;
 use App\Http\Middleware\AdminAuth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\App;
 
-// Public routes
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
 
-// Quick PDF Arabic rendering test (public)
-Route::get('/pdf-test-ar', function () {
-    $html = '<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:"DejaVu Sans", "Tahoma", sans-serif; direction: rtl; text-align: right;}</style></head><body><p style="font-size:18px">مرحبا بالعالم — Arabic rendering test</p></body></html>';
+Route::get('/', fn() => redirect()->route('login'));
 
-    $pdf = \Barryvdh\DomPDF\Facade\Pdf::setOptions([
-        'isHtml5ParserEnabled' => true,
-        'isRemoteEnabled' => true,
-        'isFontSubsettingEnabled' => true,
-    ])->loadHTML($html);
+// PDF Testing
+Route::get('/pdf-test-ar', [PdfTestController::class, 'testArabic']);
 
-    return $pdf->stream('test-ar.pdf');
-});
+// Language Switcher
+Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.switch');
 
-// Language Switcher Route
-Route::get('/lang/{locale}', function ($locale) {
-    if (in_array($locale, ['en', 'ar'])) {
-        Session::put('locale', $locale);
-        App::setLocale($locale);
-    }
-    
-    // Get the previous URL, but prevent redirect loops
-    $previousUrl = url()->previous();
-    $currentUrl = url()->current();
-    
-    // If previous URL is the same as current (language switcher), redirect to dashboard
-    if ($previousUrl === $currentUrl || str_contains($previousUrl, '/lang/')) {
-        return redirect()->route('admin.dashboard');
-    }
-    
-    return redirect($previousUrl);
-})->name('lang.switch');
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+*/
 
-// Authentication routes (guest only)
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 });
 
-// Logout route (authenticated only)
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware(AdminAuth::class);
 
-// Admin routes (protected by AdminAuth middleware)
+/*
+|--------------------------------------------------------------------------
+| Admin Routes (Protected by AdminAuth middleware)
+|--------------------------------------------------------------------------
+*/
+
 Route::prefix('admin')->middleware(AdminAuth::class)->group(function (): void {
+    
     // Dashboard
-    Route::get('/', function () {
-        // Use the currently open day only — do not fallback to general orders by created_at
-        $todayDay = \App\Models\Day::query()->current()->first();
+    Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        // Default to zero when no open day
-        $todayOrders = 0;
-        $todaySales = 0;
-
-        if ($todayDay) {
-            // Prefer Day model accessors which already filter to completed orders
-            $todayOrders = $todayDay->total_orders;
-            $todaySales = (float) $todayDay->total_sales;
-        }
-
-        return view('admin.dashboard', [
-            'todayOrders' => $todayOrders,
-            'todaySales' => $todaySales,
-            'totalItems' => \App\Models\Item::count(),
-            'totalCategories' => \App\Models\Category::count(),
-        ]);
-    })->name('admin.dashboard');
-
-    Route::get('/dashboard', function () {
-        // Use the currently open day only — do not fallback to general orders by created_at
-        $todayDay = \App\Models\Day::query()->current()->first();
-
-        // Default to zero when no open day
-        $todayOrders = 0;
-        $todaySales = 0;
-
-        if ($todayDay) {
-            $todayOrders = $todayDay->total_orders;
-            $todaySales = (float) $todayDay->total_sales;
-        }
-
-        return view('admin.dashboard', [
-            'todayOrders' => $todayOrders,
-            'todaySales' => $todaySales,
-            'totalItems' => \App\Models\Item::count(),
-            'totalCategories' => \App\Models\Category::count(),
-        ]);
-    })->name('dashboard');
-
-    // Categories CRUD
+    // Categories Management
     Route::get('categories/export-pdf', [CategoryController::class, 'exportPdf'])->name('categories.export-pdf');
     Route::resource('categories', CategoryController::class);
 
-    // Items CRUD
+    // Items Management
     Route::get('items/export-pdf', [ItemController::class, 'exportPdf'])->name('items.export-pdf');
     Route::resource('items', ItemController::class);
     Route::post('items/{item}/add-stock', [ItemController::class, 'addStock'])->name('items.add-stock');
@@ -134,23 +85,28 @@ Route::prefix('admin')->middleware(AdminAuth::class)->group(function (): void {
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('reports/export-pdf', [ReportController::class, 'exportPdf'])->name('reports.export-pdf');
 
-    // Settings
-    Route::get('settings', [\App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
-    Route::get('settings/printer', [\App\Http\Controllers\SettingsController::class, 'printer'])->name('settings.printer');
-    Route::delete('settings/reset-data', [\App\Http\Controllers\SettingsController::class, 'resetData'])->name('settings.reset-data');
-    Route::delete('settings/reset-specific', [\App\Http\Controllers\SettingsController::class, 'resetSpecific'])->name('settings.reset-specific');
+    // Settings Management
+    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::get('settings/printer', [SettingsController::class, 'printer'])->name('settings.printer');
+    Route::delete('settings/reset-data', [SettingsController::class, 'resetData'])->name('settings.reset-data');
+    Route::delete('settings/reset-specific', [SettingsController::class, 'resetSpecific'])->name('settings.reset-specific');
 
-    // Shop Settings (Protected)
-    Route::get('settings/shop', [\App\Http\Controllers\ShopSettingsController::class, 'index'])->name('settings.shop.index');
-    Route::post('settings/shop/verify', [\App\Http\Controllers\ShopSettingsController::class, 'verifyPassword'])->name('settings.shop.verify');
-    Route::put('settings/shop', [\App\Http\Controllers\ShopSettingsController::class, 'update'])->name('settings.shop.update');
-    Route::delete('settings/shop/logo', [\App\Http\Controllers\ShopSettingsController::class, 'deleteLogo'])->name('settings.shop.deleteLogo');
+    // Shop Settings (Password Protected)
+    Route::get('settings/shop', [ShopSettingsController::class, 'index'])->name('settings.shop.index');
+    Route::post('settings/shop/verify', [ShopSettingsController::class, 'verifyPassword'])->name('settings.shop.verify');
+    Route::put('settings/shop', [ShopSettingsController::class, 'update'])->name('settings.shop.update');
+    Route::delete('settings/shop/logo', [ShopSettingsController::class, 'deleteLogo'])->name('settings.shop.deleteLogo');
 
-    // POS - Point of Sale (uses order creation interface)
+    // POS - Point of Sale
     Route::get('pos', [OrderController::class, 'create'])->name('pos.index');
 });
 
-// Marketing Materials (Public - no auth required)
-Route::get('/marketing', [\App\Http\Controllers\MarketingController::class, 'index'])->name('marketing.index');
-Route::get('/marketing/brochure', [\App\Http\Controllers\MarketingController::class, 'brochure'])->name('marketing.brochure');
-Route::get('/marketing/brochure/download', [\App\Http\Controllers\MarketingController::class, 'downloadBrochure'])->name('marketing.brochure.download');
+/*
+|--------------------------------------------------------------------------
+| Public Marketing Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/marketing', [MarketingController::class, 'index'])->name('marketing.index');
+Route::get('/marketing/brochure', [MarketingController::class, 'brochure'])->name('marketing.brochure');
+Route::get('/marketing/brochure/download', [MarketingController::class, 'downloadBrochure'])->name('marketing.brochure.download');
