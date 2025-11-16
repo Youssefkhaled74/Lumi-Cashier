@@ -106,7 +106,10 @@ class OrderController extends Controller
     {
         $order->load(['day', 'items.itemUnit.item.category']);
 
-        return view('admin.orders.show', compact('order'));
+        // For debugging - uncomment the line below to see raw data
+        return view('admin.orders.debug', compact('order'));
+
+        // return view('admin.orders.show', compact('order'));
     }
 
     /**

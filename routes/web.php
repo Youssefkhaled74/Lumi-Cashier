@@ -22,7 +22,13 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', fn() => redirect()->route('login'));
+Route::get('/', function () {
+    // If authenticated, go to dashboard, otherwise go to login
+    if (session()->has('admin_authenticated')) {
+        return redirect()->route('admin.dashboard');
+    }
+    return redirect()->route('login');
+})->name('home');
 
 // PDF Testing
 Route::get('/pdf-test-ar', [PdfTestController::class, 'testArabic']);

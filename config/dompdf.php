@@ -45,7 +45,7 @@ return [
          * Times-Roman, Times-Bold, Times-BoldItalic, Times-Italic,
          * Symbol, ZapfDingbats.
          */
-        'font_dir' => storage_path('fonts'), // advised by dompdf (https://github.com/dompdf/dompdf/pull/782)
+        'font_dir' => storage_path('fonts'), // Custom fonts directory (Arabic fonts)
 
         /**
          * The location of the DOMPDF font cache directory
@@ -55,7 +55,7 @@ return [
          *
          * Note: This directory must exist and be writable by the webserver process.
          */
-        'font_cache' => storage_path('fonts'),
+        'font_cache' => storage_path('fonts'), // Cache font metrics here
 
         /**
          * The location of a temporary directory.
@@ -109,8 +109,12 @@ return [
 
         /**
          * Whether to enable font subsetting or not.
+         * 
+         * Font subsetting reduces PDF file size by including only the characters
+         * used in the document rather than the entire font file.
+         * Highly recommended for Arabic fonts which can be large.
          */
-        'enable_font_subsetting' => false,
+        'enable_font_subsetting' => true, // ✅ Enabled for smaller PDF files
 
         /**
          * The PDF rendering backend to use
@@ -176,10 +180,11 @@ return [
          * The default font family
          *
          * Used if no suitable fonts can be found. This must exist in the font folder.
+         * DejaVu Sans is recommended as it has good Unicode/Arabic support.
          *
          * @var string
          */
-        'default_font' => 'serif',
+        'default_font' => 'dejavusans', // ✅ Changed from 'serif' - better Arabic support
 
         /**
          * Image DPI setting

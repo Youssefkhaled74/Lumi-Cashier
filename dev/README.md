@@ -39,6 +39,12 @@ This folder contains comprehensive technical documentation to help you understan
 ### Extension & Customization
 - **[19-ADDING-FEATURES.md](./19-ADDING-FEATURES.md)** - Step-by-step guide to add new features
 - **[20-TROUBLESHOOTING.md](./20-TROUBLESHOOTING.md)** - Common issues and solutions
+- **[ROUTES_REFACTORING.md](./ROUTES_REFACTORING.md)** - Routes cleanup & MVC best practices
+
+### PDF & Arabic Support 🆕
+- **[PDF_ARABIC_QUICK_SETUP.md](./PDF_ARABIC_QUICK_SETUP.md)** ⚡ - Quick 5-minute setup for Arabic PDF
+- **[PDF_ARABIC_COMPLETE_GUIDE.md](./PDF_ARABIC_COMPLETE_GUIDE.md)** 📖 - Comprehensive guide (13,000+ words)
+- **[PDF_ARABIC_IMPLEMENTATION_SUMMARY.md](./PDF_ARABIC_IMPLEMENTATION_SUMMARY.md)** 📊 - Technical summary
 
 ---
 

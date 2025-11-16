@@ -31,3 +31,12 @@ Thumbs.db
 /bootstrap/cache/*.php
 database/database.sqlite
 database/database.sqlite-journal
+
+# PDF Fonts (don't commit font files due to licensing)
+/public/fonts/*.ttf
+/public/fonts/*.otf
+/public/fonts/*.woff
+/public/fonts/*.woff2
+!/public/fonts/README.md
+/storage/fonts/*
+!/storage/fonts/.gitkeep

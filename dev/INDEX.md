@@ -48,6 +48,14 @@ This folder contains **comprehensive technical documentation** created to help d
 |------|-------------|--------------|
 | **[15-API-ENDPOINTS.md](./15-API-ENDPOINTS.md)** | Complete API reference | Frontend devs, integrators |
 | **[19-ADDING-FEATURES.md](./19-ADDING-FEATURES.md)** | Step-by-step feature development | All developers |
+| **[ROUTES_REFACTORING.md](./ROUTES_REFACTORING.md)** | Routes cleanup & MVC best practices | All developers |
+
+### PDF & Arabic Support 🆕
+| File | Description | Who Needs It |
+|------|-------------|--------------|
+| **[PDF_ARABIC_QUICK_SETUP.md](./PDF_ARABIC_QUICK_SETUP.md)** ⚡ | Quick 5-min setup guide | New developers |
+| **[PDF_ARABIC_COMPLETE_GUIDE.md](./PDF_ARABIC_COMPLETE_GUIDE.md)** | Comprehensive Arabic PDF guide | All developers |
+| **[PDF_ARABIC_IMPLEMENTATION_SUMMARY.md](./PDF_ARABIC_IMPLEMENTATION_SUMMARY.md)** | Summary of implementation | DevOps, managers |
 
 ---
 

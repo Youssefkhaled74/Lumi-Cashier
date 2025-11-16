@@ -32,6 +32,11 @@ class PdfGenerator
     {
         // Sanitize HTML/ensure UTF-8 before handing to mPDF
         $html = $this->sanitizeHtml($html);
+        
+        // Add RTL wrapper if Arabic locale and HTML doesn't have proper RTL setup
+        if (app()->getLocale() === 'ar' && !$this->hasRtlSetup($html)) {
+            $html = $this->wrapWithRtl($html);
+        }
 
         if (class_exists(\Mpdf\Mpdf::class)) {
             try {
@@ -59,11 +64,8 @@ class PdfGenerator
 
         // Dompdf fallback
         try {
-            $pdf = DomPdfFacade::setOptions([
-                'isHtml5ParserEnabled' => true,
-                'isRemoteEnabled' => true,
-                'isFontSubsettingEnabled' => true,
-            ])->loadHTML($html);
+            $pdf = DomPdfFacade::setOptions($this->getDompdfOptions())
+                ->loadHTML($html);
 
             if (is_array($paper)) {
                 $pdf->setPaper($paper, $orientation);
@@ -84,6 +86,11 @@ class PdfGenerator
     public function downloadHtml(string $html, string $filename = 'document.pdf', $paper = 'A4', string $orientation = 'portrait')
     {
         $html = $this->sanitizeHtml($html);
+        
+        // Add RTL wrapper if Arabic locale and HTML doesn't have proper RTL setup
+        if (app()->getLocale() === 'ar' && !$this->hasRtlSetup($html)) {
+            $html = $this->wrapWithRtl($html);
+        }
 
         if (class_exists(\Mpdf\Mpdf::class)) {
             try {
@@ -106,11 +113,8 @@ class PdfGenerator
         }
 
         try {
-            $pdf = DomPdfFacade::setOptions([
-                'isHtml5ParserEnabled' => true,
-                'isRemoteEnabled' => true,
-                'isFontSubsettingEnabled' => true,
-            ])->loadHTML($html);
+            $pdf = DomPdfFacade::setOptions($this->getDompdfOptions())
+                ->loadHTML($html);
 
             if (is_array($paper)) {
                 $pdf->setPaper($paper, $orientation);
@@ -123,6 +127,71 @@ class PdfGenerator
             Log::error('PdfGenerator::downloadHtml - Dompdf also failed', ['error' => $e->getMessage()]);
             abort(500, 'Failed to generate PDF');
         }
+    }
+
+    /**
+     * Get DomPDF options optimized for Arabic/RTL support.
+     */
+    protected function getDompdfOptions(): array
+    {
+        return [
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'isFontSubsettingEnabled' => true,
+            'enable_font_subsetting' => true,
+            'default_font' => 'dejavusans', // DejaVu Sans supports Arabic
+        ];
+    }
+
+    /**
+     * Check if HTML already has RTL setup (dir="rtl" or direction: rtl).
+     */
+    protected function hasRtlSetup(string $html): bool
+    {
+        return str_contains($html, 'dir="rtl"') 
+            || str_contains($html, "dir='rtl'")
+            || str_contains($html, 'direction: rtl')
+            || str_contains($html, 'direction:rtl');
+    }
+
+    /**
+     * Wrap HTML with RTL configuration if not already present.
+     */
+    protected function wrapWithRtl(string $html): string
+    {
+        // If already a complete HTML document, return as-is
+        if (str_contains(strtolower($html), '<!doctype') || str_contains(strtolower($html), '<html')) {
+            return $html;
+        }
+
+        // Wrap simple HTML with RTL structure
+        return <<<HTML
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <style>
+        body {
+            font-family: "DejaVu Sans", "Tahoma", sans-serif;
+            direction: rtl;
+            text-align: right;
+            line-height: 1.6;
+        }
+        table {
+            direction: rtl;
+            text-align: right;
+        }
+        th, td {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+{$html}
+</body>
+</html>
+HTML;
     }
 
     /**
