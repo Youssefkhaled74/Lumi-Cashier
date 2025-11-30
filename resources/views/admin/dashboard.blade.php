@@ -3,15 +3,7 @@
 @section('title', __('messages.dashboard'))
 
 @section('content')
-    <!-- Welcome Message -->
-    @if(session('success'))
-        <div class="alert-animate bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded-xl shadow-lg" role="alert">
-            <div class="flex items-center">
-                <i class="bi bi-check-circle-fill text-2xl mr-3"></i>
-                <span class="font-semibold">{{ session('success') }}</span>
-            </div>
-        </div>
-    @endif
+    <!-- Welcome Message handled by global flash partial -->
 
     <!-- Page Header -->
     <div class="mb-8">
@@ -84,8 +76,8 @@
 
     <!-- Quick Actions -->
     <div class="card p-8 mb-8 shadow-xl">
-        <h3 class="text-2xl font-extrabold text-gray-800 mb-6 flex items-center">
-            <i class="bi bi-lightning-fill text-yellow-500 mr-3 text-3xl"></i>
+        <h3 class="text-2xl font-extrabold text-gray-800 mb-6 flex items-center gap-4">
+            <i class="bi bi-lightning-fill text-yellow-500 text-3xl"></i>
             {{ __('messages.quick_actions') }}
         </h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -112,9 +104,9 @@
         
         <!-- Settings Button (Full Width Below) -->
         <div class="mt-6">
-            <a href="{{ route('settings.index') }}" class="group flex items-center justify-center p-6 bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border-2 border-red-200">
-                <i class="bi bi-gear-fill text-4xl text-red-600 mr-4 group-hover:rotate-90 transition-transform duration-500"></i>
-                <div class="text-left">
+            <a href="{{ route('settings.index') }}" class="group flex items-center justify-center gap-6 p-6 bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border-2 border-red-200">
+                <i class="bi bi-gear-fill text-4xl text-red-600 group-hover:rotate-90 transition-transform duration-500"></i>
+                <div class="">
                     <span class="font-bold text-gray-700 group-hover:text-red-600 transition-colors text-lg block">System Settings</span>
                     <span class="text-sm text-gray-500">Manage system data and configurations</span>
                 </div>
@@ -125,8 +117,8 @@
     <!-- Recent Activity / Info -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="card p-8 shadow-xl">
-            <h3 class="text-xl font-extrabold text-gray-800 mb-6 flex items-center">
-                <i class="bi bi-clock-history text-blue-600 mr-3 text-2xl"></i>
+            <h3 class="text-xl font-extrabold text-gray-800 mb-6 flex items-center gap-4">
+                <i class="bi bi-clock-history text-blue-600 text-2xl"></i>
                 Recent Activity
             </h3>
             <div class="text-center py-12 text-gray-400">
@@ -137,8 +129,8 @@
         </div>
 
         <div class="card p-8 shadow-xl">
-            <h3 class="text-xl font-extrabold text-gray-800 mb-6 flex items-center">
-                <i class="bi bi-info-circle text-purple-600 mr-3 text-2xl"></i>
+            <h3 class="text-xl font-extrabold text-gray-800 mb-6 flex items-center gap-4">
+                <i class="bi bi-info-circle text-purple-600 text-2xl"></i>
                 System Information
             </h3>
             <div class="space-y-4">
@@ -156,8 +148,8 @@
                 </div>
                 <div class="flex items-center justify-between py-3">
                     <span class="text-gray-600 font-medium">Status</span>
-                    <span class="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-lg text-sm font-bold shadow-sm">
-                        <i class="bi bi-circle-fill text-xs mr-2 animate-pulse"></i>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-lg text-sm font-bold shadow-sm">
+                        <i class="bi bi-circle-fill text-xs animate-pulse"></i>
                         Online
                     </span>
                 </div>
