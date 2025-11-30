@@ -147,8 +147,9 @@ class OrderController extends Controller
             'company' => $company,
         ])->render();
 
-        // Thermal receipt width (90mm) converted to approximate points used previously
-        $paper = [0, 0, 255.12, 841.89];
+        // Thermal receipt size: 90mm width x 297mm height (approx A4 height)
+        // Use mm dimensions so mPDF/TCPDF receive correct format.
+        $paper = [90, 297];
 
         return app(PdfGenerator::class)->streamHtml($html, "receipt-{$order->id}.pdf", $paper, 'portrait');
     }

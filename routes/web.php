@@ -33,6 +33,14 @@ Route::get('/', function () {
 // PDF Testing
 Route::get('/pdf-test-ar', [PdfTestController::class, 'testArabic']);
 
+// Development helper: generate an invoice PDF for testing (no auth)
+Route::get('/dev/generate-invoice/{id}', function ($id) {
+    $order = App\Models\Order::with(['day','items.itemUnit.item.category'])->findOrFail($id);
+    $company = config('cashier.company');
+    $html = view('invoices.show', ['order' => $order, 'company' => $company])->render();
+    return app(App\Services\PdfGenerator::class)->streamHtml($html, "invoice-{$id}.pdf", [90, 297], 'portrait');
+});
+
 // Language Switcher
 Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.switch');
 

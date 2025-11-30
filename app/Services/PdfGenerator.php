@@ -145,7 +145,18 @@ class PdfGenerator
                 ->loadHTML($html);
 
             if (is_array($paper)) {
-                $pdf->setPaper($paper, $orientation);
+                // If the paper was given as [left, top, right, bottom] (points), convert to [width, height] in points
+                if (count($paper) === 4) {
+                    $left = (float) $paper[0];
+                    $top = (float) $paper[1];
+                    $right = (float) $paper[2];
+                    $bottom = (float) $paper[3];
+                    $widthPoints = $right - $left;
+                    $heightPoints = $bottom - $top;
+                    $pdf->setPaper([$widthPoints, $heightPoints], $orientation);
+                } else {
+                    $pdf->setPaper($paper, $orientation);
+                }
             } else {
                 $pdf->setPaper($paper, $orientation);
             }
@@ -194,7 +205,17 @@ class PdfGenerator
                 ->loadHTML($html);
 
             if (is_array($paper)) {
-                $pdf->setPaper($paper, $orientation);
+                if (count($paper) === 4) {
+                    $left = (float) $paper[0];
+                    $top = (float) $paper[1];
+                    $right = (float) $paper[2];
+                    $bottom = (float) $paper[3];
+                    $widthPoints = $right - $left;
+                    $heightPoints = $bottom - $top;
+                    $pdf->setPaper([$widthPoints, $heightPoints], $orientation);
+                } else {
+                    $pdf->setPaper($paper, $orientation);
+                }
             } else {
                 $pdf->setPaper($paper, $orientation);
             }
@@ -276,9 +297,25 @@ HTML;
      */
     protected function createMpdfInstance($paper)
     {
+        // If caller passed a 4-value array like [left, top, right, bottom] (points), convert to width/height in mm
+        if (is_array($paper) && count($paper) === 4) {
+            $left = (float) $paper[0];
+            $top = (float) $paper[1];
+            $right = (float) $paper[2];
+            $bottom = (float) $paper[3];
+            $widthPoints = $right - $left;
+            $heightPoints = $bottom - $top;
+            // convert points to mm (1 pt = 0.352777778 mm)
+            $widthMm = round($widthPoints * 0.352777778, 4);
+            $heightMm = round($heightPoints * 0.352777778, 4);
+            $format = [$widthMm, $heightMm];
+        } else {
+            $format = $paper;
+        }
+
         $config = [
             'mode' => 'utf-8',
-            'format' => $paper,
+            'format' => $format,
             'default_font' => 'dejavusans',
             // Enable hyphenation and complex script handling
             'autoScriptToLang' => true,
