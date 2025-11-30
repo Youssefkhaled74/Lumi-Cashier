@@ -38,6 +38,83 @@ class PdfGenerator
             $html = $this->wrapWithRtl($html);
         }
 
+        // Prefer TCPDF for Arabic content if available (good RTL & shaping support)
+        if ((app()->getLocale() === 'ar' || $this->containsArabic($html)) && class_exists(\TCPDF::class)) {
+            try {
+                $tcpdf = $this->createTcpdfInstance($paper, $orientation);
+                // Disable default header/footer
+                $tcpdf->setPrintHeader(false);
+                $tcpdf->setPrintFooter(false);
+
+                // Register a Unicode TTF font (Tajawal or fallback to DejaVu Sans)
+                $font = 'dejavusans';
+                $tajawalPath = public_path('fonts/Tajawal-Regular.ttf');
+                if (file_exists($tajawalPath) && class_exists(\TCPDF_FONTS::class)) {
+                    try {
+                        // addTTFfont returns internal font name when successful
+                        $added = \TCPDF_FONTS::addTTFfont($tajawalPath, 'TrueTypeUnicode', '', 32);
+                        if ($added) {
+                            $font = $added;
+                        }
+                    } catch (\Throwable $e) {
+                        // ignore font registration failures, fallback to built-in
+                    }
+                }
+
+                $tcpdf->setRTL(true);
+                $tcpdf->SetAutoPageBreak(true, 0);
+                $tcpdf->AddPage($orientation === 'portrait' ? 'P' : 'L');
+                $tcpdf->SetFont($font, '', 12);
+
+                // Write HTML and output as string
+                $tcpdf->writeHTML($html, true, false, true, false, '');
+                $pdfOutput = $tcpdf->Output('', 'S');
+
+                return response($pdfOutput, 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="' . $filename . '"',
+                ]);
+            } catch (\Throwable $e) {
+                Log::warning('PdfGenerator::streamHtml - TCPDF failed, falling back to mPDF/Dompdf', ['error' => $e->getMessage()]);
+            }
+        }
+
+        // Prefer TCPDF for Arabic content if available
+        if ((app()->getLocale() === 'ar' || $this->containsArabic($html)) && class_exists(\TCPDF::class)) {
+            try {
+                $tcpdf = $this->createTcpdfInstance($paper, $orientation);
+                $tcpdf->setPrintHeader(false);
+                $tcpdf->setPrintFooter(false);
+
+                $font = 'dejavusans';
+                $tajawalPath = public_path('fonts/Tajawal-Regular.ttf');
+                if (file_exists($tajawalPath) && class_exists(\TCPDF_FONTS::class)) {
+                    try {
+                        $added = \TCPDF_FONTS::addTTFfont($tajawalPath, 'TrueTypeUnicode', '', 32);
+                        if ($added) {
+                            $font = $added;
+                        }
+                    } catch (\Throwable $e) {
+                        // ignore
+                    }
+                }
+
+                $tcpdf->setRTL(true);
+                $tcpdf->SetAutoPageBreak(true, 0);
+                $tcpdf->AddPage($orientation === 'portrait' ? 'P' : 'L');
+                $tcpdf->SetFont($font, '', 12);
+
+                $tcpdf->writeHTML($html, true, false, true, false, '');
+                $pdfContent = $tcpdf->Output('', 'S');
+                return response($pdfContent, 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                ]);
+            } catch (\Throwable $e) {
+                Log::warning('PdfGenerator::downloadHtml - TCPDF failed, falling back to mPDF/Dompdf', ['error' => $e->getMessage()]);
+            }
+        }
+
         if (class_exists(\Mpdf\Mpdf::class)) {
             try {
                 $mpdf = $this->createMpdfInstance($paper);
@@ -210,6 +287,66 @@ HTML;
 
         // If caller passed a simple A4/A5 string, keep as-is; mPDF will accept that
         return new \Mpdf\Mpdf($config);
+    }
+
+    /**
+     * Create a TCPDF instance configured for UTF-8/RTL output.
+     * Accepts string paper sizes (A4) or the same array format used elsewhere.
+     */
+    protected function createTcpdfInstance($paper, string $orientation = 'portrait')
+    {
+        // Convert paper to TCPDF format if needed (TCPDF accepts array(width,height) in mm)
+        $format = $this->convertPaperForTcpdf($paper);
+
+        $orient = strtoupper(substr($orientation, 0, 1)) === 'L' ? 'L' : 'P';
+
+        // TCPDF constructor: TCPDF($orientation='P',$unit='mm',$format='A4',$unicode=true,$encoding='UTF-8',$diskcache=false,$pdfa=false)
+        $tcpdf = new \TCPDF($orient, 'mm', $format, true, 'UTF-8', false);
+
+        // Set document info minimal
+        $tcpdf->SetCreator(config('app.name'));
+        $tcpdf->SetAuthor(config('app.name'));
+
+        // Make sure the default font can render Arabic (we attempt to set later)
+        $tcpdf->setLanguageArray([]);
+
+        return $tcpdf;
+    }
+
+    /**
+     * Convert our $paper value to a TCPDF-acceptable format.
+     * If $paper is an array of 4 coordinates (points), convert to mm width/height.
+     */
+    protected function convertPaperForTcpdf($paper)
+    {
+        if (is_array($paper)) {
+            // If passed as [left, top, right, bottom] in points (as Dompdf often uses), convert to mm
+            if (count($paper) === 4) {
+                $left = (float) $paper[0];
+                $top = (float) $paper[1];
+                $right = (float) $paper[2];
+                $bottom = (float) $paper[3];
+                $widthPoints = $right - $left;
+                $heightPoints = $bottom - $top;
+                // 1 point = 0.352777778 mm
+                $widthMm = $widthPoints * 0.352777778;
+                $heightMm = $heightPoints * 0.352777778;
+                return [$widthMm, $heightMm];
+            }
+
+            // If already width/height in mm, return as-is
+            return $paper;
+        }
+
+        return $paper;
+    }
+
+    /**
+     * Detect presence of Arabic characters in a string.
+     */
+    protected function containsArabic(string $text): bool
+    {
+        return (bool) preg_match('/\p{Arabic}/u', $text);
     }
 
     /**
