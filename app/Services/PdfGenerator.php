@@ -135,7 +135,13 @@ class PdfGenerator
                     'Content-Disposition' => 'inline; filename="' . $filename . '"',
                 ]);
             } catch (\Throwable $e) {
-                Log::warning('PdfGenerator::streamHtml - mPDF failed, falling back to Dompdf', ['error' => $e->getMessage()]);
+                Log::warning('PdfGenerator::streamHtml - mPDF failed, falling back to Dompdf', [
+                    'error' => $e->getMessage(),
+                    'paper' => $paper,
+                    'utf8' => mb_check_encoding($html, 'UTF-8'),
+                    'html_preview' => mb_substr($html, 0, 500),
+                    'exception' => $e->getTraceAsString(),
+                ]);
             }
         }
 
@@ -145,17 +151,20 @@ class PdfGenerator
                 ->loadHTML($html);
 
             if (is_array($paper)) {
+                // Normalize array keys to avoid undefined index when associative arrays are passed
+                $vals = array_values($paper);
                 // If the paper was given as [left, top, right, bottom] (points), convert to [width, height] in points
-                if (count($paper) === 4) {
-                    $left = (float) $paper[0];
-                    $top = (float) $paper[1];
-                    $right = (float) $paper[2];
-                    $bottom = (float) $paper[3];
+                if (count($vals) === 4) {
+                    $left = (float) $vals[0];
+                    $top = (float) $vals[1];
+                    $right = (float) $vals[2];
+                    $bottom = (float) $vals[3];
                     $widthPoints = $right - $left;
                     $heightPoints = $bottom - $top;
                     $pdf->setPaper([$widthPoints, $heightPoints], $orientation);
                 } else {
-                    $pdf->setPaper($paper, $orientation);
+                    // For 2-value arrays (width, height) or other shapes, pass through
+                    $pdf->setPaper($vals, $orientation);
                 }
             } else {
                 $pdf->setPaper($paper, $orientation);
@@ -163,7 +172,13 @@ class PdfGenerator
 
             return $pdf->stream($filename);
         } catch (\Throwable $e) {
-            Log::error('PdfGenerator::streamHtml - Dompdf also failed', ['error' => $e->getMessage()]);
+            Log::error('PdfGenerator::streamHtml - Dompdf also failed', [
+                'error' => $e->getMessage(),
+                'paper' => $paper,
+                'utf8' => mb_check_encoding($html, 'UTF-8'),
+                'html_preview' => mb_substr($html, 0, 500),
+                'exception' => $e->getTraceAsString(),
+            ]);
             abort(500, 'Failed to generate PDF');
         }
     }
@@ -196,7 +211,13 @@ class PdfGenerator
                     'Content-Disposition' => 'attachment; filename="' . $filename . '"',
                 ]);
             } catch (\Throwable $e) {
-                Log::warning('PdfGenerator::downloadHtml - mPDF failed, falling back to Dompdf', ['error' => $e->getMessage()]);
+                Log::warning('PdfGenerator::downloadHtml - mPDF failed, falling back to Dompdf', [
+                    'error' => $e->getMessage(),
+                    'paper' => $paper,
+                    'utf8' => mb_check_encoding($html, 'UTF-8'),
+                    'html_preview' => mb_substr($html, 0, 500),
+                    'exception' => $e->getTraceAsString(),
+                ]);
             }
         }
 
@@ -205,16 +226,17 @@ class PdfGenerator
                 ->loadHTML($html);
 
             if (is_array($paper)) {
-                if (count($paper) === 4) {
-                    $left = (float) $paper[0];
-                    $top = (float) $paper[1];
-                    $right = (float) $paper[2];
-                    $bottom = (float) $paper[3];
+                $vals = array_values($paper);
+                if (count($vals) === 4) {
+                    $left = (float) $vals[0];
+                    $top = (float) $vals[1];
+                    $right = (float) $vals[2];
+                    $bottom = (float) $vals[3];
                     $widthPoints = $right - $left;
                     $heightPoints = $bottom - $top;
                     $pdf->setPaper([$widthPoints, $heightPoints], $orientation);
                 } else {
-                    $pdf->setPaper($paper, $orientation);
+                    $pdf->setPaper($vals, $orientation);
                 }
             } else {
                 $pdf->setPaper($paper, $orientation);
@@ -222,7 +244,13 @@ class PdfGenerator
 
             return $pdf->download($filename);
         } catch (\Throwable $e) {
-            Log::error('PdfGenerator::downloadHtml - Dompdf also failed', ['error' => $e->getMessage()]);
+            Log::error('PdfGenerator::downloadHtml - Dompdf also failed', [
+                'error' => $e->getMessage(),
+                'paper' => $paper,
+                'utf8' => mb_check_encoding($html, 'UTF-8'),
+                'html_preview' => mb_substr($html, 0, 500),
+                'exception' => $e->getTraceAsString(),
+            ]);
             abort(500, 'Failed to generate PDF');
         }
     }
