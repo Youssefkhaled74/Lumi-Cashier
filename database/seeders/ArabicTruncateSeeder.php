@@ -21,18 +21,47 @@ class ArabicTruncateSeeder extends Seeder
             return;
         }
 
-        $this->command->info('Disabling foreign key checks...');
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
-
-        // Get all table names - try Doctrine first, fall back to SHOW TABLES
+        $this->command->info('Disabling foreign key checks (driver aware)...');
+        // Detect driver to run appropriate FK-disable statement
         try {
+            $driver = DB::getPdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        } catch (\Throwable $e) {
+            $driver = Schema::getConnection()->getDriverName() ?? 'mysql';
+        }
+
+        if ($driver === 'mysql' || $driver === 'mysqli') {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        } elseif ($driver === 'sqlite') {
+            DB::statement('PRAGMA foreign_keys = OFF');
+        } elseif ($driver === 'pgsql' || $driver === 'postgres') {
+            DB::statement("SET session_replication_role = 'replica'");
+        } else {
+            // fallback - try MySQL style, catch errors later
+            try { DB::statement('SET FOREIGN_KEY_CHECKS=0'); } catch (\Throwable $e) {}
+        }
+
+        // Get all table names - driver aware
+        $tables = [];
+        try {
+            // Prefer Doctrine where available
             $tables = Schema::getConnection()->getDoctrineSchemaManager()->listTableNames();
         } catch (\Throwable $e) {
-            $result = DB::select('SHOW TABLES');
-            $tables = [];
-            foreach ($result as $row) {
-                // object keys vary by driver, pick the first
-                $tables[] = array_values((array) $row)[0];
+            // Fallback per driver
+            if ($driver === 'sqlite') {
+                $result = DB::select("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'");
+                foreach ($result as $row) {
+                    $tables[] = $row->name ?? array_values((array) $row)[0];
+                }
+            } elseif ($driver === 'pgsql' || $driver === 'postgres') {
+                $result = DB::select("SELECT tablename FROM pg_tables WHERE schemaname = 'public'");
+                foreach ($result as $row) {
+                    $tables[] = $row->tablename ?? array_values((array) $row)[0];
+                }
+            } else {
+                $result = DB::select('SHOW TABLES');
+                foreach ($result as $row) {
+                    $tables[] = array_values((array) $row)[0];
+                }
             }
         }
 
@@ -52,14 +81,33 @@ class ArabicTruncateSeeder extends Seeder
 
             // Some tables may not be truncatable via DB::table if they don't exist
             try {
-                DB::table($table)->truncate();
+                if ($driver === 'sqlite') {
+                    DB::table($table)->delete();
+                    // Reset sqlite sequence if exists
+                    try {
+                        DB::statement("DELETE FROM sqlite_sequence WHERE name = ?", [$table]);
+                    } catch (\Throwable $e) {
+                        // ignore
+                    }
+                } else {
+                    DB::table($table)->truncate();
+                }
                 $this->command->info("Truncated: $table");
             } catch (\Throwable $e) {
                 $this->command->warn("Could not truncate $table: " . $e->getMessage());
             }
         }
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        // Re-enable foreign keys based on driver
+        if ($driver === 'mysql' || $driver === 'mysqli') {
+            DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        } elseif ($driver === 'sqlite') {
+            DB::statement('PRAGMA foreign_keys = ON');
+        } elseif ($driver === 'pgsql' || $driver === 'postgres') {
+            DB::statement("SET session_replication_role = 'origin'");
+        } else {
+            try { DB::statement('SET FOREIGN_KEY_CHECKS=1'); } catch (\Throwable $e) {}
+        }
         $this->command->info('Foreign key checks re-enabled.');
 
         // Seed Arabic categories
