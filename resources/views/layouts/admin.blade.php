@@ -421,27 +421,27 @@ $shopSettings = \App\Models\ShopSettings::current();
         <aside class="w-64 bg-white shadow-2xl hidden lg:block">
             <div class="h-full overflow-y-auto py-6">
                 <nav class="space-y-1 px-3">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('admin.dashboard') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link flex items-center gap-3 {{ $isRtl ? 'flex-row-reverse' : '' }} px-4 py-3 text-gray-700 {{ request()->routeIs('admin.dashboard') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                         <i class="bi bi-speedometer2 text-xl"></i>
                         <span class="font-semibold">{{ __('messages.nav.dashboard') }}</span>
                     </a>
                     
-                    <a href="{{ route('categories.index') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('categories.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
+                    <a href="{{ route('categories.index') }}" class="nav-link flex items-center gap-3 {{ $isRtl ? 'flex-row-reverse' : '' }} px-4 py-3 text-gray-700 {{ request()->routeIs('categories.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                         <i class="bi bi-folder text-xl"></i>
                         <span class="font-semibold">{{ __('messages.nav.categories') }}</span>
                     </a>
                     
-                    <a href="{{ route('items.index') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('items.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
+                    <a href="{{ route('items.index') }}" class="nav-link flex items-center gap-3 {{ $isRtl ? 'flex-row-reverse' : '' }} px-4 py-3 text-gray-700 {{ request()->routeIs('items.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                         <i class="bi bi-box-seam text-xl"></i>
                         <span class="font-semibold">{{ __('messages.nav.items') }}</span>
                     </a>
                     
-                    <a href="{{ route('orders.index') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('orders.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
+                    <a href="{{ route('orders.index') }}" class="nav-link flex items-center gap-3 {{ $isRtl ? 'flex-row-reverse' : '' }} px-4 py-3 text-gray-700 {{ request()->routeIs('orders.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                         <i class="bi bi-receipt text-xl"></i>
                         <span class="font-semibold">{{ __('messages.nav.orders') }}</span>
                     </a>
                     
-                    <a href="{{ route('pos.index') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('pos.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
+                    <a href="{{ route('pos.index') }}" class="nav-link flex items-center gap-3 {{ $isRtl ? 'flex-row-reverse' : '' }} px-4 py-3 text-gray-700 {{ request()->routeIs('pos.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                         <i class="bi bi-cart3 text-xl"></i>
                         <span class="font-semibold">{{ __('messages.nav.pos') }}</span>
                     </a>
@@ -449,22 +449,22 @@ $shopSettings = \App\Models\ShopSettings::current();
                     <div class="pt-6 mt-6 border-t border-gray-200">
                         <p class="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">{{ __('messages.nav.analytics') }}</p>
                         
-                        <a href="{{ route('months.index') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('months.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
+                        <a href="{{ route('months.index') }}" class="nav-link flex items-center gap-3 {{ $isRtl ? 'flex-row-reverse' : '' }} px-4 py-3 text-gray-700 {{ request()->routeIs('months.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                             <i class="bi bi-calendar-month text-xl"></i>
                             <span class="font-semibold">{{ __('messages.nav.monthly_overview') }}</span>
                         </a>
                         
-                        <a href="{{ route('days.index') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('days.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
+                        <a href="{{ route('days.index') }}" class="nav-link flex items-center gap-3 {{ $isRtl ? 'flex-row-reverse' : '' }} px-4 py-3 text-gray-700 {{ request()->routeIs('days.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                             <i class="bi bi-calendar3 text-xl"></i>
                             <span class="font-semibold">{{ __('messages.nav.days_history') }}</span>
                         </a>
                         
-                        <a href="{{ route('reports.index') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('reports.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
+                        <a href="{{ route('reports.index') }}" class="nav-link flex items-center gap-3 {{ $isRtl ? 'flex-row-reverse' : '' }} px-4 py-3 text-gray-700 {{ request()->routeIs('reports.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                             <i class="bi bi-bar-chart-line text-xl"></i>
                             <span class="font-semibold">{{ __('messages.nav.reports') }}</span>
                         </a>
                         
-                        <a href="{{ route('day.status') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('day.status') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
+                        <a href="{{ route('day.status') }}" class="nav-link flex items-center gap-3 {{ $isRtl ? 'flex-row-reverse' : '' }} px-4 py-3 text-gray-700 {{ request()->routeIs('day.status') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                             <i class="bi bi-calendar-week text-xl"></i>
                             <span class="font-semibold">{{ __('messages.nav.daily_sessions') }}</span>
                         </a>
@@ -474,7 +474,7 @@ $shopSettings = \App\Models\ShopSettings::current();
                     <div class="pt-6 mt-6 border-t border-gray-200">
                         <p class="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">{{ __('messages.nav.settings') }}</p>
                         
-                        <a href="{{ route('settings.shop.index') }}" class="nav-link flex items-center space-x-3 px-4 py-3 text-gray-700 {{ request()->routeIs('settings.shop.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
+                        <a href="{{ route('settings.shop.index') }}" class="nav-link flex items-center gap-3 {{ $isRtl ? 'flex-row-reverse' : '' }} px-4 py-3 text-gray-700 {{ request()->routeIs('settings.shop.*') ? 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700' : '' }} rounded-xl hover:bg-gray-50 transition-all duration-200">
                             <i class="bi bi-shop text-xl"></i>
                             <span class="font-semibold">{{ __('messages.nav.shop_settings') }}</span>
                         </a>
